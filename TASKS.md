@@ -32,10 +32,6 @@
 - [x] 20. README: pitch, screenshots placeholder, mermaid architecture, which Meta model does what, setup steps for Windows, and a section "Built during the hackathon".
 - [x] 21. Write a live smoke test in `backend/tests/live/` (RUN_LIVE=1): one short transcript through the full pipeline. Writing it completes the task; Emre runs it.
 
-## Stretch (only if all above are ticked)
-- [ ] 22. Third philosopher: Kant (universalisability test).
-- [ ] 23. Philosopher agents on open-weights model via `PHILOSOPHER_BASE_URL` (Modal/Baseten) for the Open Weights bonus.
-
 ## Phase 6 — Learn & delight (from docs/LEARN_TASKS.md; after the core demo works)
 - [ ] 25. Learn panel UI: a "Learn" tab/drawer listing philosopher cards (from `philosophers.json`) and
   fallacy cards (from `fallacies.json`). Each card: image (`image`, falling back to `fallback_image` on
@@ -68,3 +64,7 @@
   cross-segment and wrong-segment tests.
 - [ ] 35. Philosopher trust gate + graph integrity: propagate `verified` to judge inputs and
   validate edge endpoints/speakers/fallacy links at the analyst boundary.
+
+## Stretch (only if all above are ticked)
+- [ ] 22. Third philosopher: Kant (universalisability test).
+- [ ] 23. Philosopher agents on open-weights model via `PHILOSOPHER_BASE_URL` (Modal/Baseten) for the Open Weights bonus.
