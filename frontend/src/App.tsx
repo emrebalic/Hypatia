@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import ArgumentMap, { type DebateFallacy, type DebateMapEdge, type DebateMapNode } from './ArgumentMap'
 import FallacyPanel from './FallacyPanel'
+import PhilosopherPanel from './PhilosopherPanel'
 import './App.css'
 
 interface Speaker {
@@ -128,6 +129,12 @@ export default function App() {
   function handleSelectFallacy(fallacy: DebateFallacy) {
     setSelectedFallacyId(fallacy.id)
     setSelectedNodeId(fallacy.node_id)
+  }
+
+  function handlePhilosopherNode(nodeId: string) {
+    setSelectedNodeId(nodeId)
+    const firstBadge = fallacies.find((fallacy) => fallacy.node_id === nodeId) ?? null
+    setSelectedFallacyId(firstBadge ? firstBadge.id : null)
   }
 
   async function runAnalyze(speakers: Speaker[], segments: Segment[]) {
@@ -274,6 +281,18 @@ export default function App() {
 
   const firstSegmentStart = transcriptInfo && transcriptInfo.segments.length > 0 ? transcriptInfo.segments[0].start : null
 
+  const philosopherResult =
+    mapGraph && transcriptInfo
+      ? {
+          speakers: transcriptInfo.speakers,
+          segments: transcriptInfo.segments,
+          nodes: mapGraph.nodes,
+          edges: mapGraph.edges,
+          fallacies,
+        }
+      : null
+  const philosopherKey = summary ? `${summary.nodes}-${summary.edges}-${summary.fallacies}` : 'empty'
+
   return (
     <div className="app">
       <header className="app-header">
@@ -415,12 +434,12 @@ export default function App() {
         </section>
         <section className="column" aria-label="Philosopher panel">
           <h2>Philosopher</h2>
-          <p>Pick a judge: Aristotle, Socrates, or Hypatia.</p>
-          <ul className="philosopher-list">
-            <li>Aristotle — verdict from syllogistic structure</li>
-            <li>Socrates — probing questions, no verdict</li>
-            <li>Hypatia — step-by-step proof check</li>
-          </ul>
+          <PhilosopherPanel
+            key={philosopherKey}
+            result={philosopherResult}
+            selectedNodeId={selectedNodeId}
+            onSelectNode={handlePhilosopherNode}
+          />
         </section>
       </main>
     </div>
