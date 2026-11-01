@@ -8,7 +8,7 @@
 - [x] 5. Frontend skeleton: Vite + React + TS, three-column layout (player / map / philosopher), builds cleanly.
 
 ## Phase 2 — Core pipeline (target: Nov 2 morning)
-- [ ] 6. `POST /api/transcribe`: accepts upload; converts non-WAV input to the required WAV with ffmpeg (clear 400 error if ffmpeg is missing); rejects audio over 10 minutes with a clear message; maps `turns` to `segments` + `speakers` (ms to seconds). Also accept `POST /api/transcript` with pasted text in the format of `fixtures/sample_transcript.txt` (fallback path, parses timestamps + speakers without any model call).
+- [x] 6. `POST /api/transcribe`: accepts upload; converts non-WAV input to the required WAV with ffmpeg (clear 400 error if ffmpeg is missing); rejects audio over 10 minutes with a clear message; maps `turns` to `segments` + `speakers` (ms to seconds). Also accept `POST /api/transcript` with pasted text in the format of `fixtures/sample_transcript.txt` (fallback path, parses timestamps + speakers without any model call).
 - [ ] 7. Analyst agent: transcript → nodes + edges (JSON), prompt in `backend/app/prompts/analyst.md`. Test with canned reply from `fixtures/`.
 - [ ] 8. Deterministic verifier: every quote appears in transcript, every timestamp inside its segment; failing items get `verified=false`. Tests with deliberately broken canned replies.
 - [ ] 9. FallacyHunter agent: adds `fallacies` (name, explanation, quote, start). Prompt in `prompts/fallacy.md`. Runs through the deterministic verifier.

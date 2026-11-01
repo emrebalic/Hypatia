@@ -28,5 +28,6 @@ $120 of estimated spend, computed from `run_usage` events in `logs/`. The estima
 - task 3: backend/app/schemas.py contract models (Speaker/Segment/Node/Edge/Fallacy/DebateResult) + backend/tests/test_schemas.py validating fixtures/sample_debate.json.
 - task 4: backend/app/meta_client.py (chat_json/chat_json_validated via OpenAI SDK with json_schema structured output + one retry, transcribe_wav via httpx multipart, env vars read lazily) + backend/tests/test_meta_client.py (14 offline tests, SDK + httpx faked).
 - task 5: frontend skeleton (Vite 5 + React 18 + TS, @xyflow/react dep for task 13, three-column player/map/philosopher layout in src/App.tsx, non-political demo note); build not run here, left to check.ps1.
+- task 6: backend/app/transcribe.py (POST /api/transcribe with ffmpeg conversion + 10-min limit + turns-to-segments/speakers mapping, POST /api/transcript paste parser) + backend/tests/test_transcribe.py (14 offline tests); code not run here, left to check.ps1.
 
 ## Blocked
