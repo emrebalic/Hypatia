@@ -24,5 +24,6 @@ The loop builds with `muse-spark-1.3` at high effort ($1.25 in / $0.15 cached / 
 $120 of estimated spend, computed from `run_usage` events in `logs/`. The estimate may miss child runs.
 
 ## Log
+- task 1: backend skeleton (FastAPI /health in app/main.py, requirements.txt, .env.example, tests/test_health.py).
 
 ## Blocked

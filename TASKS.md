@@ -1,7 +1,7 @@
 # Tasks (do in order; tick when check.ps1 passes)
 
 ## Phase 1 — Skeleton (target: Nov 1 night)
-- [ ] 1. Backend skeleton: `backend/app/main.py` (FastAPI, `/health`), `backend/requirements.txt` (fastapi, uvicorn, pydantic, openai, httpx, python-multipart, python-dotenv, pytest), `backend/.env.example` (META_BASE_URL=https://api.meta.ai/v1, META_API_KEY=, META_TEXT_MODEL=muse-spark-1.3, META_TRANSCRIBE_MODEL=muse-voice-transcribe-1.0), pytest setup in `backend/tests/` with one passing test.
+- [x] 1. Backend skeleton: `backend/app/main.py` (FastAPI, `/health`), `backend/requirements.txt` (fastapi, uvicorn, pydantic, openai, httpx, python-multipart, python-dotenv, pytest), `backend/.env.example` (META_BASE_URL=https://api.meta.ai/v1, META_API_KEY=, META_TEXT_MODEL=muse-spark-1.3, META_TRANSCRIBE_MODEL=muse-voice-transcribe-1.0), pytest setup in `backend/tests/` with one passing test.
 - [x] 2. `scripts/check.ps1`: creates/uses `backend/.venv`, installs requirements, runs pytest; then `npm ci` (or `npm install` on first run) and `npm run build` in `frontend/`. Exit non-zero on any failure. (Done during setup.)
 - [ ] 3. `backend/app/schemas.py`: pydantic models exactly matching the data contract in SPEC.md + tests using `fixtures/sample_debate.json`.
 - [ ] 4. `backend/app/meta_client.py`: thin wrapper (chat JSON call + transcription call via httpx) reading env vars; follow the shapes in NOTES.md "Verified API facts". Tests mock it.
