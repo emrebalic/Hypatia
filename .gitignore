@@ -1,0 +1,22 @@
+# secrets — repo is PUBLIC
+.env
+*.env
+!.env.example
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# node
+node_modules/
+frontend/dist/
+
+# runtime
+logs/
+backend/data/uploads/
+*.mp3
+*.mp4
+*.wav
+*.m4a

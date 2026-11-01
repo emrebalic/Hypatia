@@ -1,0 +1,11 @@
+[00:00] Speaker 1: Remote work should be the default for software teams. People are more productive when they control their environment.
+[00:09] Speaker 2: I disagree. Teams lose the informal conversations where most real problem solving happens.
+[00:17] Speaker 1: Studies of focused tasks show fewer interruptions at home, and fewer interruptions means more output.
+[00:26] Speaker 2: So you are saying people should never meet and just sit alone forever? That would destroy any company culture.
+[00:34] Speaker 1: That is not what I said. I said remote should be the default, not the only option.
+[00:41] Speaker 2: Well, every successful company I know brings people back to the office, so the office must be better.
+[00:49] Speaker 1: Those companies also have expensive office leases to justify. And you only know a handful of companies.
+[00:57] Speaker 2: You only say this because you hate commuting.
+[01:02] Speaker 1: Whether I like commuting has nothing to do with whether the argument is sound.
+[01:08] Speaker 2: Fine. But onboarding a junior developer remotely is clearly slower. They learn by watching seniors.
+[01:17] Speaker 1: That is a fair point. Maybe juniors need a hybrid period, then remote by default.
