@@ -16,7 +16,7 @@
 - [x] 11. `POST /api/analyze`: runs Analyst → FallacyHunter → Verifiers, returns full contract JSON. Saves result to `backend/data/last_result.json` for fast demo reloads.
 
 ## Phase 3 — UI (target: Nov 2 evening)
-- [ ] 12. Upload + transcript paste screen; loading states per pipeline stage.
+- [x] 12. Upload + transcript paste screen; loading states per pipeline stage.
 - [ ] 13. Argument map with @xyflow/react: node colours per type, supports=green / attacks=red edges, auto-layout (dagre or elk).
 - [ ] 14. Click node → media player seeks to `start`. Speaker + timestamp on each node.
 - [ ] 15. Fallacy badges + side detail card with quote and explanation; unverified items greyed with ⚠️.
