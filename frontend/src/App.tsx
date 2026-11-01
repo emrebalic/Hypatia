@@ -3,6 +3,7 @@ import ArgumentMap, { type DebateFallacy, type DebateMapEdge, type DebateMapNode
 import FallacyPanel from './FallacyPanel'
 import PhilosopherPanel from './PhilosopherPanel'
 import LearnPanel, { type LearnOpenRequest } from './LearnPanel'
+import PipelineFlow, { type StageId, type StageStatus } from './PipelineFlow'
 import './App.css'
 
 interface Speaker {
@@ -35,15 +36,6 @@ interface AnalyzeResult {
 }
 
 type BusyKind = 'idle' | 'transcript' | 'analyze'
-type StageStatus = 'idle' | 'active' | 'done' | 'error'
-type StageId = 'transcript' | 'arguments' | 'fallacies' | 'verification'
-
-const STAGES: { id: StageId; label: string; detail: string }[] = [
-  { id: 'transcript', label: 'Transcript', detail: 'Upload + transcribe, or parse pasted text' },
-  { id: 'arguments', label: 'Map arguments', detail: 'Analyst: premises → conclusion' },
-  { id: 'fallacies', label: 'Flag fallacies', detail: 'FallacyHunter with exact quotes' },
-  { id: 'verification', label: 'Verify', detail: 'Quote + timestamp checks' },
-]
 
 const IDLE_STAGES: Record<StageId, StageStatus> = {
   transcript: 'idle',
@@ -89,6 +81,7 @@ export default function App() {
   const [selectedFallacyId, setSelectedFallacyId] = useState<string | null>(null)
   const [learnTarget, setLearnTarget] = useState<LearnOpenRequest | null>(null)
   const [seekNotice, setSeekNotice] = useState<string | null>(null)
+  const [dragging, setDragging] = useState(false)
   // Monotonic version of the loaded result. Used as the PhilosopherPanel
   // key so the panel remounts exactly when a *new* result arrives — the
   // old count-based key collided whenever two debates had equal counts.
@@ -336,39 +329,74 @@ export default function App() {
 
   return (
     <div className="app">
+      <p className="app-notice" role="note">
+        Hypatia analyzes arguments. It does not give medical, mental-health or political advice, so please don't ask
+        for it.
+      </p>
       <header className="app-header">
         <h1>HYPATIA</h1>
-        <p className="app-tagline">
-          Debate X-Ray: map every argument, flag every fallacy, ask a philosopher.
-        </p>
-        <p className="app-note">
-          Demo debates are non-political. No medical or mental-health advice.
-        </p>
+        <figure className="app-quote">
+          <blockquote>“Though this be madness, yet there is method in ’t.”</blockquote>
+          <figcaption>Shakespeare, Hamlet</figcaption>
+        </figure>
       </header>
 
-      <LearnPanel openRequest={learnTarget} />
-
       <section className="intake" aria-label="Load a debate">
-        <h2>Load a debate</h2>
+        <div className="intake-head">
+          <h2>Load a debate</h2>
+          <div className="intake-actions">
+            <button type="button" className="secondary" disabled={busy !== 'idle'} onClick={() => void handleDemo()}>
+              Load demo instantly
+            </button>
+            <button type="button" className="secondary" disabled={busy !== 'idle'} onClick={resetAll}>
+              Start over
+            </button>
+          </div>
+        </div>
         <div className="intake-grid">
           <div className="field">
-            <label htmlFor="audio-upload">Upload audio or video</label>
+            <span className="field-title">Upload audio or video</span>
             <input
               id="audio-upload"
+              className="dropzone-input"
               type="file"
               accept="audio/*,video/mp4,.mp3,.wav,.m4a,.mp4"
               disabled={busy !== 'idle'}
-              onChange={(event) => void handleFile(event.target.files?.[0])}
+              onChange={(event) => {
+                void handleFile(event.target.files?.[0])
+                event.target.value = ''
+              }}
             />
-            <p className="hint">mp3, wav, m4a, or mp4. Clips up to 10 minutes; other formats convert with ffmpeg.</p>
-            {fileName && (
-              <p className="hint">
-                File: <strong>{fileName}</strong>
-              </p>
-            )}
+            <label
+              htmlFor="audio-upload"
+              className={`dropzone${dragging ? ' dropzone-over' : ''}${busy !== 'idle' ? ' dropzone-busy' : ''}`}
+              onDragOver={(event) => {
+                event.preventDefault()
+                setDragging(true)
+              }}
+              onDragLeave={(event) => {
+                // dragleave also fires when entering a child; only clear
+                // when the pointer truly leaves the dropzone.
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setDragging(false)
+              }}
+              onDrop={(event) => {
+                event.preventDefault()
+                setDragging(false)
+                void handleFile(event.dataTransfer.files[0])
+              }}
+            >
+              <svg className="dropzone-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 16V5M7.500 9.500 12 5l4.500 4.500" />
+                <path d="M4 15v3.500A1.500 1.500 0 0 0 5.500 20h13a1.500 1.500 0 0 0 1.500-1.500V15" />
+              </svg>
+              <strong>{fileName ?? 'Drop your recording here'}</strong>
+              <span>{fileName ? 'Choose another file' : 'or click to browse'}</span>
+              <small>mp3, wav, m4a or mp4, up to 10 minutes</small>
+            </label>
           </div>
+          <span className="intake-or" aria-hidden="true">or</span>
           <div className="field">
-            <label htmlFor="transcript-paste">Or paste a transcript</label>
+            <label className="field-title" htmlFor="transcript-paste">Paste a transcript</label>
             <textarea
               id="transcript-paste"
               rows={6}
@@ -377,42 +405,16 @@ export default function App() {
               disabled={busy !== 'idle'}
               onChange={(event) => setTranscriptText(event.target.value)}
             />
-            <div className="intake-actions">
-              <button type="button" disabled={busy !== 'idle'} onClick={() => void handlePaste()}>
-                {busy === 'idle' ? 'Analyze pasted transcript' : 'Working…'}
-              </button>
-              <button type="button" className="secondary" disabled={busy !== 'idle'} onClick={() => void handleDemo()}>
-                Load demo instantly
-              </button>
-              <button type="button" className="secondary" disabled={busy !== 'idle'} onClick={resetAll}>
-                Start over
+            <div className="paste-foot">
+              <small>One turn per line: [MM:SS] Speaker: words</small>
+              <button type="button" className="primary" disabled={busy !== 'idle'} onClick={() => void handlePaste()}>
+                {busy === 'idle' ? 'Analyze transcript' : 'Working…'}
               </button>
             </div>
-            <p className="hint">Demo loads backend/data/last_result.json with no model calls — for recording the video.</p>
           </div>
         </div>
 
-        <ol className="stages" aria-label="Pipeline stages" aria-live="polite">
-          {STAGES.map((stage) => {
-            const status = stages[stage.id]
-            return (
-              <li key={stage.id} className={`stage stage-${status}`}>
-                <span className="stage-dot" aria-hidden="true">
-                  {status === 'active' && <span className="spinner" />}
-                  {status === 'done' && '✓'}
-                  {status === 'error' && '!'}
-                </span>
-                <span className="stage-text">
-                  <strong>
-                    {stage.label}
-                    {status === 'active' ? ' — working…' : status === 'done' ? ' — done' : status === 'error' ? ' — failed' : ''}
-                  </strong>
-                  <small>{stage.detail}</small>
-                </span>
-              </li>
-            )
-          })}
-        </ol>
+        <PipelineFlow stages={stages} />
         <p className="status-line" role="status">
           {busyLabel ? `${busyLabel} ` : ''}{statusLine}
         </p>
@@ -492,6 +494,8 @@ export default function App() {
           />
         </section>
       </main>
+
+      <LearnPanel openRequest={learnTarget} />
     </div>
   )
 }
