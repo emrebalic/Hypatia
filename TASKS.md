@@ -5,7 +5,7 @@
 - [x] 2. `scripts/check.ps1`: creates/uses `backend/.venv`, installs requirements, runs pytest; then `npm ci` (or `npm install` on first run) and `npm run build` in `frontend/`. Exit non-zero on any failure. (Done during setup.)
 - [x] 3. `backend/app/schemas.py`: pydantic models exactly matching the data contract in SPEC.md + tests using `fixtures/sample_debate.json`.
 - [x] 4. `backend/app/meta_client.py`: thin wrapper (chat JSON call + transcription call via httpx) reading env vars; follow the shapes in NOTES.md "Verified API facts". Tests mock it.
-- [ ] 5. Frontend skeleton: Vite + React + TS, three-column layout (player / map / philosopher), builds cleanly.
+- [x] 5. Frontend skeleton: Vite + React + TS, three-column layout (player / map / philosopher), builds cleanly.
 
 ## Phase 2 — Core pipeline (target: Nov 2 morning)
 - [ ] 6. `POST /api/transcribe`: accepts upload; converts non-WAV input to the required WAV with ffmpeg (clear 400 error if ffmpeg is missing); rejects audio over 10 minutes with a clear message; maps `turns` to `segments` + `speakers` (ms to seconds). Also accept `POST /api/transcript` with pasted text in the format of `fixtures/sample_transcript.txt` (fallback path, parses timestamps + speakers without any model call).

@@ -1,0 +1,72 @@
+.app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #1a1a1a;
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+  margin: 0 0 0.25rem;
+}
+
+.app-note {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  color: #555;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 1rem;
+}
+
+.column {
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fff;
+  min-height: 320px;
+}
+
+.column h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem;
+}
+
+.column p {
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.player {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.map-placeholder {
+  border: 1px dashed #bbb;
+  border-radius: 8px;
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.philosopher-list {
+  padding-left: 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .column {
+    min-height: 0;
+  }
+}
