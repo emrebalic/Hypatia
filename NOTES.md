@@ -51,4 +51,6 @@ $120 of estimated spend, computed from `run_usage` events in `logs/`. The estima
 
 - task 20: README.md (pitch, screenshots placeholder, mermaid architecture, Meta-model table, Windows setup, "Built during the hackathon"); fixed demo.py default-arg bug (load_demo_result bound LAST_RESULT_PATH at def time, so monkeypatched path was ignored -> 404/500 tests got 200; now resolves the global at call time); code not run here, left to check.ps1.
 
+- task 21: backend/tests/live/test_smoke.py (skipped unless RUN_LIVE=1, loads backend/.env: pasted 5-turn cafeteria-trays transcript -> /api/analyze -> /api/philosopher Aristotle, loose contract assertions, LAST_RESULT_PATH redirected to tmp_path); code not run here, Emre runs it.
+
 ## Blocked

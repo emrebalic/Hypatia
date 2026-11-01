@@ -30,7 +30,7 @@
 ## Phase 5 — Polish (target: Nov 3 before 12:00 TR)
 - [x] 19. "Demo mode": load `backend/data/last_result.json` instantly (no API calls) for recording the video.
 - [x] 20. README: pitch, screenshots placeholder, mermaid architecture, which Meta model does what, setup steps for Windows, and a section "Built during the hackathon".
-- [ ] 21. Write a live smoke test in `backend/tests/live/` (RUN_LIVE=1): one short transcript through the full pipeline. Writing it completes the task; Emre runs it.
+- [x] 21. Write a live smoke test in `backend/tests/live/` (RUN_LIVE=1): one short transcript through the full pipeline. Writing it completes the task; Emre runs it.
 
 ## Stretch (only if all above are ticked)
 - [ ] 22. Third philosopher: Kant (universalisability test).
