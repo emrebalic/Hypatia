@@ -51,3 +51,20 @@
 - [ ] 27. Use `docs/philosophy-notes.md` to sharpen `prompts/aristotle.md`, `prompts/socrates.md` and
   `prompts/hypatia.md` (methods, "will not" lists, paraphrase-don't-quote rule). Keep existing tests
   green; add one test per prompt that the "will not" rules are present.
+
+## Phase 7 — Improvement loop, cycle 1 (multi-agent discovery, Nov 1)
+- [ ] 28. Demo audio: ship a 60-90s demo mp3 beside `backend/data/last_result.json` and wire demo
+  mode to it so node clicks play. (Needs a recorded file from Emre; stale-audio clearing done in 31.)
+- [x] 29. Verifier proof strip + agent-named stages: after analysis show verified X/Y tallies for
+  nodes and fallacies from the result, and name PipelineFlow stages after the agents.
+- [x] 30. Transcript rail: clickable timestamped segment list under the Player; highlight the
+  segment(s) of the selected node.
+- [x] 31. Atomic demo-file write (temp + rename in `save_result`) and stale-audio clearing when
+  the input source switches (paste/demo).
+- [x] 32. Header column motif: engraved Ionic columns flanking HYPATIA (gold capital, aubergine
+  duotone, mirrored), responsive entablature rule under 640px, fluid title size.
+- [ ] 33. Map legibility + three-column layout: distinct per-type node rules, wider side columns.
+- [ ] 34. Verifier quote/segment coupling: tie quote location to its segment span; add
+  cross-segment and wrong-segment tests.
+- [ ] 35. Philosopher trust gate + graph integrity: propagate `verified` to judge inputs and
+  validate edge endpoints/speakers/fallacy links at the analyst boundary.

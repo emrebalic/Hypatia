@@ -20,8 +20,8 @@ const STAGES: { id: StageId; label: string; detail: string; icon: ReactNode }[] 
   },
   {
     id: 'arguments',
-    label: 'Argument map',
-    detail: 'Connects premises to conclusions',
+    label: 'Analyst',
+    detail: 'Maps premises to conclusions',
     icon: (
       <>
         <path d="M12 7v4M12 11l-6 6M12 11l6 6" />
@@ -33,7 +33,7 @@ const STAGES: { id: StageId; label: string; detail: string; icon: ReactNode }[] 
   },
   {
     id: 'fallacies',
-    label: 'Fallacies',
+    label: 'Fallacy hunter',
     detail: 'Hunts for flaws, with exact quotes',
     icon: (
       <>
@@ -45,7 +45,7 @@ const STAGES: { id: StageId; label: string; detail: string; icon: ReactNode }[] 
   },
   {
     id: 'verification',
-    label: 'Verification',
+    label: 'Verifier',
     detail: 'Checks every quote against the source',
     icon: (
       <>

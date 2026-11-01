@@ -4,6 +4,7 @@ import FallacyPanel from './FallacyPanel'
 import PhilosopherPanel from './PhilosopherPanel'
 import LearnPanel, { type LearnOpenRequest } from './LearnPanel'
 import PipelineFlow, { type StageId, type StageStatus } from './PipelineFlow'
+import ColumnMotif from './ColumnMotif'
 import './App.css'
 
 interface Speaker {
@@ -97,6 +98,11 @@ export default function App() {
     setSelectedNodeId(null)
     setSelectedFallacyId(null)
     setSeekNotice(null)
+    // The previous source's audio must never play against new timestamps.
+    // handleFile sets a fresh URL right after this, for the new file.
+    if (audioUrl) URL.revokeObjectURL(audioUrl)
+    setAudioUrl(null)
+    setFileName(null)
   }
 
   function markStage(ids: StageId[], status: StageStatus) {
@@ -334,7 +340,12 @@ export default function App() {
         for it.
       </p>
       <header className="app-header">
-        <h1>HYPATIA</h1>
+        <div className="app-header-title">
+          <ColumnMotif />
+          <h1>HYPATIA</h1>
+          <ColumnMotif mirrored />
+        </div>
+        <div className="app-entablature" aria-hidden="true" />
         <figure className="app-quote">
           <blockquote>“Though this be madness, yet there is method in ’t.”</blockquote>
           <figcaption>Shakespeare, Hamlet</figcaption>
@@ -415,6 +426,14 @@ export default function App() {
         </div>
 
         <PipelineFlow stages={stages} />
+        {mapGraph && (
+          <p className="proof-strip" role="status">
+            Verifier: {mapGraph.nodes.filter((node) => node.verified).length}/{mapGraph.nodes.length} node quotes
+            passed every check (quote, timestamp, meaning) ·{' '}
+            {fallacies.filter((fallacy) => fallacy.verified).length}/{fallacies.length} fallacy quotes passed ·{' '}
+            items that fail any check stay greyed, never hidden
+          </p>
+        )}
         <p className="status-line" role="status">
           {busyLabel ? `${busyLabel} ` : ''}{statusLine}
         </p>
@@ -447,6 +466,31 @@ export default function App() {
               {transcriptInfo.segments.length} segments
               {firstSegmentStart !== null ? ` · starts ${formatTime(firstSegmentStart)}` : ''}
             </p>
+          )}
+          {transcriptInfo && (
+            <ol className="transcript-rail" aria-label="Transcript">
+              {transcriptInfo.segments.map((segment) => {
+                const selectedNode = mapGraph?.nodes.find((node) => node.id === selectedNodeId)
+                const focused =
+                  selectedNode !== undefined &&
+                  (selectedNode.segment_ids
+                    ? selectedNode.segment_ids.includes(segment.id)
+                    : segment.start <= selectedNode.start && selectedNode.start <= segment.end)
+                return (
+                  <li key={segment.id}>
+                    <button
+                      type="button"
+                      className={focused ? 'transcript-seg transcript-seg-focused' : 'transcript-seg'}
+                      onClick={() => seekTo(segment.start, `${speakerLabel(segment.speaker)} at ${formatTime(segment.start)}`)}
+                    >
+                      <span className="transcript-seg-time">{formatTime(segment.start)}</span>
+                      <span className="transcript-seg-speaker">{speakerLabel(segment.speaker)}</span>
+                      <span className="transcript-seg-text">{segment.text}</span>
+                    </button>
+                  </li>
+                )
+              })}
+            </ol>
           )}
         </section>
         <section className="column" aria-label="Argument map">

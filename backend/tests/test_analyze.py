@@ -268,6 +268,23 @@ def test_analyze_fallacy_failure_degrades_to_empty_fallacies(
     assert result.fallacies == []
 
 
+def test_save_result_is_atomic_and_leaves_no_tmp(tmp_path):
+    from app.analyze import save_result
+
+    result = DebateResult.model_validate(_load_input() | {
+        "nodes": [], "edges": [], "fallacies": [],
+    })
+    target = tmp_path / "nested" / "last_result.json"
+    saved = save_result(result, target)
+    assert saved == target
+    assert DebateResult.model_validate_json(target.read_text(encoding="utf-8")) == result
+    assert not list((tmp_path / "nested").glob("*.tmp"))
+    # Overwriting an existing result (the demo file) replaces it cleanly.
+    save_result(result, target)
+    assert DebateResult.model_validate_json(target.read_text(encoding="utf-8")) == result
+    assert not list((tmp_path / "nested").glob("*.tmp"))
+
+
 def test_run_analysis_saves_contract_json(monkeypatch, tmp_path):
     saved = tmp_path / "nested" / "last_result.json"
     monkeypatch.setattr(anmod, "LAST_RESULT_PATH", saved)

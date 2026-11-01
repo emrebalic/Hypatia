@@ -13,15 +13,78 @@
   border-bottom: 1px solid var(--lilac-200);
 }
 
+.app-header-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.column-motif {
+  width: 26px;
+  height: 72px;
+  flex: none;
+  margin-bottom: 0.35rem;
+}
+
+.column-motif .cm-gold {
+  stroke: var(--gold);
+  stroke-width: 1.6;
+}
+
+.column-motif .cm-lilac {
+  stroke: var(--lilac-700);
+  stroke-width: 1.4;
+}
+
+.column-motif .cm-ink {
+  stroke: var(--aubergine-950);
+  stroke-width: 1.3;
+}
+
+.column-motif-mirrored {
+  transform: scaleX(-1);
+}
+
+.app-entablature {
+  display: none;
+  width: 120px;
+  height: 10px;
+  margin: 0.5rem auto 0;
+  border-top: 2px solid var(--gold);
+  border-bottom: 1px solid var(--lilac-300);
+}
+
 .app-header h1 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 3.4rem;
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
   letter-spacing: 0.24em;
   text-indent: 0.24em;
   line-height: 1.05;
   margin: 0 0 0.6rem;
   color: var(--aubergine-950);
+}
+
+@media (max-width: 900px) {
+  .column-motif {
+    width: 18px;
+    height: 46px;
+  }
+
+  .app-header-title {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .column-motif {
+    display: none;
+  }
+
+  .app-entablature {
+    display: block;
+  }
 }
 
 .app-quote {
@@ -295,6 +358,67 @@
   border: 1px solid var(--lilac-500);
   border-radius: 8px;
   padding: 0.4rem 0.6rem;
+}
+
+.proof-strip {
+  margin: 0.9rem 0 0;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--gold-soft);
+  border-radius: 10px;
+  background: var(--lilac-50);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--lilac-900);
+}
+
+.transcript-rail {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.transcript-seg {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--lilac-200);
+  border-radius: 10px;
+  background: var(--paper);
+  cursor: pointer;
+  font: inherit;
+}
+
+.transcript-seg-focused {
+  border-color: var(--gold);
+  background: var(--lilac-100);
+}
+
+.transcript-seg-time {
+  font-family: var(--font-ui);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--lilac-700);
+}
+
+.transcript-seg-speaker {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.transcript-seg-text {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--ink);
 }
 
 .map-placeholder {

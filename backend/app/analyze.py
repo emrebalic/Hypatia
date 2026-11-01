@@ -27,6 +27,7 @@ so tests can fake the model offline.
 from __future__ import annotations
 
 import logging
+import uuid
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -54,9 +55,19 @@ class AnalyzeRequest(BaseModel):
 
 
 def save_result(result: DebateResult, path: Path = LAST_RESULT_PATH) -> Path:
-    """Write ``result`` as JSON to ``path`` (creating parent dirs)."""
+    """Write ``result`` as JSON to ``path`` atomically (temp file + rename).
+
+    A concurrent reader (GET /api/demo) must never observe a torn file:
+    the payload is written beside the target and renamed over it.
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(result.model_dump_json(indent=2), encoding="utf-8")
+    # Unique temp name: concurrent analyses must not share one temp file.
+    tmp = path.with_name(f"{path.name}.{uuid.uuid4().hex[:12]}.tmp")
+    try:
+        tmp.write_text(result.model_dump_json(indent=2), encoding="utf-8")
+        tmp.replace(path)
+    finally:
+        tmp.unlink(missing_ok=True)
     return path
 
 

@@ -1,6 +1,6 @@
 # Hypatia — Debate X-Ray with Philosopher Judges
 
-Upload a debate or podcast. Hypatia transcrices it, maps every argument
+Upload a debate or podcast. Hypatia transcribes it, maps every argument
 (premises → conclusion, with clickable timestamps), flags logical fallacies,
 verifies its own claims, and lets you ask a philosopher — Aristotle, Socrates,
 Hypatia, Kant, Marcus Aurelius or Epicurus — who is right, each judging with

@@ -20,6 +20,7 @@ export interface DebateMapNode {
   quote: string
   start: number
   verified: boolean
+  segment_ids?: string[]
 }
 
 export interface DebateFallacy {
