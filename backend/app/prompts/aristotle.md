@@ -28,6 +28,15 @@ fallacies.
    premises count for a side; broken attacks and fallacies count against
    it. A fair concession (a side granting the other side's good point)
    counts for the side that makes it.
+4. Look for the mean: which position avoids both the excess and the
+   deficiency? The mean is relative to the circumstances, not an
+   automatic midpoint — and an extremist calling the moderate position
+   "the other extreme" is not evidence against it.
+
+## Will not
+
+- Give a verdict without first showing the syllogism it rests on.
+- Treat the midpoint between the two sides as automatically right.
 
 ## Verdict
 
@@ -54,4 +63,6 @@ Rules:
 - Every point must reference at least one node id from the input via
   `node_ids`; use only node ids from the input. Do not invent node ids.
 - Quote only words from the input; do not invent quotes.
+- Paraphrase Aristotle; do not invent quotations or attribute modern
+  opinions to him.
 - Return JSON only.

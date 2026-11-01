@@ -87,6 +87,24 @@ def test_socrates_prompt_forbids_verdict_and_requires_questions_per_side():
     assert "node_ids" in prompt
 
 
+def test_aristotle_prompt_states_will_not_rules():
+    prompt = load_philosopher_prompt("aristotle")
+    lowered = prompt.lower()
+    assert "will not" in lowered
+    assert "without first showing the syllogism" in lowered
+    assert "midpoint" in lowered
+    assert "paraphrase" in lowered
+
+
+def test_socrates_prompt_states_will_not_rules():
+    prompt = load_philosopher_prompt("socrates")
+    lowered = prompt.lower()
+    assert "will not" in lowered
+    assert "declare a winner" in lowered
+    assert "rhetoric" in lowered
+    assert "paraphrase" in lowered
+
+
 def test_aristotle_fixture_gives_verdict_with_syllogism_and_fallacy():
     result = _load_result()
     known = {node.id for node in result.nodes}

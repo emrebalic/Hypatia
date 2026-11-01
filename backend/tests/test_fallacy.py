@@ -174,3 +174,37 @@ def test_canned_fixture_matches_sample_transcript():
             assert item.quote.lower() in segment["text"].lower()
             assert segment["start"] <= item.start <= segment["end"]
     assert build_fallacy_messages(*_load_inputs())[0]["content"].strip()
+
+
+FALLACY_TAXONOMY_NAMES = (
+    "Affirming the consequent",
+    "Denying the antecedent",
+    "Ad hominem (abusive)",
+    "Ad hominem (circumstantial)",
+    "Guilt by association",
+    "Tu quoque",
+    "Genetic fallacy",
+    "Appeal to popularity",
+    "Appeal to false authority",
+    "Appeal to tradition",
+    "Appeal to self-interest",
+    "Appeal to force",
+    "Appeal to pity",
+    "Appeal to ignorance",
+    "Straw man",
+    "Red herring",
+    "False dilemma",
+    "Slippery slope",
+    "Hasty generalization",
+    "Equivocation",
+)
+
+
+def test_fallacy_prompt_keeps_taxonomy_and_procedure():
+    """The FallacyHunter prompt must keep all 20 types and the detection logic."""
+    prompt = load_fallacy_prompt()
+    for name in FALLACY_TAXONOMY_NAMES:
+        assert name in prompt
+    lowered = prompt.lower()
+    for keyword in ("standard form", "hidden premise", "conservative", "verbatim"):
+        assert keyword in lowered

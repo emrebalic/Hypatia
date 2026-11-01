@@ -3,7 +3,8 @@
 Upload a debate or podcast. Hypatia transcrices it, maps every argument
 (premises → conclusion, with clickable timestamps), flags logical fallacies,
 verifies its own claims, and lets you ask a philosopher — Aristotle, Socrates,
-or Hypatia — who is right, each judging with their *own* method.
+Hypatia, Kant, Marcus Aurelius or Epicurus — who is right, each judging with
+their *own* method.
 
 Left panel: media player. Middle: argument map (React Flow). Right:
 philosopher panel. Click a map node to seek the player to that second.
@@ -35,7 +36,7 @@ flowchart LR
         TR[POST /api/transcribe<br/>ffmpeg convert + 10-min limit]
         TP[POST /api/transcript<br/>paste parser, no model call]
         AN[POST /api/analyze<br/>Analyst -> verifier -><br/>FallacyHunter -> semantic verifier]
-        PH[POST /api/philosopher<br/>Aristotle / Socrates / Hypatia]
+        PH[POST /api/philosopher<br/>6 philosopher judges]
         DM[GET /api/demo<br/>saved last_result.json, no model calls]
     end
     subgraph META [Meta Model API]
@@ -68,8 +69,8 @@ upgrade. All network calls go through one module,
 ## Which Meta model does what
 
 Model IDs always come from env vars (`META_TEXT_MODEL`,
-`META_TRANSCRIBE_MODEL`); defaults are in `backend/.env.example`.
-Base URL: `https://api.meta.ai/v1`.
+`META_TRANSCRIBE_MODEL`, `META_IMAGE_MODEL`); defaults are in
+`backend/.env.example`. Base URL: `https://api.meta.ai/v1`.
 
 | Step | Agent | Model (env var) | How it is called |
 |---|---|---|---|
@@ -77,10 +78,11 @@ Base URL: `https://api.meta.ai/v1`.
 | Claims / premises / conclusions → JSON graph | Analyst | `META_TEXT_MODEL` (Muse Spark) | Chat Completions structured output (`json_schema`), validated with pydantic, retried once |
 | Fallacy detection with quote + timestamp | FallacyHunter | `META_TEXT_MODEL` | Same structured-output chat call, then deterministic verifier |
 | Check every quote and label against transcript | Verifier | Deterministic checks + `META_TEXT_MODEL` (semantic verifier, tool-style question) | Deterministic first, model only for semantic support checks |
-| Verdict / questions / proof check | Philosopher (Aristotle, Socrates, Hypatia) | `META_TEXT_MODEL` | Structured output; every point must cite real node ids or the reply is rejected |
+| Verdict / questions / proof check | Philosopher (Aristotle, Socrates, Hypatia, Kant, Marcus Aurelius, Epicurus) | `META_TEXT_MODEL` | Structured output; every point must cite real node ids or the reply is rejected |
+| Learn-card illustrations (one-off) | `scripts/generate_images.py` | `META_IMAGE_MODEL` (Muse Image) | `POST {BASE}/images/generations`, one square WebP per card, ~$0.01/image; not run by check.ps1 |
 
-No other model calls exist. Demo mode (`GET /api/demo`) makes zero model
-calls — it serves `backend/data/last_result.json`.
+No other model calls exist in the app. Demo mode (`GET /api/demo`) makes
+zero model calls — it serves `backend/data/last_result.json`.
 
 ## Setup (Windows)
 
@@ -139,8 +141,9 @@ philosopher / demo endpoints), the Analyst → verifier → FallacyHunter →
 semantic-verifier pipeline with all calls through `meta_client.py`, the
 React + Vite + React Flow UI (intake screen, clickable argument map, fallacy
 side card, philosopher panel with node highlighting and one follow-up), the
-three philosopher methods (Aristotle's syllogistic verdict, Socrates'
+six philosopher methods (Aristotle's syllogistic verdict, Socrates'
 verdict-free probing questions, Hypatia's geometric proof check — with the
 note that none of her writings survive, so the method is inspired by the
-mathematical tradition she taught), demo mode with a seeded non-political
+mathematical tradition she taught — Kant's universalisability test, Marcus
+Aurelius' Stoic control-and-virtues audit, and Epicurus' calm check), demo mode with a seeded non-political
 debate, offline tests for every module, and this README.

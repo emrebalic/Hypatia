@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import ArgumentMap, { type DebateFallacy, type DebateMapEdge, type DebateMapNode } from './ArgumentMap'
 import FallacyPanel from './FallacyPanel'
 import PhilosopherPanel from './PhilosopherPanel'
+import LearnPanel, { type LearnOpenRequest } from './LearnPanel'
 import './App.css'
 
 interface Speaker {
@@ -86,9 +87,24 @@ export default function App() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
   const [selectedFallacyId, setSelectedFallacyId] = useState<string | null>(null)
+  const [learnTarget, setLearnTarget] = useState<LearnOpenRequest | null>(null)
   const [seekNotice, setSeekNotice] = useState<string | null>(null)
+  // Monotonic version of the loaded result. Used as the PhilosopherPanel
+  // key so the panel remounts exactly when a *new* result arrives — the
+  // old count-based key collided whenever two debates had equal counts.
+  const [resultVersion, setResultVersion] = useState(0)
 
   const busyLabel = busy === 'transcript' ? 'Working on the transcript…' : busy === 'analyze' ? 'Analyzing the debate…' : null
+
+  function clearAnalysisState() {
+    setSummary(null)
+    setMapGraph(null)
+    setFallacies([])
+    setTranscriptInfo(null)
+    setSelectedNodeId(null)
+    setSelectedFallacyId(null)
+    setSeekNotice(null)
+  }
 
   function markStage(ids: StageId[], status: StageStatus) {
     setStages((prev) => {
@@ -129,6 +145,7 @@ export default function App() {
   function handleSelectFallacy(fallacy: DebateFallacy) {
     setSelectedFallacyId(fallacy.id)
     setSelectedNodeId(fallacy.node_id)
+    setLearnTarget((prev) => ({ name: fallacy.name, nonce: (prev?.nonce ?? 0) + 1 }))
   }
 
   function handlePhilosopherNode(nodeId: string) {
@@ -155,6 +172,7 @@ export default function App() {
       }
       const result = (await res.json()) as AnalyzeResult
       markStage(['arguments', 'fallacies', 'verification'], 'done')
+      setResultVersion((version) => version + 1)
       setMapGraph({ nodes: result.nodes, edges: result.edges })
       setFallacies(result.fallacies ?? [])
       const fallacyList = result.fallacies ?? []
@@ -181,13 +199,7 @@ export default function App() {
     if (!file) return
     if (busy !== 'idle') return
     setError(null)
-    setSummary(null)
-    setMapGraph(null)
-    setFallacies([])
-    setTranscriptInfo(null)
-    setSelectedNodeId(null)
-    setSelectedFallacyId(null)
-    setSeekNotice(null)
+    clearAnalysisState()
     setFileName(file.name)
     setStages({ ...IDLE_STAGES, transcript: 'active' })
     if (audioUrl) URL.revokeObjectURL(audioUrl)
@@ -225,13 +237,7 @@ export default function App() {
       return
     }
     setError(null)
-    setSummary(null)
-    setMapGraph(null)
-    setFallacies([])
-    setTranscriptInfo(null)
-    setSelectedNodeId(null)
-    setSelectedFallacyId(null)
-    setSeekNotice(null)
+    clearAnalysisState()
     setStages({ ...IDLE_STAGES, transcript: 'active' })
     setBusy('transcript')
     setStatusLine('Parsing pasted transcript…')
@@ -264,13 +270,7 @@ export default function App() {
   async function handleDemo() {
     if (busy !== 'idle') return
     setError(null)
-    setSummary(null)
-    setMapGraph(null)
-    setFallacies([])
-    setTranscriptInfo(null)
-    setSelectedNodeId(null)
-    setSelectedFallacyId(null)
-    setSeekNotice(null)
+    clearAnalysisState()
     setStages({ transcript: 'done', arguments: 'done', fallacies: 'done', verification: 'done' })
     setBusy('analyze')
     setStatusLine('Loading saved demo result…')
@@ -284,6 +284,7 @@ export default function App() {
         return
       }
       const result = (await res.json()) as AnalyzeResult
+      setResultVersion((version) => version + 1)
       setTranscriptInfo({ speakers: result.speakers, segments: result.segments })
       setMapGraph({ nodes: result.nodes, edges: result.edges })
       setFallacies(result.fallacies ?? [])
@@ -313,13 +314,8 @@ export default function App() {
     setFileName(null)
     setTranscriptText('')
     setError(null)
-    setTranscriptInfo(null)
-    setSummary(null)
-    setMapGraph(null)
-    setFallacies([])
-    setSelectedNodeId(null)
-    setSelectedFallacyId(null)
-    setSeekNotice(null)
+    clearAnalysisState()
+    setResultVersion((version) => version + 1)
     setStages({ ...IDLE_STAGES })
     setStatusLine('No debate loaded yet. Upload audio or paste a transcript.')
   }
@@ -336,16 +332,21 @@ export default function App() {
           fallacies,
         }
       : null
-  const philosopherKey = summary ? `${summary.nodes}-${summary.edges}-${summary.fallacies}` : 'empty'
+  const philosopherKey = `result-${resultVersion}`
 
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Hypatia — Debate X-Ray</h1>
+        <h1>HYPATIA</h1>
+        <p className="app-tagline">
+          Debate X-Ray: map every argument, flag every fallacy, ask a philosopher.
+        </p>
         <p className="app-note">
           Demo debates are non-political. No medical or mental-health advice.
         </p>
       </header>
+
+      <LearnPanel openRequest={learnTarget} />
 
       <section className="intake" aria-label="Load a debate">
         <h2>Load a debate</h2>

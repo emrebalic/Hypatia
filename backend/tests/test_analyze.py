@@ -211,6 +211,63 @@ def test_analyze_model_error_is_502(monkeypatch, tmp_path):
     assert response.status_code == 502, response.text
 
 
+def test_analyze_semantic_failure_degrades_to_deterministic(monkeypatch, tmp_path):
+    """A semantic-verifier outage must not lose the whole analysis."""
+    monkeypatch.setattr(anmod, "LAST_RESULT_PATH", tmp_path / "last_result.json")
+    analyst_canned = json.loads(
+        (FIXTURES / "analyst_reply.json").read_text(encoding="utf-8")
+    )
+    fallacy_canned = json.loads(
+        (FIXTURES / "fallacy_reply.json").read_text(encoding="utf-8")
+    )
+    monkeypatch.setattr(
+        amod, "chat_json_validated", _fake_validated_factory(analyst_canned)
+    )
+    monkeypatch.setattr(
+        fmod, "chat_json_validated", _fake_validated_factory(fallacy_canned)
+    )
+
+    def fail(*args: Any, **kwargs: Any) -> Any:
+        raise MetaClientError("semantic verifier unavailable")
+
+    monkeypatch.setattr(smod, "chat_json_validated", fail)
+    response = client.post("/api/analyze", json=_load_input())
+    assert response.status_code == 200, response.text
+    result = DebateResult.model_validate(response.json())
+    assert len(result.nodes) == 9
+    # Deterministic flags survive: good canned quotes stay verified.
+    assert all(node.verified is True for node in result.nodes)
+    assert len(result.fallacies) == 3
+
+
+def test_analyze_fallacy_failure_degrades_to_empty_fallacies(
+    monkeypatch, tmp_path
+):
+    """A FallacyHunter outage returns the graph with no fallacy flags."""
+    monkeypatch.setattr(anmod, "LAST_RESULT_PATH", tmp_path / "last_result.json")
+    analyst_canned = json.loads(
+        (FIXTURES / "analyst_reply.json").read_text(encoding="utf-8")
+    )
+    monkeypatch.setattr(
+        amod, "chat_json_validated", _fake_validated_factory(analyst_canned)
+    )
+
+    def fail(*args: Any, **kwargs: Any) -> Any:
+        raise MetaClientError("fallacy hunter unavailable")
+
+    monkeypatch.setattr(fmod, "chat_json_validated", fail)
+    monkeypatch.setattr(
+        smod,
+        "chat_json_validated",
+        _fake_validated_factory(_node_verdicts(_node_ids())),
+    )
+    response = client.post("/api/analyze", json=_load_input())
+    assert response.status_code == 200, response.text
+    result = DebateResult.model_validate(response.json())
+    assert len(result.nodes) == 9
+    assert result.fallacies == []
+
+
 def test_run_analysis_saves_contract_json(monkeypatch, tmp_path):
     saved = tmp_path / "nested" / "last_result.json"
     monkeypatch.setattr(anmod, "LAST_RESULT_PATH", saved)

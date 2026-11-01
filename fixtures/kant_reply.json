@@ -1,0 +1,9 @@
+{
+  "philosopher": "kant",
+  "summary": "S1 (Speaker 1)'s maxim can be universalised: 'argue from what anyone can check' holds as a law for everyone, while S2's maxims — misstate the other side, then dismiss the speaker — contradict themselves the moment everyone follows them.",
+  "points": [
+    {"title": "S1's maxim: judge by checkable reasons", "text": "S1's maxim is: when defending a default, offer reasons anyone can examine (n2, n3) and grant the other side's good point (n9). Universalised, every debater does the same and debate still works; no one is used merely as a means, because each claim is left open for the other to test.", "node_ids": ["n1", "n2", "n3", "n9"]},
+    {"title": "S2's maxim fails universalisability", "text": "S2's maxim in the 'never meet' move (n5) and the 'companies I know' move (n6) is: restate the other side in an extreme form, or generalise from a handful of cases, whenever it helps. Universalised, no restatement could be trusted and no sample would settle anything; the maxim contradicts the very practice of arguing it relies on.", "node_ids": ["n5", "n6", "n1"]},
+    {"title": "S2's motive attack fails the humanity formula", "text": "'You only say this because you hate commuting' (n7) uses S1 merely as a means: it bypasses S1's reasons and steers the audience by motive instead of argument. S1's reply at n9, conceding the junior-onboarding point (n8), treats S2 as an end whose reasons must be answered.", "node_ids": ["n7", "n8", "n9"]}
+  ]
+}

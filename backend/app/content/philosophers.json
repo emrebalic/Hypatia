@@ -1,0 +1,147 @@
+{
+  "style": "Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+  "philosophers": [
+    {
+      "id": "socrates",
+      "name": "Socrates",
+      "years": "c. 470–399 BC",
+      "role": "The Questioner",
+      "judge": true,
+      "emoji": "🦉",
+      "colors": [
+        "#F4E3C1",
+        "#C9714A"
+      ],
+      "tagline": "Never gives a verdict. Asks the one question that shakes your weakest premise.",
+      "summary": "Socrates believed real wisdom starts with admitting what you don't know. He wandered the Athenian marketplace asking people to define the big words they used, then gently showed where their answers fell apart.",
+      "method": [
+        "Asks for definitions of key terms",
+        "Tests them with counterexamples",
+        "Finds the hidden premise each side leans on",
+        "Ends in honest puzzlement instead of a ruling"
+      ],
+      "in_hypatia": "Pick Socrates when you want to think, not to be told. He asks each speaker 2–3 questions about their weakest premise.",
+      "image_prompt": "A carved stone owl perched on stacked ancient scrolls. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "image": "/illustrations/philosopher-socrates.webp",
+      "fallback_image": "/illustrations/philosopher-socrates.svg"
+    },
+    {
+      "id": "aristotle",
+      "name": "Aristotle",
+      "years": "384–322 BC",
+      "role": "The Balanced Judge",
+      "judge": true,
+      "emoji": "⚖️",
+      "colors": [
+        "#E4EBD8",
+        "#6E8B5E"
+      ],
+      "tagline": "Turns every argument into a syllogism, then finds the wise middle path.",
+      "summary": "Aristotle founded formal logic and wrote the first catalogue of fallacies. In ethics he taught that virtue sits between two extremes, like courage between cowardice and recklessness, and that practical wisdom finds that middle in each situation.",
+      "method": [
+        "Rebuilds each side as premises → conclusion",
+        "Checks validity and premise truth",
+        "Names fallacies from his own catalogue",
+        "Looks for the mean between two extremes",
+        "Gives a reasoned verdict"
+      ],
+      "in_hypatia": "Pick Aristotle for a clear verdict: who argued better, why, and what each side should fix.",
+      "image_prompt": "An antique brass balance scale holding two rolled scrolls in perfect balance. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "image": "/illustrations/philosopher-aristotle.webp",
+      "fallback_image": "/illustrations/philosopher-aristotle.svg"
+    },
+    {
+      "id": "kant",
+      "name": "Immanuel Kant",
+      "years": "1724–1804",
+      "role": "The Universaliser",
+      "judge": true,
+      "emoji": "🧭",
+      "colors": [
+        "#DCE5EE",
+        "#4F6D8A"
+      ],
+      "tagline": "Asks: what if everyone did that? And is anyone being used merely as a tool?",
+      "summary": "Kant grounded morality in reason. His categorical imperative asks whether the rule behind your action could become a law for everyone, and insists that people are always ends in themselves, never merely means.",
+      "method": [
+        "States each side's underlying rule",
+        "Universalises it and looks for contradiction",
+        "Checks if anyone is used merely as a means"
+      ],
+      "in_hypatia": "Pick Kant to test whether each side's rule could hold as a law for everyone — and whether anyone is being used merely as a tool.",
+      "image_prompt": "A brass compass and pocket watch resting on an engraved star chart with orbit lines. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "image": "/illustrations/philosopher-kant.webp",
+      "fallback_image": "/illustrations/philosopher-kant.svg"
+    },
+    {
+      "id": "marcus-aurelius",
+      "name": "Marcus Aurelius",
+      "years": "121–180",
+      "role": "The Stoic Emperor",
+      "judge": true,
+      "emoji": "🏛️",
+      "colors": [
+        "#EDE3D6",
+        "#8A6A4F"
+      ],
+      "tagline": "Separates what you control from what you don't, and keeps anger out of the argument.",
+      "summary": "A Roman emperor who wrote private notes to himself about staying calm, fair and humble. The Stoics taught that we control our judgments, not outcomes, and that most anger comes from a judgment we can question.",
+      "method": [
+        "Splits what's in each speaker's control from what isn't",
+        "Spots passion doing the arguing",
+        "Weighs wisdom, courage, justice and temperance"
+      ],
+      "in_hypatia": "Pick Marcus Aurelius for a calm audit: what each side controls, where passion argues, and who shows wisdom, courage, justice and temperance.",
+      "image_prompt": "A bronze oil lamp with a calm flame beside a closed leather journal and a laurel branch. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "image": "/illustrations/philosopher-marcus-aurelius.webp",
+      "fallback_image": "/illustrations/philosopher-marcus-aurelius.svg"
+    },
+    {
+      "id": "epicurus",
+      "name": "Epicurus",
+      "years": "341–270 BC",
+      "role": "The Calm Gardener",
+      "judge": true,
+      "emoji": "🌿",
+      "colors": [
+        "#E6EFD9",
+        "#7A9A4A"
+      ],
+      "tagline": "Which view leaves people with less fear and less needless worry?",
+      "summary": "Epicurus taught that the good life is a calm one: free of pain and anxiety, rich in friendship, simple in its needs. He saw philosophy as medicine for the false beliefs that make us suffer.",
+      "method": [
+        "Separates needs from wants",
+        "Finds false beliefs causing needless fear",
+        "Prefers long-term calm over short-term thrills"
+      ],
+      "in_hypatia": "Pick Epicurus to ask which view leaves people with less fear and less needless worry — and which desires are worth chasing at all.",
+      "image_prompt": "A terracotta bowl with bread, olives and vine leaves on a rustic wooden table. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "image": "/illustrations/philosopher-epicurus.webp",
+      "fallback_image": "/illustrations/philosopher-epicurus.svg"
+    },
+    {
+      "id": "hypatia",
+      "name": "Hypatia of Alexandria",
+      "years": "c. 360–415",
+      "role": "The Step-by-Step Prover",
+      "judge": true,
+      "emoji": "✨",
+      "colors": [
+        "#F3E6D8",
+        "#B5654A"
+      ],
+      "tagline": "Lists each side's definitions and assumptions, then checks every step: holds or breaks.",
+      "summary": "Hypatia taught mathematics, astronomy and philosophy in Alexandria and reasoned openly with anyone who came to listen. None of her writings survive, so Hypatia's judging method is inspired by the mathematical tradition she taught rather than by her own words. The app is named in her honour.",
+      "method": [
+        "Lists the definitions and assumptions each side depends on",
+        "Walks the argument step by step",
+        "Marks each step holds or breaks, with the reason",
+        "Ends with what both sides have actually established — no overall winner"
+      ],
+      "in_hypatia": "Pick Hypatia for a proof-style audit of both arguments.",
+      "image_prompt": "A brass armillary sphere surrounded by small engraved stars. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "image": "/illustrations/philosopher-hypatia.webp",
+      "fallback_image": "/illustrations/philosopher-hypatia.svg"
+    }
+  ]
+}

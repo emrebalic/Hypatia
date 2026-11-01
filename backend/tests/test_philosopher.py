@@ -84,7 +84,10 @@ def test_ask_returns_checked_reply(monkeypatch):
     assert seen["schema_name"] == pmod.SCHEMA_NAME
 
 
-@pytest.mark.parametrize("philosopher", ["aristotle", "socrates", "hypatia"])
+@pytest.mark.parametrize(
+    "philosopher",
+    ["aristotle", "socrates", "hypatia", "kant", "marcus-aurelius", "epicurus"],
+)
 def test_each_philosopher_uses_its_prompt_file(monkeypatch, philosopher):
     result = DebateResult.model_validate(_load_result())
     canned = _canned_reply()
@@ -214,7 +217,7 @@ def test_endpoint_empty_nodes_is_400(monkeypatch):
 
 
 def test_endpoint_unknown_philosopher_is_422():
-    response = client.post("/api/philosopher", json=_request_body("kant"))
+    response = client.post("/api/philosopher", json=_request_body("plato"))
     assert response.status_code == 422, response.text
 
 
@@ -236,7 +239,14 @@ def test_canned_fixture_references_real_nodes():
     for point in reply.points:
         assert point.node_ids
         assert set(point.node_ids) <= node_ids
-    for philosopher in ("aristotle", "socrates", "hypatia"):
+    for philosopher in (
+        "aristotle",
+        "socrates",
+        "hypatia",
+        "kant",
+        "marcus-aurelius",
+        "epicurus",
+    ):
         assert load_philosopher_prompt(philosopher).strip()
         assert "node_ids" in load_philosopher_prompt(philosopher)
     assert build_philosopher_messages(

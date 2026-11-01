@@ -1,8 +1,36 @@
+:root {
+  /* Aubergine / lilac core (user palette), warmed with gold and parchment. */
+  --lilac-50: #f6f2fa;
+  --lilac-100: #ede5f6;
+  --lilac-200: #d9c8ef;
+  --lilac-300: #bfa3e2;
+  --lilac-500: #8b6cc7;
+  --lilac-600: #744fb8;
+  --lilac-700: #5b3d99;
+  --lilac-900: #38245e;
+  --aubergine-950: #221435;
+  --ink: #2c2140;
+  --ink-soft: #55496e;
+  --gold: #b08d4f;
+  --gold-soft: #eadfc3;
+  --paper: #fbf9fd;
+  --surface: #fffefe;
+  --burgundy: #7c2d3e;
+  --burgundy-soft: #f7e8ea;
+  --sage: #4a6b57;
+
+  --font-display: "Cormorant Garamond", "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: #f4f4f2;
+  background: var(--lilac-100);
+  color: var(--ink);
+  font-family: var(--font-body);
 }

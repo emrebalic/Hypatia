@@ -9,10 +9,16 @@ Pipeline order:
 1. Analyst (``app.analyst.analyze_transcript``) maps segments to nodes+edges.
 2. Deterministic verifier (``app.verifier.verify_nodes``) checks quotes
    verbatim in transcript and timestamps inside segments.
-3. FallacyHunter (``app.fallacy.hunt_fallacies``) flags fallacies; it runs
-   its drafts through the deterministic verifier itself.
-4. Semantic verifier (``app.semantic_verifier``) asks the model whether each
-   still-verified quote supports its label, downgrading mismatches.
+3. FallacyHunter (``app.fallacy.hunt_fallacies``) and the node semantic
+   verifier run concurrently; both only need the deterministically
+   verified nodes.
+4. Fallacy semantic verifier (``app.semantic_verifier``) asks the model
+   whether each still-verified quote supports its label.
+
+Failure policy: an Analyst failure is fatal (no graph to show). A
+FallacyHunter or semantic-verifier failure degrades gracefully — the
+deterministically verified graph is returned (with an empty fallacy list
+when the hunter failed) instead of failing the whole analysis.
 
 All network calls go through ``app.meta_client`` (via the agent modules),
 so tests can fake the model offline.
@@ -20,6 +26,8 @@ so tests can fake the model offline.
 
 from __future__ import annotations
 
+import logging
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
@@ -33,6 +41,7 @@ from app.meta_client import MetaClientError
 from app.schemas import DebateResult, Segment, Speaker
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 LAST_RESULT_PATH = Path(__file__).resolve().parents[1] / "data" / "last_result.json"
 
@@ -59,18 +68,43 @@ def run_analysis(
 ) -> DebateResult:
     """Run the full pipeline and persist the result.
 
-    Raises ValueError when there are no segments; MetaClientError from
-    ``meta_client`` propagates unchanged after its one retry.
+    Raises ValueError when there are no segments. An Analyst
+    MetaClientError propagates unchanged (fatal: no graph). FallacyHunter
+    and semantic-verifier MetaClientErrors degrade gracefully to the
+    deterministically verified graph (see module docstring).
     """
     if not segments:
         raise ValueError("No transcript segments to analyze.")
     nodes, edges = analyst_mod.analyze_transcript(speakers, segments)
     nodes = verifier_mod.verify_nodes(nodes, segments)
-    fallacies = fallacy_mod.hunt_fallacies(speakers, segments, nodes)
-    nodes = semantic_mod.verify_nodes_semantic(nodes, segments, speakers)
-    fallacies = semantic_mod.verify_fallacies_semantic(
-        fallacies, segments, nodes, speakers
-    )
+    # Fallacy hunting and node semantic verification are independent: both
+    # consume the deterministically verified nodes, so run them together.
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        fallacy_future = pool.submit(
+            fallacy_mod.hunt_fallacies, speakers, segments, nodes
+        )
+        node_future = pool.submit(
+            semantic_mod.verify_nodes_semantic, nodes, segments, speakers
+        )
+        try:
+            fallacies = fallacy_future.result()
+        except MetaClientError as exc:
+            logger.warning("FallacyHunter failed, returning no fallacies: %s", exc)
+            fallacies = []
+        try:
+            nodes = node_future.result()
+        except MetaClientError as exc:
+            logger.warning(
+                "Node semantic verifier failed, keeping deterministic flags: %s", exc
+            )
+    try:
+        fallacies = semantic_mod.verify_fallacies_semantic(
+            fallacies, segments, nodes, speakers
+        )
+    except MetaClientError as exc:
+        logger.warning(
+            "Fallacy semantic verifier failed, keeping deterministic flags: %s", exc
+        )
     result = DebateResult(
         speakers=speakers,
         segments=segments,

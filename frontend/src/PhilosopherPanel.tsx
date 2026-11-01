@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { DebateFallacy, DebateMapEdge, DebateMapNode, MapSpeaker } from './ArgumentMap'
 
-export type PhilosopherName = 'aristotle' | 'socrates' | 'hypatia'
+export type PhilosopherName = 'aristotle' | 'socrates' | 'hypatia' | 'kant' | 'marcus-aurelius' | 'epicurus'
 
 export interface PhilosopherSegment {
   id: string
@@ -41,6 +41,9 @@ const PHILOSOPHERS: { id: PhilosopherName; label: string; detail: string }[] = [
   { id: 'aristotle', label: 'Aristotle', detail: 'verdict from syllogistic structure' },
   { id: 'socrates', label: 'Socrates', detail: 'probing questions, no verdict' },
   { id: 'hypatia', label: 'Hypatia', detail: 'step-by-step proof check' },
+  { id: 'kant', label: 'Kant', detail: 'could everyone live by that rule?' },
+  { id: 'marcus-aurelius', label: 'Marcus Aurelius', detail: 'control what you can, calmly' },
+  { id: 'epicurus', label: 'Epicurus', detail: 'which view brings less needless worry?' },
 ]
 
 const HYPATIA_NOTE =

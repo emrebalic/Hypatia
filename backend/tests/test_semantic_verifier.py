@@ -5,7 +5,8 @@ app.semantic_verifier.chat_json_validated; the fallacy-verdict fixture lives
 in fixtures/semantic_verifier_reply.json, node verdicts are built inline,
 and transcript inputs come from fixtures/sample_debate.json. No network is
 used. Already-unverified items are never sent to the model and stay False;
-the model can keep or downgrade, never upgrade.
+the model can keep or downgrade, never upgrade. Verification fails closed:
+an eligible item with no verdict is downgraded, not kept.
 """
 
 import copy
@@ -173,7 +174,7 @@ def test_unsupported_fallacy_label_is_downgraded(monkeypatch):
     assert all(item.verified is True for item in inputs)
 
 
-def test_missing_verdict_keeps_and_unknown_verdict_ignored(monkeypatch):
+def test_missing_verdict_downgrades_and_unknown_verdict_ignored(monkeypatch):
     _, segments, _, fallacies = _load()
     canned = {
         "verdicts": [
@@ -183,9 +184,29 @@ def test_missing_verdict_keeps_and_unknown_verdict_ignored(monkeypatch):
     }
     monkeypatch.setattr(smod, "chat_json_validated", _fake_validated_factory(canned, {}))
     checked = verify_fallacies_semantic(fallacies, segments)
-    # f2/f3 have no verdict: kept. fX matches nothing: ignored.
-    assert all(item.verified is True for item in checked)
+    # Fail closed: f2/f3 have no verdict, so they are downgraded; the
+    # explicit f1 verdict keeps it verified; fX matches nothing.
+    by_id = {item.id: item for item in checked}
+    assert by_id["f1"].verified is True
+    assert by_id["f2"].verified is False
+    assert by_id["f3"].verified is False
     assert {item.id for item in checked} == {"f1", "f2", "f3"}
+
+
+def test_missing_node_verdict_downgrades(monkeypatch):
+    _, segments, nodes, _ = _load()
+    subset = nodes[:3]
+    canned = {
+        "verdicts": [
+            {"id": "n1", "supported": True, "reason": "Canned verdict."},
+        ]
+    }
+    monkeypatch.setattr(smod, "chat_json_validated", _fake_validated_factory(canned, {}))
+    checked = verify_nodes_semantic(subset, segments)
+    by_id = {node.id: node for node in checked}
+    assert by_id["n1"].verified is True
+    assert by_id["n2"].verified is False
+    assert by_id["n3"].verified is False
 
 
 def test_no_model_call_when_nothing_eligible(monkeypatch):

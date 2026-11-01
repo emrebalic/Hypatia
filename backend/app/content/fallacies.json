@@ -1,0 +1,325 @@
+{
+  "style": "Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+  "fallacies": [
+    {
+      "id": "straw-man",
+      "name": "Straw man",
+      "emoji": "🧑‍🌾",
+      "colors": [
+        "#F6E7C8",
+        "#C98A3E"
+      ],
+      "what": "Attacking a twisted, weaker version of what someone said instead of their real view.",
+      "example": "“You want remote-first? So you think people should never meet again!”",
+      "tip": "Ask: is that really what they claimed?",
+      "image_prompt": "A straw effigy figure (simple scarecrow made of straw with a wooden cross frame). Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Straw man",
+      "image": "/illustrations/fallacy-straw-man.webp",
+      "fallback_image": "/illustrations/fallacy-straw-man.svg"
+    },
+    {
+      "id": "ad-hominem",
+      "name": "Ad hominem",
+      "emoji": "🎯",
+      "colors": [
+        "#F4DCD3",
+        "#C2614A"
+      ],
+      "what": "Rejecting an argument by attacking the person making it.",
+      "example": "“Why listen to her? She failed her exams.”",
+      "tip": "Judge the reasons, not the reasoner (unless they're giving testimony).",
+      "image_prompt": "A cracked marble theatre mask with a deep fissure. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Ad hominem (abusive)",
+      "image": "/illustrations/fallacy-ad-hominem.webp",
+      "fallback_image": "/illustrations/fallacy-ad-hominem.svg"
+    },
+    {
+      "id": "ad-hominem-circumstantial",
+      "name": "You only say that because…",
+      "emoji": "🕵️",
+      "colors": [
+        "#EADFF0",
+        "#7E5FA0"
+      ],
+      "what": "Dismissing a claim by pointing at the speaker's motives or situation.",
+      "example": "“You only argue for remote work because you hate commuting.”",
+      "tip": "A motive doesn't make an argument false.",
+      "image_prompt": "A leather coin purse spilling gold coins over a rolled scroll. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Ad hominem (circumstantial)",
+      "image": "/illustrations/fallacy-ad-hominem-circumstantial.webp",
+      "fallback_image": "/illustrations/fallacy-ad-hominem-circumstantial.svg"
+    },
+    {
+      "id": "tu-quoque",
+      "name": "Tu quoque (you too!)",
+      "emoji": "🪞",
+      "colors": [
+        "#DDEBEA",
+        "#4F8C88"
+      ],
+      "what": "Rejecting advice because the advisor doesn't follow it.",
+      "example": "“You tell me to exercise, but you never do!”",
+      "tip": "Hypocrisy says something about the person, not about the claim.",
+      "image_prompt": "Two antique oval hand mirrors facing each other reflecting infinitely. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Tu quoque",
+      "image": "/illustrations/fallacy-tu-quoque.webp",
+      "fallback_image": "/illustrations/fallacy-tu-quoque.svg"
+    },
+    {
+      "id": "guilt-by-association",
+      "name": "Guilt by association",
+      "emoji": "🧺",
+      "colors": [
+        "#F1E4D0",
+        "#9C7B4E"
+      ],
+      "what": "Judging a view by the group or people linked to it.",
+      "example": "“That idea came from that club, so it must be wrong.”",
+      "tip": "Evaluate the idea on its own merits.",
+      "image_prompt": "A heavy iron chain linking a golden laurel wreath to a broken clay pot. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Guilt by association",
+      "image": "/illustrations/fallacy-guilt-by-association.webp",
+      "fallback_image": "/illustrations/fallacy-guilt-by-association.svg"
+    },
+    {
+      "id": "genetic",
+      "name": "Genetic fallacy",
+      "emoji": "🌱",
+      "colors": [
+        "#E4EED8",
+        "#6F9A55"
+      ],
+      "what": "Accepting or rejecting a claim because of where it came from.",
+      "example": "“He got the idea from a dream, so it can't be right.”",
+      "tip": "How an idea was born doesn't decide if it's true.",
+      "image_prompt": "Gnarled old tree roots growing out of an open antique book, a small seedling rising. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Genetic fallacy",
+      "image": "/illustrations/fallacy-genetic.webp",
+      "fallback_image": "/illustrations/fallacy-genetic.svg"
+    },
+    {
+      "id": "ad-populum",
+      "name": "Bandwagon",
+      "emoji": "🚌",
+      "colors": [
+        "#F5E9C6",
+        "#C9A23E"
+      ],
+      "what": "Treating popularity as proof.",
+      "example": "“Everyone's doing it, so it must be fine.”",
+      "tip": "Popular isn't the same as true.",
+      "image_prompt": "A row of seven identical blank oval theatre masks standing in a line. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Appeal to popularity",
+      "image": "/illustrations/fallacy-ad-populum.webp",
+      "fallback_image": "/illustrations/fallacy-ad-populum.svg"
+    },
+    {
+      "id": "false-authority",
+      "name": "Appeal to false authority",
+      "emoji": "🎓",
+      "colors": [
+        "#E1E6F2",
+        "#5868A0"
+      ],
+      "what": "Relying on someone who isn't an expert on this question.",
+      "example": "“My favourite actor says this diet works.”",
+      "tip": "Ask: expert in this field, and do experts agree?",
+      "image_prompt": "A golden laurel wreath resting alone on an empty tall marble pedestal. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Appeal to false authority",
+      "image": "/illustrations/fallacy-false-authority.webp",
+      "fallback_image": "/illustrations/fallacy-false-authority.svg"
+    },
+    {
+      "id": "appeal-to-tradition",
+      "name": "Appeal to tradition",
+      "emoji": "🏺",
+      "colors": [
+        "#F0E2D2",
+        "#A86F4C"
+      ],
+      "what": "Claiming something is right because it's old or always done.",
+      "example": "“We've always done it this way.”",
+      "tip": "Old isn't automatically good — or bad.",
+      "image_prompt": "A weathered ancient stone column beside a brass hourglass with sand falling. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Appeal to tradition",
+      "image": "/illustrations/fallacy-appeal-to-tradition.webp",
+      "fallback_image": "/illustrations/fallacy-appeal-to-tradition.svg"
+    },
+    {
+      "id": "appeal-to-self-interest",
+      "name": "Appeal to self-interest",
+      "emoji": "💰",
+      "colors": [
+        "#EEF0D6",
+        "#8F9A3E"
+      ],
+      "what": "Arguing that something is true or right because it benefits you.",
+      "example": "“Oppose the plan — it'll cost you money!”",
+      "tip": "Truth doesn't depend on our wallets.",
+      "image_prompt": "A single golden apple placed on a small brass coin scale tipping heavily. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Appeal to self-interest",
+      "image": "/illustrations/fallacy-appeal-to-self-interest.webp",
+      "fallback_image": "/illustrations/fallacy-appeal-to-self-interest.svg"
+    },
+    {
+      "id": "appeal-to-force",
+      "name": "Appeal to force",
+      "emoji": "⛈️",
+      "colors": [
+        "#DFE4EA",
+        "#6B7A8C"
+      ],
+      "what": "Pushing a claim through threats instead of reasons.",
+      "example": "“Agree with me, or you'll regret it.”",
+      "tip": "A threat is not an argument.",
+      "image_prompt": "A bronze short sword laid diagonally across a rolled parchment scroll. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Appeal to force",
+      "image": "/illustrations/fallacy-appeal-to-force.webp",
+      "fallback_image": "/illustrations/fallacy-appeal-to-force.svg"
+    },
+    {
+      "id": "appeal-to-pity",
+      "name": "Appeal to pity",
+      "emoji": "🥺",
+      "colors": [
+        "#F4E0E6",
+        "#B86A85"
+      ],
+      "what": "Using sympathy as a reason to accept a claim.",
+      "example": "“Please give me an A, I worked so hard!”",
+      "tip": "Feelings matter, but they're not evidence.",
+      "image_prompt": "An empty bronze begging bowl with soft light falling into it. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Appeal to pity",
+      "image": "/illustrations/fallacy-appeal-to-pity.webp",
+      "fallback_image": "/illustrations/fallacy-appeal-to-pity.svg"
+    },
+    {
+      "id": "appeal-to-ignorance",
+      "name": "Appeal to ignorance",
+      "emoji": "🔦",
+      "colors": [
+        "#E3E0F0",
+        "#6C639E"
+      ],
+      "what": "Claiming something is true because it hasn't been proven false (or vice versa).",
+      "example": "“No one has proven ghosts don't exist, so they do.”",
+      "tip": "Absence of proof isn't proof of absence.",
+      "image_prompt": "A closed antique book completely covered by a draped cloth veil, a brass key beside it. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Appeal to ignorance",
+      "image": "/illustrations/fallacy-appeal-to-ignorance.webp",
+      "fallback_image": "/illustrations/fallacy-appeal-to-ignorance.svg"
+    },
+    {
+      "id": "red-herring",
+      "name": "Red herring",
+      "emoji": "🐟",
+      "colors": [
+        "#F6DAD3",
+        "#C8543E"
+      ],
+      "what": "Changing the subject to dodge the point.",
+      "example": "“Forget remote work — what about the traffic in this city?”",
+      "tip": "Bring the debate back to the original claim.",
+      "image_prompt": "A single detailed herring fish lying on parchment, elegantly engraved. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Red herring",
+      "image": "/illustrations/fallacy-red-herring.webp",
+      "fallback_image": "/illustrations/fallacy-red-herring.svg"
+    },
+    {
+      "id": "false-dilemma",
+      "name": "False dilemma",
+      "emoji": "🛣️",
+      "colors": [
+        "#E2ECE4",
+        "#5E8F6E"
+      ],
+      "what": "Presenting only two options when more exist.",
+      "example": "“Either we go fully remote or we go fully back to the office.”",
+      "tip": "Look for the options in between.",
+      "image_prompt": "A rustic wooden signpost at a fork with exactly two blank arrows pointing in opposite directions. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "False dilemma",
+      "image": "/illustrations/fallacy-false-dilemma.webp",
+      "fallback_image": "/illustrations/fallacy-false-dilemma.svg"
+    },
+    {
+      "id": "slippery-slope",
+      "name": "Slippery slope",
+      "emoji": "🛷",
+      "colors": [
+        "#DCE8F2",
+        "#4E7FA6"
+      ],
+      "what": "Claiming one small step will inevitably lead to disaster through weak links.",
+      "example": "“If we allow one remote day, soon nobody will ever come in!”",
+      "tip": "Check every link in the chain — it's only as strong as the weakest one.",
+      "image_prompt": "A smooth marble ball at the top of a steep flight of stone steps descending into shadow. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Slippery slope",
+      "image": "/illustrations/fallacy-slippery-slope.webp",
+      "fallback_image": "/illustrations/fallacy-slippery-slope.svg"
+    },
+    {
+      "id": "hasty-generalization",
+      "name": "Hasty generalization",
+      "emoji": "🔍",
+      "colors": [
+        "#F2E6D6",
+        "#A97E4E"
+      ],
+      "what": "Drawing a big conclusion from too few examples.",
+      "example": "“Every successful company I know is back in the office.”",
+      "tip": "How big and fair is the sample?",
+      "image_prompt": "A brass magnifying glass enlarging a single footprint in sand. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Hasty generalization",
+      "image": "/illustrations/fallacy-hasty-generalization.webp",
+      "fallback_image": "/illustrations/fallacy-hasty-generalization.svg"
+    },
+    {
+      "id": "equivocation",
+      "name": "Equivocation",
+      "emoji": "🔀",
+      "colors": [
+        "#E9E2F1",
+        "#7D66A3"
+      ],
+      "what": "Using one word in two different meanings within the same argument.",
+      "example": "“Breaking the law is punished; you broke the law of gravity, so…”",
+      "tip": "Make sure key words keep the same meaning.",
+      "image_prompt": "A Janus theatre mask with two opposite faces back to back, marble. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Equivocation",
+      "image": "/illustrations/fallacy-equivocation.webp",
+      "fallback_image": "/illustrations/fallacy-equivocation.svg"
+    },
+    {
+      "id": "affirming-the-consequent",
+      "name": "Affirming the consequent",
+      "emoji": "↩️",
+      "colors": [
+        "#E0EAEF",
+        "#507F95"
+      ],
+      "what": "“If A then B. B. So A.” — ignoring other causes.",
+      "example": "“If it rained, the street is wet. The street is wet, so it rained.”",
+      "tip": "Could something else have caused B?",
+      "image_prompt": "A wooden signpost with one arrow curving backward on itself in a loop, footprints turning back. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Affirming the consequent",
+      "image": "/illustrations/fallacy-affirming-the-consequent.webp",
+      "fallback_image": "/illustrations/fallacy-affirming-the-consequent.svg"
+    },
+    {
+      "id": "denying-the-antecedent",
+      "name": "Denying the antecedent",
+      "emoji": "🚫",
+      "colors": [
+        "#F1E0DC",
+        "#A3594E"
+      ],
+      "what": "“If A then B. Not A. So not B.”",
+      "example": "“If you study, you'll pass. You didn't study, so you'll fail.”",
+      "tip": "B might still happen another way.",
+      "image_prompt": "Two interlocked bronze rings, one ring broken open with a clear gap. Classical engraving book-plate illustration, duotone: deep aubergine-plum ink linework with antique gold accents on warm cream parchment, fine crosshatching, single classical object centered, warm and wise mood, no people, no portraits, no faces, no text, no letters, square 1:1",
+      "taxonomy_name": "Denying the antecedent",
+      "image": "/illustrations/fallacy-denying-the-antecedent.webp",
+      "fallback_image": "/illustrations/fallacy-denying-the-antecedent.svg"
+    }
+  ]
+}

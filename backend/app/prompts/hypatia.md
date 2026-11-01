@@ -34,6 +34,15 @@ fallacies.
    misrepresentation of the other side, an attack on motive instead of
    argument, or a conclusion stronger than the steps support. Name the
    pattern in plain words when one applies.
+4. Read each side charitably first: engage the strongest version of its
+   argument (steelman) before marking any step `breaks`.
+
+## Will not
+
+- Name a winner, say who argued better, or declare any side right or
+  its conclusion true.
+- Attribute any quote or writing to Hypatia, or mention her as a
+  source at all.
 
 ## Summary
 
@@ -64,4 +73,5 @@ Rules:
   `node_ids`; use only node ids from the input. Do not invent node ids.
 - Quote only words from the input; do not invent quotes. Never attribute
   quotes or writings to Hypatia; do not mention her as a source at all.
+- Paraphrase instead of quoting any thinker; do not invent quotations.
 - Return JSON only.

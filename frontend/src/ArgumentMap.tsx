@@ -1,4 +1,4 @@
-import { useMemo, type MouseEvent as ReactMouseEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent } from 'react'
 import {
   Background,
   Controls,
@@ -49,15 +49,15 @@ interface NodeStyle {
 }
 
 export const NODE_COLORS: Record<ArgumentNodeType, NodeStyle> = {
-  claim: { background: '#e8f0fe', border: '#1f5fa8' },
-  premise: { background: '#fef7e0', border: '#8a6d00' },
-  conclusion: { background: '#f3e8fd', border: '#6a2fb3' },
-  rebuttal: { background: '#fdecea', border: '#b3261e' },
+  claim: { background: '#ede5f6', border: '#5b3d99' },
+  premise: { background: '#f5ecd4', border: '#b08d4f' },
+  conclusion: { background: '#e2d2f2', border: '#38245e' },
+  rebuttal: { background: '#f7e8ea', border: '#7c2d3e' },
 }
 
 export const EDGE_COLORS: Record<ArgumentRelation, string> = {
-  supports: '#2e7d32',
-  attacks: '#b3261e',
+  supports: '#4a6b57',
+  attacks: '#7c2d3e',
 }
 
 export const MAP_NODE_WIDTH = 230
@@ -80,7 +80,7 @@ function nodeLabel(node: DebateMapNode, speakerLabel: string, badges: DebateFall
       <span className={`arg-node-type arg-node-type-${node.type}`}>{node.type}</span>
       {unverified && (
         <span className="arg-node-flag" title="This item did not pass verification">
-          ⚠️ uncertain
+          uncertain
         </span>
       )}
       <span className="arg-node-text">{node.text}</span>
@@ -92,7 +92,7 @@ function nodeLabel(node: DebateMapNode, speakerLabel: string, badges: DebateFall
               className={fallacy.verified ? 'arg-node-badge' : 'arg-node-badge arg-node-badge-unverified'}
               title={fallacy.explanation}
             >
-              {!fallacy.verified && '⚠️ '}
+              {!fallacy.verified && 'uncertain · '}
               {fallacy.name}
             </span>
           ))}
@@ -108,6 +108,9 @@ function nodeLabel(node: DebateMapNode, speakerLabel: string, badges: DebateFall
 /**
  * Pure transform: debate graph → layered React Flow nodes + edges.
  * Longest-path layering from roots; bounded relaxation keeps cycles finite.
+ * Within each layer, nodes are reordered by the barycenter (average
+ * neighbour position) heuristic in both directions, which pulls connected
+ * nodes toward each other and reduces edge crossings versus id order.
  * Dependency-free so the frontend builds from package-lock.json alone.
  */
 export function layoutDebateGraph(
@@ -164,9 +167,55 @@ export function layoutDebateGraph(
     }
   }
 
+  // Barycenter ordering: sort each layer by the average position of its
+  // neighbours in the adjacent layer, sweeping down then up a few times.
+  // Ties (and neighbourless nodes) fall back to start time, then id, so
+  // the layout stays deterministic.
+  const incoming = new Map<string, string[]>(nodes.map((node) => [node.id, []]))
+  for (const edge of edges) {
+    if (known.has(edge.source) && known.has(edge.target) && edge.source !== edge.target) {
+      incoming.get(edge.target)?.push(edge.source)
+    }
+  }
+  const layerKeys = [...layers.keys()].sort((a, b) => a - b)
+  for (const key of layerKeys) {
+    layers.get(key)?.sort((a, b) => a.start - b.start || a.id.localeCompare(b.id))
+  }
+  const positionOf = new Map<string, number>()
+  const refreshPositions = () => {
+    positionOf.clear()
+    for (const key of layerKeys) {
+      ;(layers.get(key) ?? []).forEach((node, index) => positionOf.set(node.id, index))
+    }
+  }
+  const barycenter = (ids: string[], fallback: number): number => {
+    const positions = ids
+      .map((id) => positionOf.get(id))
+      .filter((value): value is number => value !== undefined)
+    return positions.length > 0 ? positions.reduce((sum, v) => sum + v, 0) / positions.length : fallback
+  }
+  refreshPositions()
+  for (let sweep = 0; sweep < 4; sweep += 1) {
+    const sweeps: { keys: number[]; neighbours: Map<string, string[]> }[] = [
+      { keys: layerKeys, neighbours: incoming },
+      { keys: [...layerKeys].reverse(), neighbours: outgoing },
+    ]
+    for (const { keys, neighbours } of sweeps) {
+      for (const key of keys) {
+        const layer = layers.get(key) ?? []
+        const sorted = layer
+          .map((node, index) => ({ node, key: barycenter(neighbours.get(node.id) ?? [], index) }))
+          .sort((a, b) => a.key - b.key || a.node.start - b.node.start || a.node.id.localeCompare(b.node.id))
+          .map((entry) => entry.node)
+        layers.set(key, sorted)
+        refreshPositions()
+      }
+    }
+  }
+
   const flowNodes: FlowNode[] = []
-  for (const key of [...layers.keys()].sort((a, b) => a - b)) {
-    const layer = (layers.get(key) ?? []).sort((a, b) => a.id.localeCompare(b.id))
+  for (const key of layerKeys) {
+    const layer = layers.get(key) ?? []
     const rowWidth = layer.length * (MAP_NODE_WIDTH + LAYER_H_GAP) - LAYER_H_GAP
     layer.forEach((node, index) => {
       const colors = NODE_COLORS[node.type]
@@ -181,7 +230,7 @@ export function layoutDebateGraph(
         style: {
           background: unverified ? '#ececec' : colors.background,
           border: unverified ? '2px solid #8a8a8a' : `2px solid ${colors.border}`,
-          borderRadius: 8,
+          borderRadius: 10,
           width: MAP_NODE_WIDTH,
           fontSize: 12,
           opacity: unverified ? 0.75 : 1,
@@ -223,6 +272,28 @@ export default function ArgumentMap({ nodes, edges, speakers = [], fallacies = [
     () => layoutDebateGraph(nodes, edges, speakers, fallacies),
     [nodes, edges, speakers, fallacies],
   )
+  const wrapRef = useRef<HTMLDivElement | null>(null)
+  const [isFullscreen, setIsFullscreen] = useState(false)
+
+  useEffect(() => {
+    function onFullscreenChange() {
+      setIsFullscreen(document.fullscreenElement !== null)
+    }
+    document.addEventListener('fullscreenchange', onFullscreenChange)
+    return () => document.removeEventListener('fullscreenchange', onFullscreenChange)
+  }, [])
+
+  async function toggleFullscreen() {
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen()
+      } else {
+        await wrapRef.current?.requestFullscreen()
+      }
+    } catch {
+      /* ignore: fullscreen unavailable or denied */
+    }
+  }
 
   if (nodes.length === 0) {
     return <div className="argument-map-empty">No debate loaded yet.</div>
@@ -242,7 +313,17 @@ export default function ArgumentMap({ nodes, edges, speakers = [], fallacies = [
 
   return (
     <div>
-      <div className="argument-map-wrapper">
+      <div className="argument-map-toolbar">
+        <button
+          type="button"
+          className="map-fullscreen-btn"
+          onClick={() => void toggleFullscreen()}
+          aria-pressed={isFullscreen}
+        >
+          {isFullscreen ? 'Exit full screen' : '⛶ Full screen'}
+        </button>
+      </div>
+      <div className="argument-map-wrapper" ref={wrapRef}>
         <ReactFlow nodes={renderedNodes} edges={flowEdges} onNodeClick={handleNodeClick} fitView>
           <Background />
           <Controls />
@@ -279,7 +360,7 @@ export default function ArgumentMap({ nodes, edges, speakers = [], fallacies = [
           </span>
           fallacy badge
         </span>
-        <span>⚠️ uncertain (unverified, greyed)</span>
+        <span>uncertain (unverified, greyed)</span>
       </div>
     </div>
   )

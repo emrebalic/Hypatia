@@ -133,11 +133,12 @@ def verify_nodes_semantic(
     """Ask the model whether each still-verified node's quote supports its label.
 
     Nodes already ``verified=False`` are never sent to the model and stay
-    ``False``. A ``supported=false`` verdict downgrades its node to
-    ``verified=False``; anything else keeps ``verified=True``. Missing or
-    unknown verdict ids change nothing. ``model`` defaults to
-    ``META_TEXT_MODEL``. Pass ``client`` only in tests. MetaClientError from
-    ``meta_client`` propagates unchanged after its retry.
+    ``False``. Only an explicit ``supported=true`` verdict keeps a node
+    ``verified=True`` (fail closed): a ``supported=false`` verdict *or a
+    missing verdict* downgrades it to ``verified=False``. Unknown verdict
+    ids are ignored. ``model`` defaults to ``META_TEXT_MODEL``. Pass
+    ``client`` only in tests. MetaClientError from ``meta_client``
+    propagates unchanged after its retry.
     """
     if not nodes:
         return []
@@ -155,10 +156,10 @@ def verify_nodes_semantic(
     by_id = _verdict_by_id(reply)
     checked = []
     for node in nodes:
-        if not node.verified or by_id.get(node.id) is False:
-            checked.append(node.model_copy(update={"verified": False}))
-        else:
+        if node.verified and by_id.get(node.id) is True:
             checked.append(node.model_copy(update={"verified": True}))
+        else:
+            checked.append(node.model_copy(update={"verified": False}))
     return checked
 
 
@@ -173,9 +174,10 @@ def verify_fallacies_semantic(
 ) -> list[Fallacy]:
     """Ask the model whether each still-verified fallacy's quote shows its name.
 
-    Same keep-or-downgrade contract as :func:`verify_nodes_semantic`: items
-    already ``verified=False`` skip the model call and stay ``False``; only a
-    ``supported=false`` verdict for a listed id downgrades. ``model`` defaults
+    Same fail-closed contract as :func:`verify_nodes_semantic`: items
+    already ``verified=False`` skip the model call and stay ``False``; only
+    an explicit ``supported=true`` verdict keeps an item verified, while a
+    ``supported=false`` or missing verdict downgrades it. ``model`` defaults
     to ``META_TEXT_MODEL``. Pass ``client`` only in tests.
     """
     if not fallacies:
@@ -194,8 +196,8 @@ def verify_fallacies_semantic(
     by_id = _verdict_by_id(reply)
     checked = []
     for fallacy in fallacies:
-        if not fallacy.verified or by_id.get(fallacy.id) is False:
-            checked.append(fallacy.model_copy(update={"verified": False}))
-        else:
+        if fallacy.verified and by_id.get(fallacy.id) is True:
             checked.append(fallacy.model_copy(update={"verified": True}))
+        else:
+            checked.append(fallacy.model_copy(update={"verified": False}))
     return checked

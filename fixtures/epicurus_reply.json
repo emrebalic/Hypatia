@@ -1,0 +1,9 @@
+{
+  "philosopher": "epicurus",
+  "summary": "S1 (Speaker 1)'s position is the calmer one to live by: it rests on the natural and necessary desire for undisturbed work, while S2's case feeds on the false belief that remote-by-default means never meeting at all.",
+  "points": [
+    {"title": "Desires: undisturbed work versus status and habit", "text": "S1's driving desire is natural and necessary: work without needless interruption (n2, n3) in support of the default (n1). S2's 'every successful company I know' (n6) leans instead on what prestigious companies do — a vain measure, since another firm's lease or image is not a need of the people arguing.", "node_ids": ["n1", "n2", "n3", "n6"]},
+    {"title": "Needless fear: 'never meet, alone forever'", "text": "The fear that remote-by-default destroys all culture (n5) rests on a false belief: it turns 'default' into 'never meet and just sit alone forever'. Examined, the belief dissolves — S1 never claimed it (n1) — and with it the anxiety built on it.", "node_ids": ["n5", "n1"]},
+    {"title": "Calm over time: a hybrid that keeps friendship", "text": "Lived over months, S1's moderated close (n9) keeps the calm of focused work and the friendship of shared onboarding time (n8): less pain, no chased luxury. S2's remaining moves (n6, n7) keep the worry alive by attacking motives rather than removing its cause.", "node_ids": ["n8", "n9", "n6", "n7"]}
+  ]
+}

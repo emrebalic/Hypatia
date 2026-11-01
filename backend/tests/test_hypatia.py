@@ -80,6 +80,15 @@ def test_hypatia_prompt_teaches_proof_check_and_no_winner():
     assert "Sophistical" not in prompt
 
 
+def test_hypatia_prompt_states_will_not_rules():
+    prompt = load_philosopher_prompt("hypatia")
+    lowered = prompt.lower()
+    assert "will not" in lowered
+    assert "name a winner" in lowered
+    assert "attribute any quote" in lowered
+    assert "paraphrase" in lowered
+
+
 def test_hypatia_fixture_checks_both_sides_step_by_step():
     result = _load_result()
     known = {node.id for node in result.nodes}

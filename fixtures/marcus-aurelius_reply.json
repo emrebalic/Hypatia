@@ -1,0 +1,9 @@
+{
+  "philosopher": "marcus-aurelius",
+  "summary": "S1 (Speaker 1) argued more in accord with virtue: S1 stayed with what is in a speaker's control and granted the other side's good point, while S2 let scorn for a motive do the arguing.",
+  "points": [
+    {"title": "Control: S1 argues from what is up to us", "text": "The dichotomy of control: S1's premises concern what a person controls — their environment and interruptions (n2, n3) — and support the default (n1) without demanding an outcome from anyone else. Nothing here suffers over what is not ours to command.", "node_ids": ["n1", "n2", "n3"]},
+    {"title": "Passion: S2 lets scorn argue instead of reason", "text": "'You only say this because you hate commuting' (n7) is passion doing the arguing: the judgment 'his motive settles it' replaces a reason against n1. The examination is simple — if the criticism of his reasons were true it would be usable; aimed at the person, it judges neither wisely nor justly.", "node_ids": ["n7", "n1"]},
+    {"title": "Virtues: justice to the opponent, temperance in the claim", "text": "The virtue of justice requires representing the opponent fairly; turning 'remote by default' into 'never meet' (n5) fails it. S1 shows courage and temperance instead: the junior-onboarding objection (n8) is granted, and the conclusion is moderated to a hybrid period (n9) — claiming no more than the steps support.", "node_ids": ["n5", "n8", "n9"]}
+  ]
+}

@@ -1,11 +1,12 @@
-"""Philosopher judges: Aristotle / Socrates / Hypatia (task 16).
+"""Philosopher judges: all six Learn-panel philosophers (task 16, expanded).
 
 POST /api/philosopher takes a finished ``DebateResult`` plus the chosen
 philosopher (and an optional one-shot ``user_message`` follow-up) and asks
 the Meta text model for a judgement. The system prompt comes from
-``app/prompts/<philosopher>.md`` (Aristotle/Socrates carry the task-17
-method; Hypatia carries the task-24 proof check). All network
-calls go through
+``app/prompts/<philosopher>.md`` — Aristotle (syllogism + verdict),
+Socrates (elenchus, no verdict), Hypatia (proof check, no winner), Kant
+(universalisability), Marcus Aurelius (Stoic control + virtues) and
+Epicurus (calm / needless-fear check). All network calls go through
 ``app.meta_client.chat_json_validated`` (structured output, retried once on
 invalid JSON), so tests can fake the model offline.
 
@@ -30,13 +31,18 @@ from app.schemas import DebateResult
 
 router = APIRouter()
 
-PhilosopherName = Literal["aristotle", "socrates", "hypatia"]
+PhilosopherName = Literal[
+    "aristotle", "socrates", "hypatia", "kant", "marcus-aurelius", "epicurus"
+]
 
 PROMPT_DIR = Path(__file__).resolve().parent / "prompts"
 PROMPT_FILES: dict[str, str] = {
     "aristotle": "aristotle.md",
     "socrates": "socrates.md",
     "hypatia": "hypatia.md",
+    "kant": "kant.md",
+    "marcus-aurelius": "marcus-aurelius.md",
+    "epicurus": "epicurus.md",
 }
 SCHEMA_NAME = "philosopher_judgement"
 
@@ -168,7 +174,7 @@ def ask_philosopher(
         client=client,
     )
     # Keep the reply consistent with the request even if the model echoed
-    # a different name; the schema allows only the three valid names.
+    # a different name; the schema allows only the six valid names.
     reply = reply.model_copy(update={"philosopher": philosopher})
     check_point_node_ids(reply, result)
     return reply

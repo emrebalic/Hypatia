@@ -13,6 +13,14 @@
   Times are integer milliseconds (the contract uses seconds: divide by 1000). `speaker` is a label like `A`, valid
   only within one request. No word-level timestamps. 400 = bad WAV or too long, 413 = too big, 429 = back off.
 - Convert other formats: `ffmpeg -i input.m4a -ac 1 -ar 24000 -c:a pcm_s16le -map_metadata -1 output.wav`.
+- Image generation (Muse Image, read from dev.meta.ai/docs/image-generation + pricing-rate-limits on Nov 1):
+  `POST {META_BASE_URL}/images/generations`, OpenAI-compatible (`client.images.generate(model, prompt, n)`
+  with `base_url` works). Model `muse-image-1.0` (env `META_IMAGE_MODEL`). Body: `model`, `prompt`,
+  `n` 1-10 (default 1); `size` "WxH" sets the aspect ratio only, not exact pixels ("1024x1024" for
+  square); `response_format` "b64_json" (default, bytes in `data[].b64_json`) or "url" (temporary signed
+  URL in `data[].url`); `output_format` webp (default) / png / jpeg. Flat $0.01 per generated image
+  (only successfully returned images billed, failures and safety-filtered images are free). Rate limit
+  150 requests/min, no token limit. Built-in web/image search is on by default and included in the price.
 - Prices per 1M tokens: Spark $1.25 in / $0.15 cached / $4.25 out; contributor $0.10 / $0.002 / $0.20.
   Voice Transcribe $0.18 per audio hour.
 
@@ -52,5 +60,10 @@ $120 of estimated spend, computed from `run_usage` events in `logs/`. The estima
 - task 20: README.md (pitch, screenshots placeholder, mermaid architecture, Meta-model table, Windows setup, "Built during the hackathon"); fixed demo.py default-arg bug (load_demo_result bound LAST_RESULT_PATH at def time, so monkeypatched path was ignored -> 404/500 tests got 200; now resolves the global at call time); code not run here, left to check.ps1.
 
 - task 21: backend/tests/live/test_smoke.py (skipped unless RUN_LIVE=1, loads backend/.env: pasted 5-turn cafeteria-trays transcript -> /api/analyze -> /api/philosopher Aristotle, loose contract assertions, LAST_RESULT_PATH redirected to tmp_path); code not run here, Emre runs it.
+- task 25: backend/app/content_api.py (GET /api/content serving content/*.json, no model calls) + frontend/src/LearnPanel.tsx (JSON-driven Learn guides replacing the static ReferencePanels, badge click opens the matching card on taxonomy_name == name) + backend/tests/test_content.py (6 offline tests incl. taxonomy exact-match + fallback SVGs on disk); fixed 8 taxonomy_name values in fallacies.json to the exact Hunter output names.
+- task 26: scripts/generate_images.py (one-off Muse Image generator, stdlib only, skips existing, sleeps between calls, --limit/--force/--dry-run) + verified image API facts above + META_IMAGE_MODEL in backend/.env.example + README model-table row. Script not run here (needs key, spends ~$0.26); Emre runs `py scripts/generate_images.py` once. NOTE: AGENTS.md says the loop reverts scripts/ edits, but docs/LEARN_TASKS.md task 26 explicitly requires this file — created per Emre's direct request; re-apply if the loop reverts it.
+- task 27: sharpened prompts/aristotle.md (golden-mean step), prompts/socrates.md (elenchus moves), prompts/hypatia.md (charity/steelman step); each gained a Will-not list + paraphrase-don't-quote rule; added one will-not test per prompt.
+- review fixes (per Emre): CORS in app/main.py; analyze runs FallacyHunter + node semantic in parallel and degrades gracefully on hunter/semantic failure; semantic verifier fails closed (missing verdict downgrades); all 6 Learn philosophers are now judges (new prompts/kant.md, marcus-aurelius.md, epicurus.md + fixtures + tests, judge flags true) — SPEC.md MVP lists 3 judges, expanded to 6 on Emre's direct request; ArgumentMap barycenter ordering; App.tsx resultVersion key + clearAnalysisState; illustrations converted PNG->WebP 87MB->1.7MB and generator now emits WebP. Sandbox cannot run TestClient/vite (socket/ACL), so endpoint tests await host check.ps1; offline non-TestClient tests 91 passed, tsc clean.
+- redesign (per Emre): aubergine-centred palette expanded (gold/burgundy/sage accents in index.css), wisdom typography (Cormorant Garamond display + Source Serif body + Inter UI via index.html), spacious shell (App.css padding/gaps/line-height up, scroll cap removed), Library is now one tabbed panel (Philosophers/Fallacies) in LearnPanel.tsx with no emoji in card text and no per-card pastel backgrounds, map/fallacy glyphs replaced with text labels and lilac-aligned node colours; all 26 card images regenerated as engraving duotone motifs (aubergine ink + gold, one classical object per card, no portraits) and placed as WebP (4.4MB total), image_prompt/style in both content JSONs rewritten to match. tsc clean, offline tests 91 passed; visual check + vite build await host (sandbox ACL).
 
 ## Blocked

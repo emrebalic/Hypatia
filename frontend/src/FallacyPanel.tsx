@@ -60,7 +60,7 @@ export default function FallacyPanel({
             <li key={fallacy.id}>
               <button type="button" className={classes} aria-pressed={isActive} onClick={() => onSelectFallacy(fallacy)}>
                 <span className="fallacy-item-status" aria-hidden="true">
-                  {unverified ? '⚠️' : '✅'}
+                  {unverified ? 'uncertain' : 'verified'}
                 </span>
                 <span className="fallacy-item-name">{fallacy.name}</span>
                 <span className="fallacy-item-meta">
@@ -76,7 +76,7 @@ export default function FallacyPanel({
       {selected ? (
         <article className={selected.verified ? 'fallacy-detail' : 'fallacy-detail fallacy-unverified'} aria-live="polite">
           <p className="fallacy-status" role="status">
-            {selected.verified ? '✅ verified' : '⚠️ uncertain — shown greyed, treat with caution'}
+            {selected.verified ? 'Verified' : 'Uncertain — shown greyed, treat with caution'}
           </p>
           <h4>{selected.name}</h4>
           <blockquote className="fallacy-quote">“{selected.quote}”</blockquote>
