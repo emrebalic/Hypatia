@@ -22,7 +22,7 @@
 - [x] 15. Fallacy badges + side detail card with quote and explanation; unverified items greyed with ⚠️.
 
 ## Phase 4 — Philosophers (target: Nov 2 night)
-- [ ] 16. `POST /api/philosopher` {philosopher: "aristotle"|"socrates"|"hypatia", result, user_message?}. Prompts in `prompts/aristotle.md`, `prompts/socrates.md`, `prompts/hypatia.md` (minimal placeholder until task 24). Every point must reference node ids.
+- [x] 16. `POST /api/philosopher` {philosopher: "aristotle"|"socrates"|"hypatia", result, user_message?}. Prompts in `prompts/aristotle.md`, `prompts/socrates.md`, `prompts/hypatia.md` (minimal placeholder until task 24). Every point must reference node ids.
 - [ ] 17. Aristotle: verdict on who argued better, using syllogistic structure + his fallacy categories; references node ids. Socrates: no verdict, 2–3 probing questions per side targeting the weakest premise.
 - [ ] 24. Hypatia: for each side, list the definitions and assumptions its argument depends on, walk the steps in order, and mark each step `holds` or `breaks` with the reason and node ids. No overall winner; ends with what both sides have actually established. Write `prompts/hypatia.md`, with tests on canned replies. Never attribute quotes or writings to her; none survive.
 - [ ] 18. Philosopher panel UI: choose philosopher (Aristotle, Socrates, Hypatia), show response with clickable node references (highlight node on map), one follow-up reply from the user. Hypatia's panel shows a short note: her writings did not survive, and this method is inspired by the mathematical tradition she taught.

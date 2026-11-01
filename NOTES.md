@@ -41,5 +41,6 @@ $120 of estimated spend, computed from `run_usage` events in `logs/`. The estima
 - task 14: click node seeks player (audioRef + onNodeSelect, speaker label + MM:SS on each node, seek notice + selected highlight); replaced dagre auto-layout with a dependency-free layered layout and dropped dagre/@types/dagre from frontend/package.json so `npm ci` matches package-lock.json again (lock cannot be regenerated with file-tools-only; dagre can be restored once `npm install` runs on the host); no frontend test harness exists so verification is tsc + vite build via check.ps1; code not run here, left to check.ps1.
 
 - task 15: frontend fallacy badges on map nodes + FallacyPanel detail card (quote, explanation, ✅/⚠️ status, play-from-quote seek) in middle column; unverified nodes/fallacies greyed with ⚠️; DebateMapNode extended with quote+verified, new DebateFallacy type; code not run here, left to check.ps1.
+- task 16: backend/app/philosopher.py (POST /api/philosopher with summary+points, every point must cite real node ids or the reply is rejected; prompts at backend/app/prompts/aristotle.md, socrates.md, hypatia.md as minimal placeholders per task 24) + fixtures/philosopher_reply.json + backend/tests/test_philosopher.py (14 offline tests, model faked); code not run here, left to check.ps1.
 
 ## Blocked

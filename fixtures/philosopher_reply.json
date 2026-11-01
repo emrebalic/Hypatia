@@ -1,0 +1,9 @@
+{
+  "philosopher": "aristotle",
+  "summary": "Speaker 1 argues better: two sound supporting reasons survive, while Speaker 2 leans on a straw man and an ad hominem.",
+  "points": [
+    {"title": "S1's Barbara syllogism holds", "text": "All focused work raises output; remote work is focused work; so remote work raises output.", "node_ids": ["n1", "n2", "n3"]},
+    {"title": "S2's straw man breaks the attack", "text": "Turning 'remote by default' into 'never meet' misrepresents the thesis, so the attack on n1 fails.", "node_ids": ["n5", "n1"]},
+    {"title": "S2's junior-onboarding objection stands", "text": "The claim that remote onboarding is slower is a genuine weak premise for S1, conceded in the close.", "node_ids": ["n8", "n9"]}
+  ]
+}
