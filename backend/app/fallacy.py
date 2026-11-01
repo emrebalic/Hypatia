@@ -48,10 +48,16 @@ def load_fallacy_prompt() -> str:
 
 
 def format_nodes(nodes: list[Node]) -> str:
-    """Render nodes as ``[node-id] (type, speaker, segments, start): ...`` lines."""
+    """Render nodes as ``[node-id] (type, speaker, segments, start, flag): ...``.
+
+    The verification flag travels with the node: an UNVERIFIED node failed
+    the deterministic/semantic checks and must not be treated as
+    established fact by the receiving agent.
+    """
     lines = [
         f"[{node.id}] ({node.type}, {node.speaker},"
-        f" {','.join(node.segment_ids)}, {node.start}s):"
+        f" {','.join(node.segment_ids)}, {node.start}s,"
+        f" {'verified' if node.verified else 'UNVERIFIED — failed verification'}):"
         f" {node.text} | quote: {node.quote}"
         for node in nodes
     ]

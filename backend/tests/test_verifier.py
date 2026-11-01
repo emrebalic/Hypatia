@@ -85,6 +85,33 @@ def test_unknown_segment_id_fails():
     assert verify_nodes([broken], segments)[0].verified is False
 
 
+def test_quote_from_wrong_segment_fails_even_with_moved_timestamp():
+    segments, nodes, _ = _load()
+    # n4's quote lives in seg_2; claim it under seg_1 with a seg_1 timestamp.
+    by_id = {node.id: node for node in nodes}
+    seg1 = segments[0]
+    moved = by_id["n4"].model_copy(
+        update={"segment_ids": [seg1.id], "start": seg1.start}
+    )
+    assert verify_nodes([moved], segments)[0].verified is False
+
+
+def test_cross_segment_quote_verifies_when_scope_covers_both():
+    segments, nodes, _ = _load()
+    first, second = segments[0], segments[1]
+    spanning = nodes[0].model_copy(
+        update={
+            "quote": f"{first.text} {second.text}",
+            "segment_ids": [first.id, second.id],
+            "start": first.start,
+        }
+    )
+    assert verify_nodes([spanning], segments)[0].verified is True
+    # Dropping the second segment from scope breaks the grounding.
+    narrowed = spanning.model_copy(update={"segment_ids": [first.id]})
+    assert verify_nodes([narrowed], segments)[0].verified is False
+
+
 def test_good_fallacies_all_verify():
     segments, nodes, fallacies = _load()
     checked = verify_fallacies(fallacies, segments, nodes)

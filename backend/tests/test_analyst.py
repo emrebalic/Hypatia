@@ -73,6 +73,24 @@ def test_analyze_returns_contract_nodes_and_edges(monkeypatch):
     assert seen["response_model"] is AnalystReply
 
 
+def test_analyze_drops_dangling_and_self_edges(monkeypatch):
+    speakers, segments = _load_transcript_input()
+    canned = _canned_reply()
+    canned["edges"] = canned["edges"] + [
+        {"source": "n1", "target": "ghost", "relation": "supports"},
+        {"source": "ghost", "target": "n1", "relation": "attacks"},
+        {"source": "n1", "target": "n1", "relation": "supports"},
+    ]
+    monkeypatch.setattr(
+        amod, "chat_json_validated", _fake_validated_factory(canned, {})
+    )
+    nodes, edges = analyze_transcript(speakers, segments)
+    known = {node.id for node in nodes}
+    assert len(edges) == 8
+    assert all(edge.source in known and edge.target in known for edge in edges)
+    assert all(edge.source != edge.target for edge in edges)
+
+
 def test_analyze_sends_prompt_file_and_full_transcript(monkeypatch):
     speakers, segments = _load_transcript_input()
     seen: dict[str, Any] = {}

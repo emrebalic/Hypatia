@@ -59,10 +59,10 @@
   the input source switches (paste/demo).
 - [x] 32. Header column motif: engraved Ionic columns flanking HYPATIA (gold capital, aubergine
   duotone, mirrored), responsive entablature rule under 640px, fluid title size.
-- [ ] 33. Map legibility + three-column layout: distinct per-type node rules, wider side columns.
-- [ ] 34. Verifier quote/segment coupling: tie quote location to its segment span; add
+- [x] 33. Map legibility + three-column layout: distinct per-type node rules, wider side columns.
+- [x] 34. Verifier quote/segment coupling: tie quote location to its segment span; add
   cross-segment and wrong-segment tests.
-- [ ] 35. Philosopher trust gate + graph integrity: propagate `verified` to judge inputs and
+- [x] 35. Philosopher trust gate + graph integrity: propagate `verified` to judge inputs and
   validate edge endpoints/speakers/fallacy links at the analyst boundary.
 
 ## Stretch (only if all above are ticked)

@@ -88,6 +88,14 @@ def run_analysis(
         raise ValueError("No transcript segments to analyze.")
     nodes, edges = analyst_mod.analyze_transcript(speakers, segments)
     nodes = verifier_mod.verify_nodes(nodes, segments)
+    # Unknown speakers cannot be grounded in the transcript either.
+    known_speakers = {speaker.id for speaker in speakers}
+    nodes = [
+        node
+        if node.speaker in known_speakers
+        else node.model_copy(update={"verified": False})
+        for node in nodes
+    ]
     # Fallacy hunting and node semantic verification are independent: both
     # consume the deterministically verified nodes, so run them together.
     with ThreadPoolExecutor(max_workers=2) as pool:

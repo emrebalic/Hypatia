@@ -90,9 +90,10 @@ def format_edges(result: DebateResult) -> str:
 
 
 def format_fallacies(result: DebateResult) -> str:
-    """Render fallacies as ``[fallacy-id] (name, node): explanation`` lines."""
+    """Render fallacies as ``[fallacy-id] (name, node, flag): explanation`` lines."""
     lines = [
-        f"[{fallacy.id}] ({fallacy.name}, node={fallacy.node_id}):"
+        f"[{fallacy.id}] ({fallacy.name}, node={fallacy.node_id},"
+        f" {'verified' if fallacy.verified else 'UNVERIFIED — failed verification'}):"
         f" {fallacy.explanation}"
         for fallacy in result.fallacies
     ]

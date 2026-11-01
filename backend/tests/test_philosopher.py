@@ -230,6 +230,35 @@ def test_endpoint_model_error_is_502(monkeypatch):
     assert response.status_code == 502, response.text
 
 
+def test_unverified_items_are_flagged_for_the_judge():
+    from app.fallacy import format_nodes
+    from app.philosopher import format_fallacies
+
+    result = DebateResult.model_validate(_load_result())
+    broken = result.model_copy(
+        update={
+            "nodes": [
+                node.model_copy(update={"verified": False})
+                if node.id == "n5"
+                else node
+                for node in result.nodes
+            ],
+            "fallacies": [
+                fallacy.model_copy(update={"verified": False})
+                if fallacy.id == "f1"
+                else fallacy
+                for fallacy in result.fallacies
+            ],
+        }
+    )
+    node_lines = format_nodes(broken.nodes)
+    assert "[n5]" in node_lines and "UNVERIFIED" in node_lines.split("[n5]")[1].splitlines()[0]
+    fallacy_lines = format_fallacies(broken)
+    assert "UNVERIFIED" in fallacy_lines.split("[f1]")[1].splitlines()[0]
+    # Verified neighbours are not flagged.
+    assert "UNVERIFIED" not in node_lines.split("[n1]")[1].splitlines()[0]
+
+
 def test_canned_fixture_references_real_nodes():
     """The canned reply is judge-quality: every point cites real node ids."""
     data = json.loads((FIXTURES / "sample_debate.json").read_text(encoding="utf-8"))

@@ -77,7 +77,10 @@ export function formatMapTime(seconds: number): string {
 function nodeLabel(node: DebateMapNode, speakerLabel: string, badges: DebateFallacy[]) {
   const unverified = node.verified === false
   return (
-    <div className={unverified ? 'arg-node arg-node-unverified' : 'arg-node'} title={`Seek to ${formatMapTime(node.start)}`}>
+    <div
+      className={`${unverified ? 'arg-node arg-node-unverified' : 'arg-node'} arg-node-kind-${node.type}`}
+      title={`Seek to ${formatMapTime(node.start)}`}
+    >
       <span className={`arg-node-type arg-node-type-${node.type}`}>{node.type}</span>
       {unverified && (
         <span className="arg-node-flag" title="This item did not pass verification">

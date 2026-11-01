@@ -99,4 +99,13 @@ def analyze_transcript(
         client=client,
     )
     nodes = [Node(**draft.model_dump(), verified=True) for draft in reply.nodes]
-    return nodes, list(reply.edges)
+    # Graph integrity at the boundary: drop edges that point at unknown
+    # nodes or at themselves, so the API graph and the UI graph cannot
+    # silently diverge (the UI drops the same edges when rendering).
+    known = {node.id for node in nodes}
+    edges = [
+        edge
+        for edge in reply.edges
+        if edge.source in known and edge.target in known and edge.source != edge.target
+    ]
+    return nodes, edges
