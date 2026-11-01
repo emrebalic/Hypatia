@@ -25,5 +25,6 @@ $120 of estimated spend, computed from `run_usage` events in `logs/`. The estima
 
 ## Log
 - task 1: backend skeleton (FastAPI /health in app/main.py, requirements.txt, .env.example, tests/test_health.py).
+- task 3: backend/app/schemas.py contract models (Speaker/Segment/Node/Edge/Fallacy/DebateResult) + backend/tests/test_schemas.py validating fixtures/sample_debate.json.
 
 ## Blocked
