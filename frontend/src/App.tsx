@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
-import ArgumentMap, { type DebateMapEdge, type DebateMapNode } from './ArgumentMap'
+import ArgumentMap, { type DebateFallacy, type DebateMapEdge, type DebateMapNode } from './ArgumentMap'
+import FallacyPanel from './FallacyPanel'
 import './App.css'
 
 interface Speaker {
@@ -28,7 +29,7 @@ interface AnalyzeResult {
   segments: Segment[]
   nodes: DebateMapNode[]
   edges: DebateMapEdge[]
-  fallacies: unknown[]
+  fallacies: DebateFallacy[]
 }
 
 type BusyKind = 'idle' | 'transcript' | 'analyze'
@@ -80,8 +81,10 @@ export default function App() {
   const [transcriptInfo, setTranscriptInfo] = useState<{ speakers: Speaker[]; segments: Segment[] } | null>(null)
   const [summary, setSummary] = useState<DebateSummary | null>(null)
   const [mapGraph, setMapGraph] = useState<{ nodes: DebateMapNode[]; edges: DebateMapEdge[] } | null>(null)
+  const [fallacies, setFallacies] = useState<DebateFallacy[]>([])
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
+  const [selectedFallacyId, setSelectedFallacyId] = useState<string | null>(null)
   const [seekNotice, setSeekNotice] = useState<string | null>(null)
 
   const busyLabel = busy === 'transcript' ? 'Working on the transcript…' : busy === 'analyze' ? 'Analyzing the debate…' : null
@@ -99,22 +102,32 @@ export default function App() {
     return known ? known.label : speakerId
   }
 
-  function seekToNode(node: DebateMapNode) {
-    setSelectedNodeId(node.id)
-    const when = formatTime(node.start)
-    const who = speakerLabel(node.speaker)
+  function seekTo(seconds: number, description: string) {
+    const when = formatTime(seconds)
     const audio = audioRef.current
     if (audio && audioUrl) {
       try {
-        audio.currentTime = node.start
+        audio.currentTime = seconds
       } catch {
         /* ignore seek errors (e.g. metadata not loaded yet) */
       }
       void audio.play().catch(() => undefined)
-      setSeekNotice(`Playing from ${when} — ${who}.`)
+      setSeekNotice(`Playing from ${when} — ${description}.`)
     } else {
-      setSeekNotice(`This point starts at ${when} (${who}). Upload the audio to listen from here.`)
+      setSeekNotice(`This point starts at ${when} (${description}). Upload the audio to listen from here.`)
     }
+  }
+
+  function seekToNode(node: DebateMapNode) {
+    setSelectedNodeId(node.id)
+    const firstBadge = fallacies.find((fallacy) => fallacy.node_id === node.id) ?? null
+    setSelectedFallacyId(firstBadge ? firstBadge.id : null)
+    seekTo(node.start, speakerLabel(node.speaker))
+  }
+
+  function handleSelectFallacy(fallacy: DebateFallacy) {
+    setSelectedFallacyId(fallacy.id)
+    setSelectedNodeId(fallacy.node_id)
   }
 
   async function runAnalyze(speakers: Speaker[], segments: Segment[]) {
@@ -136,15 +149,17 @@ export default function App() {
       const result = (await res.json()) as AnalyzeResult
       markStage(['arguments', 'fallacies', 'verification'], 'done')
       setMapGraph({ nodes: result.nodes, edges: result.edges })
+      setFallacies(result.fallacies ?? [])
+      const fallacyList = result.fallacies ?? []
       setSummary({
         speakers: result.speakers.length,
         segments: result.segments.length,
         nodes: result.nodes.length,
         edges: result.edges.length,
-        fallacies: result.fallacies.length,
+        fallacies: fallacyList.length,
       })
       setStatusLine(
-        `Done: ${result.nodes.length} argument nodes, ${result.edges.length} links, ${result.fallacies.length} fallacy flags from ${result.segments.length} transcript segments.`,
+        `Done: ${result.nodes.length} argument nodes, ${result.edges.length} links, ${fallacyList.length} fallacy flags from ${result.segments.length} transcript segments.`,
       )
     } catch {
       markStage(['arguments', 'fallacies', 'verification'], 'error')
@@ -161,8 +176,10 @@ export default function App() {
     setError(null)
     setSummary(null)
     setMapGraph(null)
+    setFallacies([])
     setTranscriptInfo(null)
     setSelectedNodeId(null)
+    setSelectedFallacyId(null)
     setSeekNotice(null)
     setFileName(file.name)
     setStages({ ...IDLE_STAGES, transcript: 'active' })
@@ -203,8 +220,10 @@ export default function App() {
     setError(null)
     setSummary(null)
     setMapGraph(null)
+    setFallacies([])
     setTranscriptInfo(null)
     setSelectedNodeId(null)
+    setSelectedFallacyId(null)
     setSeekNotice(null)
     setStages({ ...IDLE_STAGES, transcript: 'active' })
     setBusy('transcript')
@@ -245,7 +264,9 @@ export default function App() {
     setTranscriptInfo(null)
     setSummary(null)
     setMapGraph(null)
+    setFallacies([])
     setSelectedNodeId(null)
+    setSelectedFallacyId(null)
     setSeekNotice(null)
     setStages({ ...IDLE_STAGES })
     setStatusLine('No debate loaded yet. Upload audio or paste a transcript.')
@@ -373,10 +394,20 @@ export default function App() {
                 nodes={mapGraph.nodes}
                 edges={mapGraph.edges}
                 speakers={transcriptInfo?.speakers ?? []}
+                fallacies={fallacies}
                 selectedNodeId={selectedNodeId}
                 onNodeSelect={seekToNode}
               />
               <p className="hint">Tip: click a node to seek the player to its timestamp.</p>
+              <FallacyPanel
+                fallacies={fallacies}
+                nodes={mapGraph.nodes}
+                speakerLabel={speakerLabel}
+                selectedNodeId={selectedNodeId}
+                selectedFallacyId={selectedFallacyId}
+                onSelectFallacy={handleSelectFallacy}
+                onSeekStart={seekTo}
+              />
             </>
           ) : (
             <div className="map-placeholder">No debate loaded yet.</div>

@@ -142,6 +142,174 @@
   color: #555;
 }
 
+.arg-node-unverified .arg-node-text {
+  color: #666;
+}
+
+.arg-node-flag {
+  align-self: flex-start;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #6b5900;
+  background: #f5efcf;
+  border: 1px solid #8a6d00;
+  border-radius: 4px;
+  padding: 0.05rem 0.35rem;
+}
+
+.arg-node-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.arg-node-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #7a1f1a;
+  background: #fdecea;
+  border: 1px solid #b3261e;
+  border-radius: 4px;
+  padding: 0 0.35rem;
+  white-space: normal;
+}
+
+.arg-node-badge-unverified {
+  color: #555;
+  background: #e4e4e4;
+  border-color: #8a8a8a;
+}
+
+.fallacy-panel {
+  margin-top: 0.75rem;
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+  padding: 0.75rem;
+  background: #fff;
+}
+
+.fallacy-panel h3 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.fallacy-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.fallacy-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.5rem;
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  background: #fdf3f2;
+  border: 1px solid #b3261e;
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+}
+
+.fallacy-item-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #7a1f1a;
+}
+
+.fallacy-item-meta {
+  font-size: 0.75rem;
+  color: #555;
+}
+
+.fallacy-item-status {
+  font-size: 0.8rem;
+}
+
+.fallacy-on-selected-node {
+  outline: 2px solid #1f5fa8;
+  outline-offset: 1px;
+}
+
+.fallacy-selected {
+  background: #e8f0fe;
+  border-color: #1f5fa8;
+}
+
+.fallacy-selected .fallacy-item-name {
+  color: #1f5fa8;
+}
+
+.fallacy-unverified {
+  background: #f0f0f0;
+  border-color: #8a8a8a;
+  color: #555;
+  opacity: 0.8;
+}
+
+.fallacy-unverified .fallacy-item-name,
+.fallacy-detail.fallacy-unverified h4 {
+  color: #555;
+}
+
+.fallacy-detail {
+  border: 1px solid #d8d8d8;
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+  background: #fbfbfa;
+}
+
+.fallacy-detail h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  color: #7a1f1a;
+}
+
+.fallacy-status {
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+  color: #1f5fa8;
+}
+
+.fallacy-detail.fallacy-unverified .fallacy-status {
+  color: #555;
+}
+
+.fallacy-quote {
+  margin: 0 0 0.4rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.fallacy-explanation {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0 0 0.4rem;
+}
+
+.fallacy-play {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #1f5fa8;
+  background: #1f5fa8;
+  color: #fff;
+  cursor: pointer;
+}
+
 .philosopher-list {
   padding-left: 1.25rem;
   font-size: 0.9rem;

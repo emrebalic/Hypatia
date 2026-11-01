@@ -19,7 +19,7 @@
 - [x] 12. Upload + transcript paste screen; loading states per pipeline stage.
 - [x] 13. Argument map with @xyflow/react: node colours per type, supports=green / attacks=red edges, auto-layout (dagre or elk).
 - [x] 14. Click node → media player seeks to `start`. Speaker + timestamp on each node.
-- [ ] 15. Fallacy badges + side detail card with quote and explanation; unverified items greyed with ⚠️.
+- [x] 15. Fallacy badges + side detail card with quote and explanation; unverified items greyed with ⚠️.
 
 ## Phase 4 — Philosophers (target: Nov 2 night)
 - [ ] 16. `POST /api/philosopher` {philosopher: "aristotle"|"socrates"|"hypatia", result, user_message?}. Prompts in `prompts/aristotle.md`, `prompts/socrates.md`, `prompts/hypatia.md` (minimal placeholder until task 24). Every point must reference node ids.

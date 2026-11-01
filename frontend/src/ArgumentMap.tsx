@@ -17,7 +17,19 @@ export interface DebateMapNode {
   type: ArgumentNodeType
   speaker: string
   text: string
+  quote: string
   start: number
+  verified: boolean
+}
+
+export interface DebateFallacy {
+  id: string
+  node_id: string
+  name: string
+  explanation: string
+  quote: string
+  start: number
+  verified: boolean
 }
 
 export interface DebateMapEdge {
@@ -49,7 +61,7 @@ export const EDGE_COLORS: Record<ArgumentRelation, string> = {
 }
 
 export const MAP_NODE_WIDTH = 230
-export const MAP_NODE_HEIGHT = 150
+export const MAP_NODE_HEIGHT = 190
 
 const LAYER_H_GAP = 40
 const LAYER_V_GAP = 70
@@ -61,11 +73,31 @@ export function formatMapTime(seconds: number): string {
   return `${String(minutes).padStart(2, '0')}:${String(rest).padStart(2, '0')}`
 }
 
-function nodeLabel(node: DebateMapNode, speakerLabel: string) {
+function nodeLabel(node: DebateMapNode, speakerLabel: string, badges: DebateFallacy[]) {
+  const unverified = node.verified === false
   return (
-    <div className="arg-node" title={`Seek to ${formatMapTime(node.start)}`}>
+    <div className={unverified ? 'arg-node arg-node-unverified' : 'arg-node'} title={`Seek to ${formatMapTime(node.start)}`}>
       <span className={`arg-node-type arg-node-type-${node.type}`}>{node.type}</span>
+      {unverified && (
+        <span className="arg-node-flag" title="This item did not pass verification">
+          ⚠️ uncertain
+        </span>
+      )}
       <span className="arg-node-text">{node.text}</span>
+      {badges.length > 0 && (
+        <span className="arg-node-badges">
+          {badges.map((fallacy) => (
+            <span
+              key={fallacy.id}
+              className={fallacy.verified ? 'arg-node-badge' : 'arg-node-badge arg-node-badge-unverified'}
+              title={fallacy.explanation}
+            >
+              {!fallacy.verified && '⚠️ '}
+              {fallacy.name}
+            </span>
+          ))}
+        </span>
+      )}
       <span className="arg-node-meta">
         {speakerLabel} · {formatMapTime(node.start)}
       </span>
@@ -82,9 +114,20 @@ export function layoutDebateGraph(
   nodes: DebateMapNode[],
   edges: DebateMapEdge[],
   speakers: MapSpeaker[] = [],
+  fallacies: DebateFallacy[] = [],
 ): { flowNodes: FlowNode[]; flowEdges: FlowEdge[] } {
   const known = new Set(nodes.map((node) => node.id))
   const labels = new Map(speakers.map((speaker) => [speaker.id, speaker.label]))
+  const badgesByNode = new Map<string, DebateFallacy[]>()
+  for (const fallacy of fallacies) {
+    if (!known.has(fallacy.node_id)) continue
+    const list = badgesByNode.get(fallacy.node_id)
+    if (list) {
+      list.push(fallacy)
+    } else {
+      badgesByNode.set(fallacy.node_id, [fallacy])
+    }
+  }
   const outgoing = new Map<string, string[]>()
   for (const node of nodes) {
     outgoing.set(node.id, [])
@@ -127,19 +170,21 @@ export function layoutDebateGraph(
     const rowWidth = layer.length * (MAP_NODE_WIDTH + LAYER_H_GAP) - LAYER_H_GAP
     layer.forEach((node, index) => {
       const colors = NODE_COLORS[node.type]
+      const unverified = node.verified === false
       flowNodes.push({
         id: node.id,
         position: {
           x: -rowWidth / 2 + index * (MAP_NODE_WIDTH + LAYER_H_GAP),
           y: key * (MAP_NODE_HEIGHT + LAYER_V_GAP),
         },
-        data: { label: nodeLabel(node, labels.get(node.speaker) ?? node.speaker) },
+        data: { label: nodeLabel(node, labels.get(node.speaker) ?? node.speaker, badgesByNode.get(node.id) ?? []) },
         style: {
-          background: colors.background,
-          border: `2px solid ${colors.border}`,
+          background: unverified ? '#ececec' : colors.background,
+          border: unverified ? '2px solid #8a8a8a' : `2px solid ${colors.border}`,
           borderRadius: 8,
           width: MAP_NODE_WIDTH,
           fontSize: 12,
+          opacity: unverified ? 0.75 : 1,
         },
       })
     })
@@ -168,12 +213,16 @@ interface ArgumentMapProps {
   nodes: DebateMapNode[]
   edges: DebateMapEdge[]
   speakers?: MapSpeaker[]
+  fallacies?: DebateFallacy[]
   selectedNodeId?: string | null
   onNodeSelect?: (node: DebateMapNode) => void
 }
 
-export default function ArgumentMap({ nodes, edges, speakers = [], selectedNodeId = null, onNodeSelect }: ArgumentMapProps) {
-  const { flowNodes, flowEdges } = useMemo(() => layoutDebateGraph(nodes, edges, speakers), [nodes, edges, speakers])
+export default function ArgumentMap({ nodes, edges, speakers = [], fallacies = [], selectedNodeId = null, onNodeSelect }: ArgumentMapProps) {
+  const { flowNodes, flowEdges } = useMemo(
+    () => layoutDebateGraph(nodes, edges, speakers, fallacies),
+    [nodes, edges, speakers, fallacies],
+  )
 
   if (nodes.length === 0) {
     return <div className="argument-map-empty">No debate loaded yet.</div>
@@ -224,6 +273,13 @@ export default function ArgumentMap({ nodes, edges, speakers = [], selectedNodeI
           <span className="legend-line" style={{ background: EDGE_COLORS.attacks }} />
           attacks
         </span>
+        <span>
+          <span className="arg-node-badge" aria-hidden="true">
+            Fallacy
+          </span>
+          fallacy badge
+        </span>
+        <span>⚠️ uncertain (unverified, greyed)</span>
       </div>
     </div>
   )
