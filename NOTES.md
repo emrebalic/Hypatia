@@ -32,4 +32,6 @@ $120 of estimated spend, computed from `run_usage` events in `logs/`. The estima
 - task 7: backend/app/analyst.py (transcript segments -> nodes+edges via meta_client structured output, prompt in backend/app/prompts/analyst.md, verified=True stamped for the task-8 verifier) + fixtures/analyst_reply.json (canned reply) + backend/tests/test_analyst.py (5 offline tests, model faked); code not run here, left to check.ps1.
 - task 8: backend/app/verifier.py (deterministic quote-in-transcript + start-in-segment checks, failing items get verified=false, inputs not mutated) + backend/tests/test_verifier.py (8 offline tests incl. deliberately broken quotes/timestamps/segment ids); fixed analyst format_transcript to render speaker id + label so S1/S2 reach the model (previous check.ps1 failure).
 
+- task 9: backend/app/fallacy.py (FallacyHunter: transcript+nodes -> fallacy drafts via meta_client structured output, then through verify_fallacies; prompt at backend/app/prompts/fallacy.md following the analyst convention for the task's `prompts/fallacy.md` path) + fixtures/fallacy_reply.json (canned reply) + backend/tests/test_fallacy.py (8 offline tests, model faked, incl. invented-quote/bad-timestamp downgraded to verified=false); code not run here, left to check.ps1.
+
 ## Blocked

@@ -1,0 +1,7 @@
+{
+  "fallacies": [
+    {"id": "f1", "node_id": "n5", "name": "Straw man", "explanation": "Misrepresents 'remote by default' as 'never meet'.", "quote": "people should never meet and just sit alone forever", "start": 26.0},
+    {"id": "f2", "node_id": "n6", "name": "Hasty generalization", "explanation": "Generalizes from a few known companies to all.", "quote": "every successful company I know", "start": 41.0},
+    {"id": "f3", "node_id": "n7", "name": "Ad hominem (circumstantial)", "explanation": "Attacks the speaker's motive instead of the argument.", "quote": "You only say this because you hate commuting.", "start": 57.0}
+  ]
+}
