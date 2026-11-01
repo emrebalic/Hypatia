@@ -29,5 +29,7 @@ $120 of estimated spend, computed from `run_usage` events in `logs/`. The estima
 - task 4: backend/app/meta_client.py (chat_json/chat_json_validated via OpenAI SDK with json_schema structured output + one retry, transcribe_wav via httpx multipart, env vars read lazily) + backend/tests/test_meta_client.py (14 offline tests, SDK + httpx faked).
 - task 5: frontend skeleton (Vite 5 + React 18 + TS, @xyflow/react dep for task 13, three-column player/map/philosopher layout in src/App.tsx, non-political demo note); build not run here, left to check.ps1.
 - task 6: backend/app/transcribe.py (POST /api/transcribe with ffmpeg conversion + 10-min limit + turns-to-segments/speakers mapping, POST /api/transcript paste parser) + backend/tests/test_transcribe.py (14 offline tests); code not run here, left to check.ps1.
+- task 7: backend/app/analyst.py (transcript segments -> nodes+edges via meta_client structured output, prompt in backend/app/prompts/analyst.md, verified=True stamped for the task-8 verifier) + fixtures/analyst_reply.json (canned reply) + backend/tests/test_analyst.py (5 offline tests, model faked); code not run here, left to check.ps1.
+- task 8: backend/app/verifier.py (deterministic quote-in-transcript + start-in-segment checks, failing items get verified=false, inputs not mutated) + backend/tests/test_verifier.py (8 offline tests incl. deliberately broken quotes/timestamps/segment ids); fixed analyst format_transcript to render speaker id + label so S1/S2 reach the model (previous check.ps1 failure).
 
 ## Blocked

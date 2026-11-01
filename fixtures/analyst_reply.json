@@ -1,0 +1,23 @@
+{
+  "nodes": [
+    {"id": "n1", "type": "conclusion", "speaker": "S1", "text": "Remote work should be the default for software teams.", "quote": "Remote work should be the default for software teams.", "start": 0.0, "segment_ids": ["seg_1"]},
+    {"id": "n2", "type": "premise", "speaker": "S1", "text": "People are more productive when they control their environment.", "quote": "People are more productive when they control their environment.", "start": 0.0, "segment_ids": ["seg_1"]},
+    {"id": "n3", "type": "premise", "speaker": "S1", "text": "Fewer interruptions at home lead to more output.", "quote": "fewer interruptions means more output", "start": 17.0, "segment_ids": ["seg_3"]},
+    {"id": "n4", "type": "rebuttal", "speaker": "S2", "text": "Teams lose informal problem-solving conversations.", "quote": "Teams lose the informal conversations where most real problem solving happens.", "start": 9.0, "segment_ids": ["seg_2"]},
+    {"id": "n5", "type": "rebuttal", "speaker": "S2", "text": "Remote work means never meeting, which destroys culture.", "quote": "So you are saying people should never meet and just sit alone forever?", "start": 26.0, "segment_ids": ["seg_4"]},
+    {"id": "n6", "type": "claim", "speaker": "S2", "text": "Successful companies return to the office, so the office is better.", "quote": "every successful company I know brings people back to the office", "start": 41.0, "segment_ids": ["seg_6"]},
+    {"id": "n7", "type": "claim", "speaker": "S2", "text": "Speaker 1 argues this because they hate commuting.", "quote": "You only say this because you hate commuting.", "start": 57.0, "segment_ids": ["seg_8"]},
+    {"id": "n8", "type": "rebuttal", "speaker": "S2", "text": "Remote onboarding of juniors is slower.", "quote": "onboarding a junior developer remotely is clearly slower", "start": 68.0, "segment_ids": ["seg_10"]},
+    {"id": "n9", "type": "conclusion", "speaker": "S1", "text": "Juniors get a hybrid period, then remote by default.", "quote": "Maybe juniors need a hybrid period, then remote by default.", "start": 77.0, "segment_ids": ["seg_11"]}
+  ],
+  "edges": [
+    {"source": "n2", "target": "n1", "relation": "supports"},
+    {"source": "n3", "target": "n1", "relation": "supports"},
+    {"source": "n4", "target": "n1", "relation": "attacks"},
+    {"source": "n5", "target": "n1", "relation": "attacks"},
+    {"source": "n6", "target": "n1", "relation": "attacks"},
+    {"source": "n7", "target": "n1", "relation": "attacks"},
+    {"source": "n8", "target": "n1", "relation": "attacks"},
+    {"source": "n8", "target": "n9", "relation": "supports"}
+  ]
+}
