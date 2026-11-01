@@ -1,10 +1,12 @@
-# Hypatia — Debate X-Ray with Philosopher Judges
+# Hypatia — "Though this be madness, yet there is method in't"
 
-Upload a debate or podcast. Hypatia transcribes it, maps every argument
-(premises → conclusion, with clickable timestamps), flags logical fallacies,
-verifies its own claims, and lets you ask a philosopher — Aristotle, Socrates,
-Hypatia, Kant, Marcus Aurelius or Epicurus — who is right, each judging with
-their *own* method.
+Upload a debate, meeting recording or podcast. Hypatia transcribes it, maps
+every argument (premises → conclusion, with clickable timestamps), flags
+logical fallacies, verifies its own claims, and lets you ask a philosopher —
+Aristotle, Socrates, Hypatia, Kant, Marcus Aurelius or Epicurus — who is
+right, each judging with their *own* method. Use it wherever a decision
+rests on spoken reasoning: find where the argument breaks before the
+decision does.
 
 Left panel: media player. Middle: argument map (React Flow). Right:
 philosopher panel. Click a map node to seek the player to that second.
@@ -131,6 +133,22 @@ Unit tests run offline with the model mocked; canned replies live in
 `fixtures/`. The live smoke test in `backend/tests/live/` runs only with
 `RUN_LIVE=1` and is not part of `check.ps1`. Never download media from
 YouTube or other sites.
+
+## Recording the 3-minute demo
+
+1. **0:00-0:20 — the problem.** Spoken decisions hide broken reasoning.
+   Open Hypatia on the seeded debate (Demo mode, no API calls).
+2. **0:20-1:30 — the agents at work.** Run one real analysis. Point at the
+   pipeline naming each agent (Analyst, Fallacy hunter, Verifier), the
+   verifier proof strip, and one greyed `uncertain` item: the system shows
+   its own failures instead of hiding them.
+3. **1:30-2:30 — the judges.** Ask Aristotle for the verdict, then contrast
+   Socrates (questions, no winner) or Hypatia (proof check). Click a cited
+   node: the map highlights it and the transcript rail shows its segment.
+4. **2:30-3:00 — the models.** Name which Meta model does what (table
+   above) and close on the quote: method in the madness.
+
+Keep at least one analysis real; cut waiting, not evidence.
 
 ## Built during the hackathon
 
