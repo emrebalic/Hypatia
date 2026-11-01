@@ -1,0 +1,10 @@
+{
+  "philosopher": "aristotle",
+  "summary": "S1 (Speaker 1) argued better: both supporting reasons form a sound syllogism for remote-by-default, while S2's attacks break on a straw man, a hasty generalization, and an ad hominem, leaving only the junior-onboarding objection standing.",
+  "points": [
+    {"title": "S1's central syllogism is valid and holds", "text": "Major premise: people who control their environment are more productive (n2). Minor premise: remote work with fewer interruptions is such focused work (n3). Conclusion: remote work should be the default (n1). This Barbara syllogism is valid in form and both premises hold on the transcript's own words.", "node_ids": ["n1", "n2", "n3"]},
+    {"title": "S2's 'never meet' attack is a straw man", "text": "Turning 'remote by default' (n1) into 'people should never meet and just sit alone forever' (n5) misrepresents the thesis, so this refutation only appears to refute and the attack on n1 fails.", "node_ids": ["n5", "n1"]},
+    {"title": "S2's office appeal piles fallacy on fallacy", "text": "'Every successful company I know brings people back' (n6) is a hasty generalization from a handful of companies, and 'you only say this because you hate commuting' (n7) is an ad hominem (circumstantial) aimed at motive rather than argument; neither refutes n1.", "node_ids": ["n6", "n7", "n1"]},
+    {"title": "Verdict: S1 argued better, with one honest concession", "text": "S2's junior-onboarding objection (n8) is the one sound attack, and S1 concedes it with a hybrid period (n9) -- a fair concession that counts for S1. Two sound supporting reasons against one surviving objection: S1 argued better.", "node_ids": ["n8", "n9", "n1"]}
+  ]
+}

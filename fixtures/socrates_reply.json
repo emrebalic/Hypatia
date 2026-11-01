@@ -1,0 +1,11 @@
+{
+  "philosopher": "socrates",
+  "summary": "Questions for both sides, each pressing the premise with the thinnest evidence or the broadest reach.",
+  "points": [
+    {"title": "For S1 -- the productivity premise (n2)", "text": "What shows that people are more productive when they control their environment -- productive at which tasks, and measured how? This probes n2, the broadest premise of the case, because it asserts a gain without any task or measure.", "node_ids": ["n2"]},
+    {"title": "For S1 -- fewer interruptions mean more output (n3)", "text": "Do fewer interruptions at home mean more output for every kind of work, or only for focused solo tasks that need little feedback? This probes n3, which stretches a finding about focused tasks onto all output.", "node_ids": ["n3"]},
+    {"title": "For S2 -- informal chats as problem solving (n4)", "text": "How much real problem solving happens in informal office conversations, and could a remote team keep that with scheduled collaboration? This probes n4, which treats the office habit as the only source of a real good.", "node_ids": ["n4"]},
+    {"title": "For S2 -- the companies you know (n6)", "text": "You know a handful of companies that brought people back -- what of the companies you do not know, and might leases or roles explain the pattern? This probes n6, which generalizes from a small sample to all companies.", "node_ids": ["n6"]},
+    {"title": "For S2 -- junior onboarding slower remotely (n8)", "text": "Is remote onboarding slower because it is remote, or because onboarding was never structured -- what would a fair comparison measure? This probes n8, the strongest objection, because it still assumes the cause without comparing like with like.", "node_ids": ["n8"]}
+  ]
+}

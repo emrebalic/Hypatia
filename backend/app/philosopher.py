@@ -3,8 +3,9 @@
 POST /api/philosopher takes a finished ``DebateResult`` plus the chosen
 philosopher (and an optional one-shot ``user_message`` follow-up) and asks
 the Meta text model for a judgement. The system prompt comes from
-``app/prompts/<philosopher>.md`` (minimal placeholders; tasks 17 and 24
-flesh out Aristotle/Socrates and Hypatia). All network calls go through
+``app/prompts/<philosopher>.md`` (Aristotle/Socrates carry the task-17
+method; Hypatia carries the task-24 proof check). All network
+calls go through
 ``app.meta_client.chat_json_validated`` (structured output, retried once on
 invalid JSON), so tests can fake the model offline.
 
