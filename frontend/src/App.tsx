@@ -261,6 +261,51 @@ export default function App() {
     }
   }
 
+  async function handleDemo() {
+    if (busy !== 'idle') return
+    setError(null)
+    setSummary(null)
+    setMapGraph(null)
+    setFallacies([])
+    setTranscriptInfo(null)
+    setSelectedNodeId(null)
+    setSelectedFallacyId(null)
+    setSeekNotice(null)
+    setStages({ transcript: 'done', arguments: 'done', fallacies: 'done', verification: 'done' })
+    setBusy('analyze')
+    setStatusLine('Loading saved demo result…')
+    try {
+      const res = await fetch('/api/demo')
+      if (!res.ok) {
+        setStages({ transcript: 'idle', arguments: 'idle', fallacies: 'idle', verification: 'idle' })
+        setError(await readError(res))
+        setStatusLine('Demo load failed. Analyze a debate first to create the saved result.')
+        setBusy('idle')
+        return
+      }
+      const result = (await res.json()) as AnalyzeResult
+      setTranscriptInfo({ speakers: result.speakers, segments: result.segments })
+      setMapGraph({ nodes: result.nodes, edges: result.edges })
+      setFallacies(result.fallacies ?? [])
+      const fallacyList = result.fallacies ?? []
+      setSummary({
+        speakers: result.speakers.length,
+        segments: result.segments.length,
+        nodes: result.nodes.length,
+        edges: result.edges.length,
+        fallacies: fallacyList.length,
+      })
+      setStatusLine(
+        `Demo loaded instantly (no API calls): ${result.nodes.length} argument nodes, ${result.edges.length} links, ${fallacyList.length} fallacy flags from ${result.segments.length} transcript segments.`,
+      )
+    } catch {
+      setError('Could not reach the API. Is the backend running on http://localhost:8000?')
+      setStatusLine('Demo load failed. Analyze a debate first to create the saved result.')
+    } finally {
+      setBusy('idle')
+    }
+  }
+
   function resetAll() {
     if (busy !== 'idle') return
     if (audioUrl) URL.revokeObjectURL(audioUrl)
@@ -335,10 +380,14 @@ export default function App() {
               <button type="button" disabled={busy !== 'idle'} onClick={() => void handlePaste()}>
                 {busy === 'idle' ? 'Analyze pasted transcript' : 'Working…'}
               </button>
+              <button type="button" className="secondary" disabled={busy !== 'idle'} onClick={() => void handleDemo()}>
+                Load demo instantly
+              </button>
               <button type="button" className="secondary" disabled={busy !== 'idle'} onClick={resetAll}>
                 Start over
               </button>
             </div>
+            <p className="hint">Demo loads backend/data/last_result.json with no model calls — for recording the video.</p>
           </div>
         </div>
 

@@ -28,8 +28,8 @@
 - [x] 18. Philosopher panel UI: choose philosopher (Aristotle, Socrates, Hypatia), show response with clickable node references (highlight node on map), one follow-up reply from the user. Hypatia's panel shows a short note: her writings did not survive, and this method is inspired by the mathematical tradition she taught.
 
 ## Phase 5 — Polish (target: Nov 3 before 12:00 TR)
-- [ ] 19. "Demo mode": load `backend/data/last_result.json` instantly (no API calls) for recording the video.
-- [ ] 20. README: pitch, screenshots placeholder, mermaid architecture, which Meta model does what, setup steps for Windows, and a section "Built during the hackathon".
+- [x] 19. "Demo mode": load `backend/data/last_result.json` instantly (no API calls) for recording the video.
+- [x] 20. README: pitch, screenshots placeholder, mermaid architecture, which Meta model does what, setup steps for Windows, and a section "Built during the hackathon".
 - [ ] 21. Write a live smoke test in `backend/tests/live/` (RUN_LIVE=1): one short transcript through the full pipeline. Writing it completes the task; Emre runs it.
 
 ## Stretch (only if all above are ticked)

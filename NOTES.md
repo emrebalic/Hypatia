@@ -47,4 +47,8 @@ $120 of estimated spend, computed from `run_usage` events in `logs/`. The estima
 
 - task 18: frontend/src/PhilosopherPanel.tsx (choose Aristotle/Socrates/Hypatia, POST /api/philosopher, node-id chips highlight the map node, one follow-up, Hypatia writings-did-not-survive note) wired into src/App.tsx right column + styles in src/App.css; code not run here, left to check.ps1.
 
+- task 19: demo mode (GET /api/demo in backend/app/demo.py serving backend/data/last_result.json with no model calls + "Load demo instantly" button in frontend/src/App.tsx, seeded backend/data/last_result.json from fixtures/sample_debate.json, 6 offline tests in backend/tests/test_demo.py); code not run here, left to check.ps1.
+
+- task 20: README.md (pitch, screenshots placeholder, mermaid architecture, Meta-model table, Windows setup, "Built during the hackathon"); fixed demo.py default-arg bug (load_demo_result bound LAST_RESULT_PATH at def time, so monkeypatched path was ignored -> 404/500 tests got 200; now resolves the global at call time); code not run here, left to check.ps1.
+
 ## Blocked
