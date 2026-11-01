@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import ArgumentMap, { type DebateMapEdge, type DebateMapNode } from './ArgumentMap'
 import './App.css'
 
 interface Speaker {
@@ -20,6 +21,14 @@ interface DebateSummary {
   nodes: number
   edges: number
   fallacies: number
+}
+
+interface AnalyzeResult {
+  speakers: Speaker[]
+  segments: Segment[]
+  nodes: DebateMapNode[]
+  edges: DebateMapEdge[]
+  fallacies: unknown[]
 }
 
 type BusyKind = 'idle' | 'transcript' | 'analyze'
@@ -70,6 +79,10 @@ export default function App() {
   const [error, setError] = useState<string | null>(null)
   const [transcriptInfo, setTranscriptInfo] = useState<{ speakers: Speaker[]; segments: Segment[] } | null>(null)
   const [summary, setSummary] = useState<DebateSummary | null>(null)
+  const [mapGraph, setMapGraph] = useState<{ nodes: DebateMapNode[]; edges: DebateMapEdge[] } | null>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
+  const [seekNotice, setSeekNotice] = useState<string | null>(null)
 
   const busyLabel = busy === 'transcript' ? 'Working on the transcript…' : busy === 'analyze' ? 'Analyzing the debate…' : null
 
@@ -79,6 +92,29 @@ export default function App() {
       for (const id of ids) next[id] = status
       return next
     })
+  }
+
+  function speakerLabel(speakerId: string): string {
+    const known = transcriptInfo?.speakers.find((speaker) => speaker.id === speakerId)
+    return known ? known.label : speakerId
+  }
+
+  function seekToNode(node: DebateMapNode) {
+    setSelectedNodeId(node.id)
+    const when = formatTime(node.start)
+    const who = speakerLabel(node.speaker)
+    const audio = audioRef.current
+    if (audio && audioUrl) {
+      try {
+        audio.currentTime = node.start
+      } catch {
+        /* ignore seek errors (e.g. metadata not loaded yet) */
+      }
+      void audio.play().catch(() => undefined)
+      setSeekNotice(`Playing from ${when} — ${who}.`)
+    } else {
+      setSeekNotice(`This point starts at ${when} (${who}). Upload the audio to listen from here.`)
+    }
   }
 
   async function runAnalyze(speakers: Speaker[], segments: Segment[]) {
@@ -97,14 +133,9 @@ export default function App() {
         setStatusLine('Analysis failed. Fix the problem and try again.')
         return
       }
-      const result = (await res.json()) as {
-        speakers: Speaker[]
-        segments: Segment[]
-        nodes: unknown[]
-        edges: unknown[]
-        fallacies: unknown[]
-      }
+      const result = (await res.json()) as AnalyzeResult
       markStage(['arguments', 'fallacies', 'verification'], 'done')
+      setMapGraph({ nodes: result.nodes, edges: result.edges })
       setSummary({
         speakers: result.speakers.length,
         segments: result.segments.length,
@@ -129,7 +160,10 @@ export default function App() {
     if (busy !== 'idle') return
     setError(null)
     setSummary(null)
+    setMapGraph(null)
     setTranscriptInfo(null)
+    setSelectedNodeId(null)
+    setSeekNotice(null)
     setFileName(file.name)
     setStages({ ...IDLE_STAGES, transcript: 'active' })
     if (audioUrl) URL.revokeObjectURL(audioUrl)
@@ -168,7 +202,10 @@ export default function App() {
     }
     setError(null)
     setSummary(null)
+    setMapGraph(null)
     setTranscriptInfo(null)
+    setSelectedNodeId(null)
+    setSeekNotice(null)
     setStages({ ...IDLE_STAGES, transcript: 'active' })
     setBusy('transcript')
     setStatusLine('Parsing pasted transcript…')
@@ -207,6 +244,9 @@ export default function App() {
     setError(null)
     setTranscriptInfo(null)
     setSummary(null)
+    setMapGraph(null)
+    setSelectedNodeId(null)
+    setSeekNotice(null)
     setStages({ ...IDLE_STAGES })
     setStatusLine('No debate loaded yet. Upload audio or paste a transcript.')
   }
@@ -296,13 +336,18 @@ export default function App() {
       <main className="layout">
         <section className="column" aria-label="Media player">
           <h2>Player</h2>
-          {audioUrl ? (
-            <audio controls preload="metadata" className="player" src={audioUrl} />
-          ) : (
-            <>
-              <p>Upload a debate or podcast episode to play it here.</p>
-              <audio controls preload="none" className="player" />
-            </>
+          {!audioUrl && <p>Upload a debate or podcast episode to play it here.</p>}
+          <audio
+            ref={audioRef}
+            controls
+            preload={audioUrl ? 'metadata' : 'none'}
+            className="player"
+            src={audioUrl ?? undefined}
+          />
+          {seekNotice && (
+            <p className="seek-notice" role="status">
+              {seekNotice}
+            </p>
           )}
           {transcriptInfo && (
             <p className="hint">
@@ -317,15 +362,25 @@ export default function App() {
           {summary ? (
             <p>
               {summary.nodes} argument nodes, {summary.edges} links, {summary.fallacies} fallacy flags from{' '}
-              {summary.segments} segments. The graph canvas lands here in task 13.
+              {summary.segments} segments.
             </p>
           ) : (
-            <p>
-              Premises and conclusions appear here as a graph (React Flow canvas
-              lands here in task 13).
-            </p>
+            <p>Premises and conclusions appear here as a graph once a debate is analyzed.</p>
           )}
-          <div className="map-placeholder">{summary ? 'Debate analyzed — map coming next.' : 'No debate loaded yet.'}</div>
+          {mapGraph ? (
+            <>
+              <ArgumentMap
+                nodes={mapGraph.nodes}
+                edges={mapGraph.edges}
+                speakers={transcriptInfo?.speakers ?? []}
+                selectedNodeId={selectedNodeId}
+                onNodeSelect={seekToNode}
+              />
+              <p className="hint">Tip: click a node to seek the player to its timestamp.</p>
+            </>
+          ) : (
+            <div className="map-placeholder">No debate loaded yet.</div>
+          )}
         </section>
         <section className="column" aria-label="Philosopher panel">
           <h2>Philosopher</h2>
