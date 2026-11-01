@@ -1,0 +1,7 @@
+{
+  "verdicts": [
+    {"id": "f1", "supported": true, "reason": "The quote inflates 'remote by default' into 'never meet', which is the reported Straw man."},
+    {"id": "f2", "supported": true, "reason": "The quote generalizes from the few companies the speaker knows, matching Hasty generalization."},
+    {"id": "f3", "supported": true, "reason": "The quote attacks the speaker's commuting motive instead of the argument, matching Ad hominem."}
+  ]
+}
