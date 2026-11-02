@@ -13,79 +13,296 @@
     {
       "id": "seg_1",
       "speaker": "S1",
-      "start": 0.0,
-      "end": 9.0,
-      "text": "Remote work should be the default for software teams. People are more productive when they control their environment."
+      "start": 0.06,
+      "end": 10.54,
+      "text": "Welcome to The Debate. Um we usually think of science as this you know perfectly objective sorting mechanism. Like like a strict bouncer at the door of a nightclub."
     },
     {
       "id": "seg_2",
       "speaker": "S2",
-      "start": 9.0,
-      "end": 17.0,
-      "text": "I disagree. Teams lose the informal conversations where most real problem solving happens."
+      "start": 10.94,
+      "end": 11.5,
+      "text": "Right yeah"
     },
     {
       "id": "seg_3",
       "speaker": "S1",
-      "start": 17.0,
-      "end": 26.0,
-      "text": "Studies of focused tasks show fewer interruptions at home, and fewer interruptions means more output."
+      "start": 11.74,
+      "end": 35.9,
+      "text": "if a theory have the evidence it gets in if it doesn't it gets tossed out onto the street today we are looking at whether that bouncer bouncer is actually doing his job exploring Carl Popper's falsificationism against Thomas Kuhn and Imre Lakatos's views on paradigms I'll be arguing for a proper strict Popper strict falsification and my counterpart here is arguing for the necessity of protecting theories even when they fail tests."
     },
     {
       "id": "seg_4",
       "speaker": "S2",
-      "start": 26.0,
-      "end": 34.0,
-      "text": "So you are saying people should never meet and just sit alone forever? That would destroy any company culture."
+      "start": 36.38,
+      "end": 42.3,
+      "text": "It's a comforting image I mean mean we really want that clean bright line separating objective truth from fiction"
     },
     {
       "id": "seg_5",
       "speaker": "S1",
-      "start": 34.0,
-      "end": 41.0,
-      "text": "That is not what I said. I said remote should be the default, not the only option."
+      "start": 42.54,
+      "end": 43.02,
+      "text": "We do"
     },
     {
       "id": "seg_6",
-      "speaker": "S2",
-      "start": 41.0,
-      "end": 49.0,
-      "text": "Well, every successful company I know brings people back to the office, so the office must be better."
+      "speaker": "S1",
+      "start": 44.14,
+      "end": 54.62,
+      "text": "But well if we want that clean line Carl Popper gives us the absolute sharpest tool right falsification I mean if a theory can't be tested and potentially destroyed by evidence it evidence it is simply not science"
     },
     {
       "id": "seg_7",
-      "speaker": "S1",
-      "start": 49.0,
-      "end": 57.0,
-      "text": "Those companies also have expensive office leases to justify. And you only know a handful of companies."
+      "speaker": "S2",
+      "start": 54.94,
+      "end": 64.54,
+      "text": "I hear that but if we actually applied Popper's strict rule historically we would have thrown out some of the greatest discoveries in human history like the very moment they hit a speed bump they'd be gone"
     },
     {
       "id": "seg_8",
-      "speaker": "S2",
-      "start": 57.0,
-      "end": 62.0,
-      "text": "You only say this because you hate commuting."
+      "speaker": "S1",
+      "start": 64.62,
+      "end": 65.66,
+      "text": "oh wait really"
     },
     {
       "id": "seg_9",
-      "speaker": "S1",
-      "start": 62.0,
-      "end": 68.0,
-      "text": "Whether I like commuting has nothing to do with whether the argument is sound."
+      "speaker": "S2",
+      "start": 65.82,
+      "end": 66.38,
+      "text": "oh yeah"
     },
     {
       "id": "seg_10",
-      "speaker": "S2",
-      "start": 68.0,
-      "end": 77.0,
-      "text": "Fine. But onboarding a junior developer remotely is clearly slower. They learn by watching seniors."
+      "speaker": "S1",
+      "start": 66.62,
+      "end": 67.66,
+      "text": "I have to push back there"
     },
     {
       "id": "seg_11",
+      "speaker": "S2",
+      "start": 67.74,
+      "end": 71.42,
+      "text": "well yes science just doesn't operate with that kind of binary purity"
+    },
+    {
+      "id": "seg_12",
       "speaker": "S1",
-      "start": 77.0,
-      "end": 83.0,
-      "text": "That is a fair point. Maybe juniors need a hybrid period, then remote by default."
+      "start": 71.42,
+      "end": 82.62,
+      "text": "but Popper's strictness is exactly what protects us from us from dogma a scientific theory has to stick its neck out you know if you find a single counter example that doesn't fit the theory is falsified and discarded"
+    },
+    {
+      "id": "seg_13",
+      "speaker": "S2",
+      "start": 82.94,
+      "end": 83.82,
+      "text": "right but"
+    },
+    {
+      "id": "seg_14",
+      "speaker": "S1",
+      "start": 83.82,
+      "end": 93.42,
+      "text": "that mechanism is what prevents vague concepts like astrology from masquerading as science because they are designed to literally never be proven wrong"
+    },
+    {
+      "id": "seg_15",
+      "speaker": "S2",
+      "start": 93.58,
+      "end": 101.66,
+      "text": "sure but you're setting up a false dilemma there you're suggesting we either have instant falsifiability or we just descend into absolute pseudoscience"
+    },
+    {
+      "id": "seg_16",
+      "speaker": "S1",
+      "start": 101.66,
+      "end": 102.14,
+      "text": "well don't we"
+    },
+    {
+      "id": "seg_17",
+      "speaker": "S2",
+      "start": 102.22,
+      "end": 124.3,
+      "text": "no not at all Thomas Kuhn showed us showed us that science actually operates in paradigms these sweeping worldviews like Newtonian physics during these long periods of normal science scientists are actually quite dogmatic they just solve puzzles within the existing paradigm when an an anomaly pops up they don't throw away the the whole theory they blame themselves or their instruments"
+    },
+    {
+      "id": "seg_18",
+      "speaker": "S1",
+      "start": 124.3,
+      "end": 130.3,
+      "text": "right but Kuhn also argues that when paradigms finally do crash it's a subjective gestalt switch right"
+    },
+    {
+      "id": "seg_19",
+      "speaker": "S2",
+      "start": 130.3,
+      "end": 131.1,
+      "text": "yeah that's that's his term"
+    },
+    {
+      "id": "seg_20",
+      "speaker": "S1",
+      "start": 131.26,
+      "end": 141.58,
+      "text": "he says competing paradigms are incommensurable meaning like an Einsteinian physicist and a Newtonian physicist use the exact same word like mass but they mean completely different things"
+    },
+    {
+      "id": "seg_21",
+      "speaker": "S2",
+      "start": 141.66,
+      "end": 142.06,
+      "text": "right"
+    },
+    {
+      "id": "seg_22",
+      "speaker": "S1",
+      "start": 142.06,
+      "end": 154.78,
+      "text": "their baseline realities don't even align so by framing progress this way isn't Kuhn essentially making an appeal to authority he just just substitutes the objective truth of a theory theory for the mere social consensus of a scientific community"
+    },
+    {
+      "id": "seg_23",
+      "speaker": "S2",
+      "start": 154.94,
+      "end": 161.1,
+      "text": "Okay, that is a straw man of how paradigm shifts actually occur. It's not just subjective mob rule."
+    },
+    {
+      "id": "seg_24",
+      "speaker": "S1",
+      "start": 161.26,
+      "end": 162.3,
+      "text": "It sure sounds like it."
+    },
+    {
+      "id": "seg_25",
+      "speaker": "S2",
+      "start": 162.3,
+      "end": 174.54,
+      "text": "Well, Imre Lakatos clarifies this perfectly. He bridges Popper and Kuhn with with what he calls research programs. A research program has an unquestioned hardcore like Newton's laws of motion you don't ever test the core"
+    },
+    {
+      "id": "seg_26",
+      "speaker": "S1",
+      "start": 174.54,
+      "end": 176.22,
+      "text": "wait you never test it it"
+    },
+    {
+      "id": "seg_27",
+      "speaker": "S2",
+      "start": 176.3,
+      "end": 189.66,
+      "text": "nope instead you protect it protect it with a protective belt of auxiliary hypotheses if an experiment goes wrong you don't throw out the core you tweak the protective belt by changing your assumptions about the instruments instruments or the testing environment"
+    },
+    {
+      "id": "seg_28",
+      "speaker": "S1",
+      "start": 189.98,
+      "end": 199.5,
+      "text": "but Lakatos sets absolutely no time limit for when scientists should finally give up on a degenerating program one that just keeps piling up anomalies are we just excusing scientists for being stubborn"
+    },
+    {
+      "id": "seg_29",
+      "speaker": "S2",
+      "start": 199.9,
+      "end": 200.46,
+      "text": "well no"
+    },
+    {
+      "id": "seg_30",
+      "speaker": "S1",
+      "start": 200.46,
+      "end": 209.5,
+      "text": "structurally this system totally shields failed ideas from scrutiny assuming a struggling program will magically recover just because a few did in the past is a massive hasty generalization"
+    },
+    {
+      "id": "seg_31",
+      "speaker": "S2",
+      "start": 209.82,
+      "end": 218.94,
+      "text": "i mean maybe but look at the historical alternative take copernican astronomy when copernicus proposed a a moving heliocentric earth there was a was a massive anomaly"
+    },
+    {
+      "id": "seg_32",
+      "speaker": "S1",
+      "start": 219.26,
+      "end": 220.06,
+      "text": "which was"
+    },
+    {
+      "id": "seg_33",
+      "speaker": "S2",
+      "start": 220.06,
+      "end": 230.94,
+      "text": "they couldn't observe stellar stellar parallax because the earth was moving the star should have appeared to shift shift from our vantage point and they didn't under Popper's strict rule heliocentrism should have been instantly killed"
+    },
+    {
+      "id": "seg_34",
+      "speaker": "S1",
+      "start": 231.1,
+      "end": 233.66,
+      "text": "well yeah because the evidence didn't support it at the time"
+    },
+    {
+      "id": "seg_35",
+      "speaker": "S2",
+      "start": 233.66,
+      "end": 244.62,
+      "text": "exactly but instead of throwing out the core idea of a moving earth scientists tweaked the protective belt belt they hypothesized that the universe was was vastly larger than previously thought"
+    },
+    {
+      "id": "seg_36",
+      "speaker": "S1",
+      "start": 244.86,
+      "end": 248.3,
+      "text": "oh so their instruments just weren't sensitive enough to detect the shift yet"
+    },
+    {
+      "id": "seg_37",
+      "speaker": "S2",
+      "start": 248.54,
+      "end": 255.98,
+      "text": "bingo by protecting that hardcore the theory survived until parallax was finally observed like 300 years later"
+    },
+    {
+      "id": "seg_38",
+      "speaker": "S1",
+      "start": 256.22,
+      "end": 267.5,
+      "text": "wow okay that 300 year gap really captures captures a fundamental tension here i mean strict falsifiability feels utterly utterly essential to prevent dogmatism right to keep our methods objective"
+    },
+    {
+      "id": "seg_39",
+      "speaker": "S2",
+      "start": 267.74,
+      "end": 268.94,
+      "text": "yeah absolutely"
+    },
+    {
+      "id": "seg_40",
+      "speaker": "S1",
+      "start": 269.18,
+      "end": 276.54,
+      "text": "but you've shown that shielding a theory's core during times of crisis is often what gives world changing ideas the breeding room they actually need to mature"
+    },
+    {
+      "id": "seg_41",
+      "speaker": "S2",
+      "start": 276.86,
+      "end": 290.14,
+      "text": "exactly understanding both the strict logic of testing and the messy protective history of paradigms gives us a much richer more accurate view of how scientific discovery actually happens there's definitely more more to explore there"
+    },
+    {
+      "id": "seg_42",
+      "speaker": "S1",
+      "start": 290.38,
+      "end": 305.9,
+      "text": "it seems It seems the line between science and pseudoscience science isn't just drawn in ink sometimes sometimes it is negotiated over centuries next time you think of science as a cosmic bouncer with a simple checklist remember sometimes you have to let a promising theory linger in the lobby for 300 years until it finally finds its ID"
     }
   ],
   "nodes": [
@@ -93,11 +310,11 @@
       "id": "n1",
       "type": "conclusion",
       "speaker": "S1",
-      "text": "Remote work should be the default for software teams",
-      "quote": "Remote work should be the default for software teams.",
-      "start": 0.0,
+      "text": "Science requires strict falsifiability; unfalsifiable theories are not science.",
+      "quote": "if a theory can't be tested and potentially destroyed by evidence it evidence it is simply not science",
+      "start": 50.0,
       "segment_ids": [
-        "seg_1"
+        "seg_6"
       ],
       "verified": true
     },
@@ -105,157 +322,169 @@
       "id": "n2",
       "type": "premise",
       "speaker": "S1",
-      "text": "People are more productive when they control their environment",
-      "quote": "People are more productive when they control their environment.",
-      "start": 5.0,
+      "text": "Strictness protects against dogma; a single counterexample falsifies and discards a theory.",
+      "quote": "if you find a single counter example that doesn't fit the theory is falsified and discarded",
+      "start": 79.0,
       "segment_ids": [
-        "seg_1"
+        "seg_12"
       ],
-      "verified": true
+      "verified": false
     },
     {
       "id": "n3",
-      "type": "rebuttal",
-      "speaker": "S2",
-      "text": "Teams lose informal conversations where real problem solving happens",
-      "quote": "Teams lose the informal conversations where most real problem solving happens.",
-      "start": 10.0,
+      "type": "premise",
+      "speaker": "S1",
+      "text": "Falsification prevents astrology from masquerading as science.",
+      "quote": "that mechanism is what prevents vague concepts like astrology from masquerading as science because they are designed to literally never be proven wrong",
+      "start": 88.0,
       "segment_ids": [
-        "seg_2"
+        "seg_14"
       ],
-      "verified": true
+      "verified": false
     },
     {
       "id": "n4",
-      "type": "premise",
-      "speaker": "S1",
-      "text": "Fewer interruptions at home means more output",
-      "quote": "Studies of focused tasks show fewer interruptions at home, and fewer interruptions means more output.",
-      "start": 18.0,
+      "type": "conclusion",
+      "speaker": "S2",
+      "text": "Strict Popperian rule would have discarded great discoveries at the first anomaly.",
+      "quote": "if we actually applied Popper's strict rule historically we would have thrown out some of the greatest discoveries in human history",
+      "start": 58.0,
       "segment_ids": [
-        "seg_3"
+        "seg_7"
       ],
-      "verified": true
+      "verified": false
     },
     {
       "id": "n5",
-      "type": "rebuttal",
+      "type": "premise",
       "speaker": "S2",
-      "text": "Claiming remote means never meeting and destroys culture",
-      "quote": "So you are saying people should never meet and just sit alone forever? That would destroy any company culture.",
-      "start": 27.0,
+      "text": "Science operates in paradigms where anomalies do not cause abandonment of theory.",
+      "quote": "science actually operates in paradigms these sweeping worldviews like Newtonian physics",
+      "start": 110.0,
       "segment_ids": [
-        "seg_4"
+        "seg_17"
       ],
-      "verified": true
+      "verified": false
     },
     {
       "id": "n6",
       "type": "rebuttal",
-      "speaker": "S1",
-      "text": "Remote as default, not only option",
-      "quote": "I said remote should be the default, not the only option.",
-      "start": 36.0,
+      "speaker": "S2",
+      "text": "S1 presents a false dilemma between instant falsifiability and pseudoscience.",
+      "quote": "sure but you're setting up a false dilemma there you're suggesting we either have instant falsifiability or we just descend into absolute pseudoscience",
+      "start": 96.0,
       "segment_ids": [
-        "seg_5"
+        "seg_15"
       ],
-      "verified": true
+      "verified": false
     },
     {
       "id": "n7",
-      "type": "conclusion",
-      "speaker": "S2",
-      "text": "Office must be better because successful companies return to office",
-      "quote": "Well, every successful company I know brings people back to the office, so the office must be better.",
-      "start": 42.0,
+      "type": "claim",
+      "speaker": "S1",
+      "text": "Competing paradigms are incommensurable and use same terms with different meanings.",
+      "quote": "he says competing paradigms are incommensurable meaning like an Einsteinian physicist and a Newtonian physicist use the exact same word like mass but they mean completely different things",
+      "start": 135.0,
       "segment_ids": [
-        "seg_6"
+        "seg_20"
       ],
-      "verified": true
+      "verified": false
     },
     {
       "id": "n8",
       "type": "rebuttal",
       "speaker": "S1",
-      "text": "Companies have office leases to justify",
-      "quote": "Those companies also have expensive office leases to justify.",
-      "start": 50.0,
+      "text": "Kuhn replaces objective truth with social consensus of the community.",
+      "quote": "he just just substitutes the objective truth of a theory theory for the mere social consensus of a scientific community",
+      "start": 150.0,
       "segment_ids": [
-        "seg_7"
+        "seg_22"
       ],
-      "verified": true
+      "verified": false
     },
     {
       "id": "n9",
       "type": "rebuttal",
-      "speaker": "S1",
-      "text": "You only know a handful of companies",
-      "quote": "And you only know a handful of companies.",
-      "start": 54.0,
+      "speaker": "S2",
+      "text": "S1's characterization of paradigm shifts as mob rule is a straw man.",
+      "quote": "Okay, that is a straw man of how paradigm shifts actually occur. It's not just subjective mob rule.",
+      "start": 157.0,
       "segment_ids": [
-        "seg_7"
+        "seg_23"
       ],
-      "verified": true
+      "verified": false
     },
     {
       "id": "n10",
-      "type": "rebuttal",
+      "type": "premise",
       "speaker": "S2",
-      "text": "You only say this because you hate commuting",
-      "quote": "You only say this because you hate commuting.",
-      "start": 58.0,
+      "text": "Lakatosian research programs have an untested hard core.",
+      "quote": "A research program has an unquestioned hardcore like Newton's laws of motion you don't ever test the core",
+      "start": 170.0,
       "segment_ids": [
-        "seg_8"
+        "seg_25"
       ],
-      "verified": true
+      "verified": false
     },
     {
       "id": "n11",
-      "type": "rebuttal",
-      "speaker": "S1",
-      "text": "Liking commuting is irrelevant to argument soundness",
-      "quote": "Whether I like commuting has nothing to do with whether the argument is sound.",
-      "start": 63.0,
+      "type": "premise",
+      "speaker": "S2",
+      "text": "Failed tests are accommodated by tweaking the protective belt, not rejecting the core.",
+      "quote": "if an experiment goes wrong you don't throw out the core you tweak the protective belt by changing your assumptions about the instruments instruments or the testing environment",
+      "start": 183.0,
       "segment_ids": [
-        "seg_9"
+        "seg_27"
       ],
-      "verified": true
+      "verified": false
     },
     {
       "id": "n12",
       "type": "rebuttal",
-      "speaker": "S2",
-      "text": "Onboarding a junior remotely is slower",
-      "quote": "But onboarding a junior developer remotely is clearly slower.",
-      "start": 70.0,
+      "speaker": "S1",
+      "text": "Lakatos sets no time limit for abandoning a degenerating program.",
+      "quote": "but Lakatos sets absolutely no time limit for when scientists should finally give up on a degenerating program",
+      "start": 193.0,
       "segment_ids": [
-        "seg_10"
+        "seg_28"
       ],
-      "verified": true
+      "verified": false
     },
     {
       "id": "n13",
-      "type": "premise",
-      "speaker": "S2",
-      "text": "Juniors learn by watching seniors",
-      "quote": "They learn by watching seniors.",
-      "start": 74.0,
+      "type": "rebuttal",
+      "speaker": "S1",
+      "text": "Shielding failed programs is hasty generalization from past recoveries.",
+      "quote": "structurally this system totally shields failed ideas from scrutiny assuming a struggling program will magically recover just because a few did in the past is a massive hasty generalization",
+      "start": 205.0,
       "segment_ids": [
-        "seg_10"
+        "seg_30"
       ],
-      "verified": true
+      "verified": false
     },
     {
       "id": "n14",
-      "type": "claim",
-      "speaker": "S1",
-      "text": "Juniors may need hybrid period then remote by default",
-      "quote": "Maybe juniors need a hybrid period, then remote by default.",
-      "start": 78.0,
+      "type": "premise",
+      "speaker": "S2",
+      "text": "Strict Popperianism would have killed heliocentrism over missing stellar parallax.",
+      "quote": "under Popper's strict rule heliocentrism should have been instantly killed",
+      "start": 228.0,
       "segment_ids": [
-        "seg_11"
+        "seg_33"
       ],
-      "verified": true
+      "verified": false
+    },
+    {
+      "id": "n15",
+      "type": "premise",
+      "speaker": "S2",
+      "text": "Protecting the heliocentric core allowed survival until parallax observed 300 years later.",
+      "quote": "bingo by protecting that hardcore the theory survived until parallax was finally observed like 300 years later",
+      "start": 252.0,
+      "segment_ids": [
+        "seg_37"
+      ],
+      "verified": false
     }
   ],
   "edges": [
@@ -265,97 +494,89 @@
       "relation": "supports"
     },
     {
-      "source": "n4",
+      "source": "n3",
       "target": "n1",
       "relation": "supports"
     },
     {
-      "source": "n3",
+      "source": "n4",
       "target": "n1",
       "relation": "attacks"
     },
     {
       "source": "n5",
-      "target": "n1",
-      "relation": "attacks"
+      "target": "n4",
+      "relation": "supports"
     },
     {
       "source": "n6",
-      "target": "n5",
+      "target": "n1",
       "relation": "attacks"
     },
     {
       "source": "n7",
-      "target": "n1",
-      "relation": "attacks"
+      "target": "n8",
+      "relation": "supports"
     },
     {
       "source": "n8",
-      "target": "n7",
+      "target": "n5",
       "relation": "attacks"
     },
     {
       "source": "n9",
-      "target": "n7",
+      "target": "n8",
       "relation": "attacks"
     },
     {
       "source": "n10",
-      "target": "n1",
-      "relation": "attacks"
+      "target": "n4",
+      "relation": "supports"
     },
     {
       "source": "n11",
       "target": "n10",
-      "relation": "attacks"
+      "relation": "supports"
     },
     {
       "source": "n12",
-      "target": "n1",
+      "target": "n10",
       "relation": "attacks"
     },
     {
       "source": "n13",
-      "target": "n12",
-      "relation": "supports"
-    },
-    {
-      "source": "n14",
-      "target": "n12",
-      "relation": "supports"
+      "target": "n10",
+      "relation": "attacks"
     },
     {
       "source": "n14",
       "target": "n1",
+      "relation": "attacks"
+    },
+    {
+      "source": "n14",
+      "target": "n4",
+      "relation": "supports"
+    },
+    {
+      "source": "n15",
+      "target": "n4",
+      "relation": "supports"
+    },
+    {
+      "source": "n15",
+      "target": "n10",
       "relation": "supports"
     }
   ],
   "fallacies": [
     {
       "id": "f1",
-      "node_id": "n5",
+      "node_id": "n8",
       "name": "Straw man",
-      "explanation": "S2 restates S1's 'remote as default' as 'never meet and sit alone forever', an extreme distortion, then attacks that extreme for destroying culture instead of the actual proposal.",
-      "quote": "So you are saying people should never meet and just sit alone forever?",
-      "start": 27.0,
-      "verified": true
-    },
-    {
-      "id": "f2",
-      "node_id": "n7",
-      "name": "Appeal to popularity",
-      "explanation": "S2 argues the office must be better because every successful company he knows does it, assuming common practice proves superiority, which does not follow.",
-      "quote": "every successful company I know brings people back to the office, so the office must be better.",
-      "start": 42.0,
-      "verified": true
-    },
-    {
-      "id": "f3",
-      "node_id": "n10",
-      "name": "Ad hominem (circumstantial)",
-      "explanation": "S2 dismisses S1's argument by citing motive – hating commuting – rather than addressing the evidence. The hidden premise that motive makes the claim false fails.",
-      "quote": "You only say this because you hate commuting.",
-      "start": 58.0,
+      "explanation": "S1 distorts Kuhn's paradigm account as mere social consensus replacing objective truth, ignoring the anomaly and puzzle-solving structure S2 described. Reducing paradigm shifts to mob rule attacks an exaggerated version, not Kuhn's actual position.",
+      "quote": "he just just substitutes the objective truth of a theory theory for the mere social consensus of a scientific community",
+      "start": 150.0,
       "verified": true
     }
   ]

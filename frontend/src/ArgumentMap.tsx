@@ -87,7 +87,6 @@ function nodeLabel(node: DebateMapNode, speakerLabel: string, badges: DebateFall
           uncertain
         </span>
       )}
-      <span className="arg-node-text">{node.text}</span>
       {badges.length > 0 && (
         <span className="arg-node-badges">
           {badges.map((fallacy) => (
@@ -96,12 +95,13 @@ function nodeLabel(node: DebateMapNode, speakerLabel: string, badges: DebateFall
               className={fallacy.verified ? 'arg-node-badge' : 'arg-node-badge arg-node-badge-unverified'}
               title={fallacy.explanation}
             >
-              {!fallacy.verified && 'uncertain · '}
-              {fallacy.name}
+              Fallacy: {fallacy.name}
+              {!fallacy.verified && ' (uncertain)'}
             </span>
           ))}
         </span>
       )}
+      <span className="arg-node-text">{node.text}</span>
       <span className="arg-node-meta">
         {speakerLabel} · {formatMapTime(node.start)}
       </span>
@@ -278,6 +278,7 @@ export default function ArgumentMap({ nodes, edges, speakers = [], fallacies = [
   )
   const wrapRef = useRef<HTMLDivElement | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [legendOpen, setLegendOpen] = useState(false)
 
   useEffect(() => {
     function onFullscreenChange() {
@@ -316,8 +317,13 @@ export default function ArgumentMap({ nodes, edges, speakers = [], fallacies = [
       : flowNodes.map((flowNode) => (flowNode.id === selectedNodeId ? { ...flowNode, selected: true } : flowNode))
 
   return (
-    <div>
+    <div className="argument-map-block">
       <div className="argument-map-toolbar">
+        <span className="map-fallacy-count" role="status">
+          {fallacies.length === 0
+            ? 'No fallacy flags on this map'
+            : `${fallacies.length} fallacy flag${fallacies.length === 1 ? '' : 's'} on this map — look for the dark red “Fallacy:” badges on the cards`}
+        </span>
         <button
           type="button"
           className="map-fullscreen-btn"
@@ -328,43 +334,69 @@ export default function ArgumentMap({ nodes, edges, speakers = [], fallacies = [
         </button>
       </div>
       <div className="argument-map-wrapper" ref={wrapRef}>
-        <ReactFlow nodes={renderedNodes} edges={flowEdges} onNodeClick={handleNodeClick} fitView>
+        <ReactFlow
+          nodes={renderedNodes}
+          edges={flowEdges}
+          onNodeClick={handleNodeClick}
+          fitView
+          fitViewOptions={{ padding: 0.12 }}
+          minZoom={0.15}
+        >
           <Background />
           <Controls />
         </ReactFlow>
       </div>
-      <div className="argument-map-legend" aria-label="Map legend">
-        <span>
-          <span className="legend-swatch" style={{ background: NODE_COLORS.claim.background, borderColor: NODE_COLORS.claim.border }} />
-          Claim
+      <div className="argument-map-legend">
+        <button
+          type="button"
+          className="legend-toggle"
+          aria-expanded={legendOpen}
+          aria-controls="map-legend-body"
+          onClick={() => setLegendOpen((open) => !open)}
+        >
+          <span>How to read?</span>
+          <span className={legendOpen ? 'legend-arrow legend-arrow-open' : 'legend-arrow'} aria-hidden="true">
+            ⌄
+          </span>
+        </button>
+        {legendOpen && (
+          <div id="map-legend-body" className="legend-body">
+        <span className="legend-chip">
+          <span className="legend-rule legend-rule-claim" aria-hidden="true" />
+          <strong>Claim</strong> — the main point someone asserts
         </span>
-        <span>
-          <span className="legend-swatch" style={{ background: NODE_COLORS.premise.background, borderColor: NODE_COLORS.premise.border }} />
-          Premise
+        <span className="legend-chip">
+          <span className="legend-rule legend-rule-premise" aria-hidden="true" />
+          <strong>Premise</strong> — a reason given to back a claim
         </span>
-        <span>
-          <span className="legend-swatch" style={{ background: NODE_COLORS.conclusion.background, borderColor: NODE_COLORS.conclusion.border }} />
-          Conclusion
+        <span className="legend-chip">
+          <span className="legend-rule legend-rule-conclusion" aria-hidden="true" />
+          <strong>Conclusion</strong> — what the reasons are meant to lead to
         </span>
-        <span>
-          <span className="legend-swatch" style={{ background: NODE_COLORS.rebuttal.background, borderColor: NODE_COLORS.rebuttal.border }} />
-          Rebuttal
+        <span className="legend-chip">
+          <span className="legend-rule legend-rule-rebuttal" aria-hidden="true" />
+          <strong>Rebuttal</strong> — a counter-argument (dashed red edge)
         </span>
-        <span>
+        <span className="legend-chip">
           <span className="legend-line" style={{ background: EDGE_COLORS.supports }} />
-          supports
+          <strong>supports</strong> — backs the next point
         </span>
-        <span>
+        <span className="legend-chip">
           <span className="legend-line" style={{ background: EDGE_COLORS.attacks }} />
-          attacks
+          <strong>attacks</strong> — pushes against the next point
         </span>
-        <span>
+        <span className="legend-chip">
           <span className="arg-node-badge" aria-hidden="true">
             Fallacy
           </span>
-          fallacy badge
+          reasoning error
         </span>
-        <span>uncertain (unverified, greyed)</span>
+        <span className="legend-chip">
+          <span className="legend-grey" aria-hidden="true" />
+          grey = uncertain
+        </span>
+          </div>
+        )}
       </div>
     </div>
   )

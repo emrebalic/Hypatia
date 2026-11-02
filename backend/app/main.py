@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -32,3 +34,19 @@ app.include_router(content_router)
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.get("/health/config")
+def health_config() -> dict[str, object]:
+    """Which Meta env vars this process can see (never returns key values).
+
+    Model ids are not secret (they are in .env.example); the API key is
+    reported as set/unset only. Use this to tell a stale process apart
+    from a fixed one: all four must read true after a proper restart.
+    """
+    return {
+        "META_BASE_URL": bool(os.environ.get("META_BASE_URL", "").strip()),
+        "META_API_KEY": bool(os.environ.get("META_API_KEY", "").strip()),
+        "META_TEXT_MODEL": os.environ.get("META_TEXT_MODEL", "") or None,
+        "META_TRANSCRIBE_MODEL": os.environ.get("META_TRANSCRIBE_MODEL", "") or None,
+    }

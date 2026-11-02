@@ -209,6 +209,28 @@ def test_missing_node_verdict_downgrades(monkeypatch):
     assert by_id["n3"].verified is False
 
 
+def test_missing_verdicts_are_retried_before_downgrading(monkeypatch):
+    # One big reply often drops verdicts; a missing item must be re-asked
+    # on its own before it is downgraded.
+    _, segments, nodes, _ = _load()
+    subset = nodes[:3]
+    replies = [
+        {"verdicts": [{"id": "n1", "supported": True, "reason": "First pass."}]},
+        {"verdicts": [{"id": "n2", "supported": True, "reason": "Retry."}]},
+        {"verdicts": [{"id": "n3", "supported": True, "reason": "Retry."}]},
+    ]
+    seen: dict[str, Any] = {"calls": 0}
+
+    def fake(messages, *, response_model, schema_name=None, model=None, client=None):
+        seen["calls"] += 1
+        return response_model.model_validate(copy.deepcopy(replies.pop(0)))
+
+    monkeypatch.setattr(smod, "chat_json_validated", fake)
+    checked = verify_nodes_semantic(subset, segments)
+    assert all(node.verified is True for node in checked)
+    assert seen["calls"] == 3
+
+
 def test_no_model_call_when_nothing_eligible(monkeypatch):
     _, segments, nodes, _ = _load()
     inputs = [node.model_copy(update={"verified": False}) for node in nodes[:2]]

@@ -20,12 +20,19 @@ from __future__ import annotations
 
 import json
 import os
-from typing import Any, TypeVar
+from pathlib import Path
+from typing import Annotated, Any, TypeVar
 
 import httpx
+from dotenv import load_dotenv
 from httpx import HTTPError
 from openai import OpenAI, OpenAIError
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, BeforeValidator, ValidationError
+
+# Secrets live only in backend/.env (gitignored). Load it explicitly so the
+# backend works however it is started (with or without `uvicorn --env-file`).
+# A missing file is fine: env vars may also come from the real environment.
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -40,6 +47,14 @@ __all__ = [
 
 _TRANSCRIBE_PATH = "/asr/transcribe"
 _TRANSCRIBE_AUDIO_ENCODING = "WAV"
+# DIARIZATION is the only mode that attributes speech to speakers, which the
+# argument map requires; it is also the model's full-accuracy batch mode.
+# There is no faster/cheaper transcribe model to select: the single model is
+# read from META_TRANSCRIBE_MODEL, and callers feed it the engine-native
+# 24 kHz mono PCM WAV (see transcribe.py / wavEncode.ts) so the server does
+# not resample. `languageBias`/`keywords` are deliberately left unset: with
+# no hint the model auto-detects language (incl. code-switching), which is
+# the correct default for an unknown debate.
 _TRANSCRIBE_MODE = "DIARIZATION"
 _MAX_ATTEMPTS = 2  # one initial try + one retry
 
@@ -52,14 +67,28 @@ class _InvalidReply(ValueError):
     """One chat reply was unusable (not JSON, or not a JSON object)."""
 
 
+def _optional_speaker(value: Any) -> str | None:
+    """Normalize a turn speaker: missing/blank means unattributed."""
+    if value is None:
+        return None
+    text = str(value).strip()
+    return text or None
+
+
 class TranscriptionTurn(BaseModel):
     """One diarized turn; times are integer milliseconds."""
 
-    turnId: str
+    # The live API returns integer turn ids (0, 1, 2, ...); coerce to str.
+    turnId: Annotated[str, BeforeValidator(lambda value: str(value))]
     startMs: int
     endMs: int
-    transcript: str
-    speaker: str
+    transcript: str = ""
+    # DIARIZATION usually attributes every turn, but the live API can omit
+    # `speaker` on turns it never attributed (its text/plain rendering calls
+    # those `unknown:`) and can emit empty filler turns. Neither may fail
+    # validation: the caller drops empty turns and lets an unattributed turn
+    # inherit the neighbouring speaker.
+    speaker: Annotated[str | None, BeforeValidator(_optional_speaker)] = None
 
 
 class TranscriptionResult(BaseModel):

@@ -27,9 +27,10 @@ export default function FallacyPanel({
   onSeekStart,
 }: FallacyPanelProps) {
   const nodesById = new Map(nodes.map((node) => [node.id, node]))
-  const selected =
-    fallacies.find((fallacy) => fallacy.id === selectedFallacyId) ??
-    (selectedNodeId !== null ? fallacies.find((fallacy) => fallacy.node_id === selectedNodeId) : undefined)
+  // Only the explicitly chosen fallacy is open. Callers set the id when a
+  // node or flag is picked and clear it when the open flag is clicked
+  // again, so there is no node-based fallback that would reopen it.
+  const selected = fallacies.find((fallacy) => fallacy.id === selectedFallacyId)
 
   if (fallacies.length === 0) {
     return (
@@ -96,10 +97,10 @@ export default function FallacyPanel({
             Play from this quote ({formatFallacyTime(selected.start)})
           </button>
         </article>
-      ) : selectedNodeId !== null ? (
+      ) : selectedNodeId !== null && !fallacies.some((fallacy) => fallacy.node_id === selectedNodeId) ? (
         <p className="hint">The selected node has no fallacy flags. Pick a flag above to see its quote and explanation.</p>
       ) : (
-        <p className="hint">Pick a flag to see the exact quote and explanation.</p>
+        <p className="hint">Pick a flag to see its quote and explanation — click it again to close.</p>
       )}
     </div>
   )

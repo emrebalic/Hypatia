@@ -17,6 +17,7 @@ from pydantic import BaseModel
 
 from app.meta_client import chat_json_validated
 from app.schemas import Edge, Node, NodeType, Segment, Speaker
+from app.verifier import ground_nodes
 
 PROMPT_PATH = Path(__file__).resolve().parent / "prompts" / "analyst.md"
 SCHEMA_NAME = "analyst_graph"
@@ -99,6 +100,10 @@ def analyze_transcript(
         client=client,
     )
     nodes = [Node(**draft.model_dump(), verified=True) for draft in reply.nodes]
+    # Snap every quote to the exact transcript words (models clean up
+    # stutters, which would fail verbatim verification) and let the segment
+    # the quote was found in correct segment_ids / speaker / start.
+    nodes = ground_nodes(nodes, segments)
     # Graph integrity at the boundary: drop edges that point at unknown
     # nodes or at themselves, so the API graph and the UI graph cannot
     # silently diverge (the UI drops the same edges when rendering).

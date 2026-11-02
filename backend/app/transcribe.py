@@ -33,7 +33,7 @@ router = APIRouter()
 
 MAX_AUDIO_SECONDS = 600  # transcription takes WAV only, up to 10 minutes
 MAX_AUDIO_BYTES = 32 * 1024 * 1024  # transcription request body max 32 MB
-TARGET_SAMPLE_RATE = 24000
+TARGET_SAMPLE_RATE = 24000  # the model's native rate; 16 kHz is resampled server-side
 WAV_CONTENT_TYPES = {"audio/wav", "audio/x-wav", "audio/vnd.wave", "audio/wave"}
 EXPECTED_TRANSCRIPT_FORMAT = "'[MM:SS] Speaker: words', one turn per line"
 
@@ -157,20 +157,35 @@ def turns_to_transcript(
 
     Speakers are numbered S1, S2, ... in order of first appearance with labels
     "Speaker 1", "Speaker 2", ...; times are converted from ms to seconds.
+    Empty turns carry no speech and are dropped. A turn the model never
+    attributed (no ``speaker``) inherits the previous speaker, or the next
+    attributed one when it comes first, so a stray fragment such as "well"
+    cannot fail the whole transcription.
     """
+    kept = [turn for turn in turns if turn.transcript.strip()]
+    # Next attributed speaker at or after each position, for leading gaps.
+    next_speaker: list[str | None] = [None] * len(kept)
+    upcoming: str | None = None
+    for index in range(len(kept) - 1, -1, -1):
+        if kept[index].speaker:
+            upcoming = kept[index].speaker
+        next_speaker[index] = upcoming
     speaker_ids: dict[str, str] = {}
     speakers: list[Speaker] = []
     segments: list[Segment] = []
-    for index, turn in enumerate(turns, start=1):
-        if turn.speaker not in speaker_ids:
+    previous: str | None = None
+    for index, turn in enumerate(kept):
+        speaker = turn.speaker or previous or next_speaker[index] or "unknown"
+        previous = speaker
+        if speaker not in speaker_ids:
             number = len(speakers) + 1
             speaker_id = f"S{number}"
-            speaker_ids[turn.speaker] = speaker_id
+            speaker_ids[speaker] = speaker_id
             speakers.append(Speaker(id=speaker_id, label=f"Speaker {number}"))
         segments.append(
             Segment(
-                id=f"seg_{index}",
-                speaker=speaker_ids[turn.speaker],
+                id=f"seg_{len(segments) + 1}",
+                speaker=speaker_ids[speaker],
                 start=turn.startMs / 1000.0,
                 end=turn.endMs / 1000.0,
                 text=turn.transcript,

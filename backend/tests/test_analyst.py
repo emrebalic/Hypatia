@@ -73,6 +73,45 @@ def test_analyze_returns_contract_nodes_and_edges(monkeypatch):
     assert seen["response_model"] is AnalystReply
 
 
+def test_analyze_snaps_cleaned_quote_to_exact_transcript_words(monkeypatch):
+    # The model tends to clean up stutters; grounding must restore the
+    # exact spoken words and correct segment/speaker/start from them.
+    speakers = [Speaker(id="S1", label="Speaker 1")]
+    segments = [
+        Segment(
+            id="seg_1",
+            speaker="S1",
+            start=10.0,
+            end=20.0,
+            text="well well I I think remote work should should be the default here",
+        )
+    ]
+    canned = {
+        "nodes": [
+            {
+                "id": "n1",
+                "type": "claim",
+                "speaker": "S9",
+                "text": "Remote work should be the default.",
+                "quote": "I think remote work should be the default",
+                "start": 999.0,
+                "segment_ids": ["seg_99"],
+            }
+        ],
+        "edges": [],
+    }
+    monkeypatch.setattr(
+        amod, "chat_json_validated", _fake_validated_factory(canned, {})
+    )
+    nodes, _ = analyze_transcript(speakers, segments)
+    assert len(nodes) == 1
+    node = nodes[0]
+    assert node.quote == "I think remote work should should be the default"
+    assert node.segment_ids == ["seg_1"]
+    assert node.speaker == "S1"
+    assert node.start == 10.0
+
+
 def test_analyze_drops_dangling_and_self_edges(monkeypatch):
     speakers, segments = _load_transcript_input()
     canned = _canned_reply()

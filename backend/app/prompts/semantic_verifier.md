@@ -31,6 +31,12 @@ One verdict per judged item: `{"id": "...", "supported": true|false, "reason": "
   unshown fallacy name is `supported=false`.
 - `reason` is one short sentence saying why.
 - Judge every listed item; use only `id` values from the input list.
+- A `text` paraphrase is a summary, not a transcript: it is supported when
+  a fair reader would say the quote backs it, even when the paraphrase is
+  shorter or uses different words. Do not mark `supported=false` merely
+  because the paraphrase does not repeat every word of the quote, or
+  because another type could also fit; reserve `false` for a paraphrase
+  the quote does not back, or a type the move clearly is not.
 
 Rules:
 

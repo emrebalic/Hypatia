@@ -19,7 +19,7 @@ from pydantic import BaseModel
 from app.analyst import format_transcript
 from app.meta_client import chat_json_validated
 from app.schemas import Fallacy, Node, Segment, Speaker
-from app.verifier import verify_fallacies
+from app.verifier import ground_fallacies, verify_fallacies
 
 PROMPT_PATH = Path(__file__).resolve().parent / "prompts" / "fallacy.md"
 SCHEMA_NAME = "fallacy_report"
@@ -110,4 +110,4 @@ def hunt_fallacies(
         client=client,
     )
     stamped = [Fallacy(**draft.model_dump(), verified=True) for draft in reply.fallacies]
-    return verify_fallacies(stamped, segments, nodes)
+    return verify_fallacies(ground_fallacies(stamped, segments, nodes), segments, nodes)

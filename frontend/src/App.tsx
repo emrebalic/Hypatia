@@ -5,6 +5,7 @@ import PhilosopherPanel from './PhilosopherPanel'
 import LearnPanel, { type LearnOpenRequest } from './LearnPanel'
 import PipelineFlow, { type StageId, type StageStatus } from './PipelineFlow'
 import ColumnMotif from './ColumnMotif'
+import { fileToWavBlob } from './wavEncode'
 import './App.css'
 
 interface Speaker {
@@ -142,6 +143,11 @@ export default function App() {
   }
 
   function handleSelectFallacy(fallacy: DebateFallacy) {
+    // Clicking the already-open fallacy closes its detail again.
+    if (selectedFallacyId === fallacy.id) {
+      setSelectedFallacyId(null)
+      return
+    }
     setSelectedFallacyId(fallacy.id)
     setSelectedNodeId(fallacy.node_id)
     setLearnTarget((prev) => ({ name: fallacy.name, nonce: (prev?.nonce ?? 0) + 1 }))
@@ -182,9 +188,7 @@ export default function App() {
         edges: result.edges.length,
         fallacies: fallacyList.length,
       })
-      setStatusLine(
-        `Done: ${result.nodes.length} argument nodes, ${result.edges.length} links, ${fallacyList.length} fallacy flags from ${result.segments.length} transcript segments.`,
-      )
+      setStatusLine('Ready.')
     } catch {
       markStage(['arguments', 'fallacies', 'verification'], 'error')
       setError('Could not reach the API. Is the backend running on http://localhost:8000?')
@@ -206,8 +210,25 @@ export default function App() {
     setBusy('transcript')
     setStatusLine(`Uploading ${file.name} and transcribing…`)
     try {
+      // No ffmpeg needed when the browser can decode the file (Chrome/Edge
+      // handle m4a/mp3/mp4/wav): always normalize locally to the model's
+      // native rate (mono 16-bit PCM WAV at 24 kHz) first, so the server
+      // never has to resample and DIARIZATION hears its best input. Even a
+      // .wav upload goes through this: it may be stereo or 44.1/16 kHz.
+      // The preview above still plays the original file.
+      let uploadFile: File | Blob = file
+      try {
+        setStatusLine(`Converting ${file.name} to WAV in your browser…`)
+        const wavBlob = await fileToWavBlob(file)
+        uploadFile = new File([wavBlob], 'audio.wav', { type: 'audio/wav' })
+        setStatusLine('Converted to WAV. Transcribing…')
+      } catch {
+        // Browser cannot decode it; upload the original and let the
+        // backend try (it needs ffmpeg for non-WAV input).
+        uploadFile = file
+      }
       const form = new FormData()
-      form.append('file', file)
+      form.append('file', uploadFile)
       const res = await fetch('/api/transcribe', { method: 'POST', body: form })
       if (!res.ok) {
         markStage(['transcript'], 'error')
@@ -295,9 +316,7 @@ export default function App() {
         edges: result.edges.length,
         fallacies: fallacyList.length,
       })
-      setStatusLine(
-        `Demo loaded instantly (no API calls): ${result.nodes.length} argument nodes, ${result.edges.length} links, ${fallacyList.length} fallacy flags from ${result.segments.length} transcript segments.`,
-      )
+      setStatusLine('Demo ready.')
     } catch {
       setError('Could not reach the API. Is the backend running on http://localhost:8000?')
       setStatusLine('Demo load failed. Analyze a debate first to create the saved result.')
@@ -428,10 +447,8 @@ export default function App() {
         <PipelineFlow stages={stages} />
         {mapGraph && (
           <p className="proof-strip" role="status">
-            Verifier: {mapGraph.nodes.filter((node) => node.verified).length}/{mapGraph.nodes.length} node quotes
-            passed every check (quote, timestamp, meaning) ·{' '}
-            {fallacies.filter((fallacy) => fallacy.verified).length}/{fallacies.length} fallacy quotes passed ·{' '}
-            items that fail any check stay greyed, never hidden
+            {mapGraph.nodes.filter((node) => node.verified).length} of {mapGraph.nodes.length} arguments fully
+            checked. The rest are grey — uncertain, not necessarily wrong.
           </p>
         )}
         <p className="status-line" role="status">
@@ -497,8 +514,8 @@ export default function App() {
           <h2>Argument map</h2>
           {summary ? (
             <p>
-              {summary.nodes} argument nodes, {summary.edges} links, {summary.fallacies} fallacy flags from{' '}
-              {summary.segments} segments.
+              {summary.nodes} arguments · {summary.fallacies} fallacy{summary.fallacies === 1 ? '' : 's'} — click a
+              card to hear that moment.
             </p>
           ) : (
             <p>Premises and conclusions appear here as a graph once a debate is analyzed.</p>
@@ -513,7 +530,6 @@ export default function App() {
                 selectedNodeId={selectedNodeId}
                 onNodeSelect={seekToNode}
               />
-              <p className="hint">Tip: click a node to seek the player to its timestamp.</p>
               <FallacyPanel
                 fallacies={fallacies}
                 nodes={mapGraph.nodes}

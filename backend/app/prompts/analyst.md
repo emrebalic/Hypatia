@@ -26,8 +26,17 @@ Each node is one argumentative move by one speaker. Fields:
 
 Rules:
 
-- Every `quote` must appear verbatim in the quoted segment's text.
-- Every `start` must lie between its segment's start and end.
+- Copy `quote` verbatim, character for character, from ONE segment, including any
+  filler words or repeated words exactly as spoken ("well well I I think").
+  Never clean up, rephrase, complete, or shorten inside the quote: if you
+  want a shorter quote, choose a shorter contiguous span of the exact words.
+- Keep each quote short: about 6-20 words, the smallest exact span that
+  still shows the whole move.
+- `text` may only claim what the chosen quote itself says. If the quote
+  does not say it, do not put it in `text`; pick a different quote or drop
+  the node. A paraphrase that goes beyond its quote fails verification.
+- Take `segment_ids` and `start` from the segment you copied the quote
+  from; `start` must lie between that segment's start and end.
 - Cover each side's main thesis and supporting reasons; skip pure filler.
 - One node per move; do not split a single sentence into several nodes.
 

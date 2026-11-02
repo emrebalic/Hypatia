@@ -59,6 +59,18 @@ MESSAGES = [{"role": "user", "content": "extract"}]
 SCHEMA = {"type": "object", "properties": {"nodes": {"type": "array"}}}
 
 
+def test_env_file_is_wired_and_missing_var_message_is_clear(monkeypatch):
+    # Regression: backend/.env must actually be loaded (load_dotenv wiring
+    # in meta_client), otherwise every call fails with this message.
+    import pathlib
+
+    source = pathlib.Path(meta_client.__file__).read_text(encoding="utf-8")
+    assert "load_dotenv" in source and 'parents[1] / ".env"' in source
+    monkeypatch.delenv("META_BASE_URL", raising=False)
+    with pytest.raises(MetaClientError, match="META_BASE_URL is not set"):
+        meta_client._env("META_BASE_URL")
+
+
 def test_chat_json_sends_env_model_and_schema_shape(env, monkeypatch):
     seen, completions = _patch_openai(monkeypatch, ['{"nodes": []}'])
     result = chat_json(MESSAGES, json_schema=SCHEMA, schema_name="analysis")
@@ -179,6 +191,43 @@ def test_transcribe_wav_posts_multipart_shape(env, monkeypatch):
     assert result.audioDurationMs == 9000
     assert [t.speaker for t in result.turns] == ["A", "B"]
     assert [t.startMs for t in result.turns] == [0, 4000]
+
+
+def test_transcribe_wav_accepts_integer_turn_ids(env, monkeypatch):
+    # Live shape (2026-11-01): turnId arrives as int, not str.
+    reply = {
+        **CANNED_TRANSCRIPTION,
+        "turns": [
+            {**turn, "turnId": index}
+            for index, turn in enumerate(CANNED_TRANSCRIPTION["turns"])
+        ],
+    }
+    _patch_httpx_post(monkeypatch, reply=reply)
+    result = transcribe_wav(b"RIFFfake", filename="debate.wav")
+    assert [turn.turnId for turn in result.turns] == ["0", "1"]
+
+
+def test_transcribe_wav_accepts_missing_speaker_and_empty_turns(env, monkeypatch):
+    # Live shape (Emre, 5-min m4a): some turns omit `speaker` entirely and
+    # filler turns can carry an empty transcript. Neither may fail validation.
+    reply = {
+        **CANNED_TRANSCRIPTION,
+        "turns": [
+            {"turnId": 22, "startMs": 0, "endMs": 100, "transcript": ""},
+            {"turnId": 30, "startMs": 100, "endMs": 200, "transcript": "well"},
+            {
+                "turnId": 35,
+                "startMs": 200,
+                "endMs": 300,
+                "transcript": "They",
+                "speaker": "  ",
+            },
+        ],
+    }
+    _patch_httpx_post(monkeypatch, reply=reply)
+    result = transcribe_wav(b"RIFFfake", filename="debate.wav")
+    assert [turn.speaker for turn in result.turns] == [None, None, None]
+    assert [turn.transcript for turn in result.turns] == ["", "well", "They"]
 
 
 def test_transcribe_wav_explicit_model_overrides_env(env, monkeypatch):

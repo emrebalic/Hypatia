@@ -121,6 +121,45 @@ def test_transcribe_repeated_speaker_keeps_first_numbering(monkeypatch):
     assert [s["id"] for s in body["speakers"]] == ["S1", "S2"]
 
 
+def test_turns_to_transcript_inherits_missing_speaker_and_drops_empty():
+    # Regression (Emre, 5-min m4a): turns without `speaker` used to fail
+    # validation for the whole file. Empty turns are dropped; unattributed
+    # fragments inherit the previous speaker (a leading one, the next).
+    canned = _canned_result(
+        turns=[
+            {"turnId": 22, "startMs": 0, "endMs": 100, "transcript": ""},
+            {"turnId": 30, "startMs": 100, "endMs": 200, "transcript": "well"},
+            {
+                "turnId": 31,
+                "startMs": 200,
+                "endMs": 1000,
+                "transcript": "Remote work should be the default.",
+                "speaker": "B",
+            },
+            {"turnId": 35, "startMs": 1000, "endMs": 1200, "transcript": "They"},
+            {
+                "turnId": 36,
+                "startMs": 1200,
+                "endMs": 2000,
+                "transcript": "I disagree.",
+                "speaker": "A",
+            },
+        ]
+    )
+    speakers, segments = tmod.turns_to_transcript(canned.turns)
+    assert [segment.text for segment in segments] == [
+        "well",
+        "Remote work should be the default.",
+        "They",
+        "I disagree.",
+    ]
+    assert [segment.id for segment in segments] == ["seg_1", "seg_2", "seg_3", "seg_4"]
+    # "well" takes the next attributed speaker (B -> S1); "They" keeps the
+    # previous one; "I disagree." is the second distinct speaker.
+    assert [segment.speaker for segment in segments] == ["S1", "S1", "S1", "S2"]
+    assert [speaker.id for speaker in speakers] == ["S1", "S2"]
+
+
 def test_transcribe_converts_non_wav_with_ffmpeg(monkeypatch):
     calls: dict = {}
     wav = _wav_bytes()

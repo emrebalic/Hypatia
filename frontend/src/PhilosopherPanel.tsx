@@ -166,7 +166,7 @@ export default function PhilosopherPanel({ result, selectedNodeId, onSelectNode 
         </p>
       )}
 
-      <div aria-live="polite">
+      <div aria-live="polite" className="philosopher-replies">
         {replies.map((reply, replyIndex) => (
           <article key={`${reply.philosopher}-${replyIndex}`} className="philosopher-reply">
             {replyIndex > 0 && followUpQuestion !== null && (

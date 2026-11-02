@@ -122,6 +122,45 @@ def _verdict_by_id(reply: SemanticReply) -> dict[str, bool]:
     return verdicts
 
 
+# Judging many items in one call makes the model drop verdicts (each drop
+# used to downgrade an item). Judge in small batches, then ask once more,
+# item by item, for anything still missing; only a verdict missing after
+# that focused retry fails closed.
+_BATCH_SIZE = 5
+
+
+def _collect_verdicts(build_messages, eligible, *, model=None, client=None) -> dict[str, bool]:
+    """Judge ``eligible`` items in batches; retry missing verdicts singly."""
+    wanted = {item.id for item in eligible}
+    verdicts: dict[str, bool] = {}
+    for offset in range(0, len(eligible), _BATCH_SIZE):
+        chunk = eligible[offset : offset + _BATCH_SIZE]
+        reply = chat_json_validated(
+            build_messages(chunk),
+            response_model=SemanticReply,
+            schema_name=SCHEMA_NAME,
+            model=model,
+            client=client,
+        )
+        for item_id, supported in _verdict_by_id(reply).items():
+            if item_id in wanted:
+                verdicts[item_id] = supported
+    for item in eligible:
+        if item.id in verdicts:
+            continue
+        reply = chat_json_validated(
+            build_messages([item]),
+            response_model=SemanticReply,
+            schema_name=SCHEMA_NAME,
+            model=model,
+            client=client,
+        )
+        for item_id, supported in _verdict_by_id(reply).items():
+            if item_id in wanted:
+                verdicts[item_id] = supported
+    return verdicts
+
+
 def verify_nodes_semantic(
     nodes: list[Node],
     segments: list[Segment],
@@ -145,15 +184,12 @@ def verify_nodes_semantic(
     eligible = [node for node in nodes if node.verified]
     if not eligible:
         return [node.model_copy(update={"verified": False}) for node in nodes]
-    messages = build_node_messages(eligible, segments, speakers)
-    reply = chat_json_validated(
-        messages,
-        response_model=SemanticReply,
-        schema_name=SCHEMA_NAME,
+    by_id = _collect_verdicts(
+        lambda chunk: build_node_messages(chunk, segments, speakers),
+        eligible,
         model=model,
         client=client,
     )
-    by_id = _verdict_by_id(reply)
     checked = []
     for node in nodes:
         if node.verified and by_id.get(node.id) is True:
@@ -185,15 +221,12 @@ def verify_fallacies_semantic(
     eligible = [fallacy for fallacy in fallacies if fallacy.verified]
     if not eligible:
         return [fallacy.model_copy(update={"verified": False}) for fallacy in fallacies]
-    messages = build_fallacy_messages(eligible, segments, nodes, speakers)
-    reply = chat_json_validated(
-        messages,
-        response_model=SemanticReply,
-        schema_name=SCHEMA_NAME,
+    by_id = _collect_verdicts(
+        lambda chunk: build_fallacy_messages(chunk, segments, nodes, speakers),
+        eligible,
         model=model,
         client=client,
     )
-    by_id = _verdict_by_id(reply)
     checked = []
     for fallacy in fallacies:
         if fallacy.verified and by_id.get(fallacy.id) is True:

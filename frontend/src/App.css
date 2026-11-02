@@ -326,6 +326,9 @@
   align-items: stretch;
 }
 
+/* Columns flow with the page. Long conversations scroll inside their
+   own generous areas instead of stretching the page, so nothing is
+   squeezed into a narrow strip. */
 .column {
   border: 1px solid var(--lilac-200);
   border-radius: 14px;
@@ -333,6 +336,11 @@
   background: var(--surface);
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  /* With overflow hidden, a column's long inner content cannot grow the
+     grid row: the middle (map + fallacy) column sets the shared height
+     and the side columns end exactly at its bottom, never below it. */
+  overflow: hidden;
 }
 
 .column h2 {
@@ -373,16 +381,22 @@
   color: var(--lilac-900);
 }
 
+/* Fills the player column down to the same bottom as the map column
+   (the grid stretches all three columns to one height); scrolls inside. */
 .transcript-rail {
   list-style: none;
   margin: 1rem 0 0;
-  padding: 0;
+  padding: 0 0.25rem 0 0;
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
+  /* height: 0 keeps the 42 transcript rows from sizing the column; flex
+     then grows the rail into exactly the shared column height. */
+  height: 0;
   flex: 1 1 auto;
-  min-height: 320px;
+  min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .transcript-seg {
@@ -435,8 +449,18 @@
 
 .argument-map-toolbar {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
   margin-bottom: 0.4rem;
+}
+
+.map-fallacy-count {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--burgundy);
 }
 
 .map-fullscreen-btn {
@@ -455,9 +479,15 @@
   background: var(--lilac-100);
 }
 
+.argument-map-block {
+  flex: none;
+}
+
 .argument-map-wrapper {
-  flex: 1 1 auto;
-  min-height: clamp(640px, 82vh, 1020px);
+  flex: none;
+  /* Tall enough to read cards and fallacy badges without full screen.
+     Full screen remains available for detail. */
+  height: clamp(440px, 58vh, 660px);
   border: 1px solid var(--lilac-200);
   border-radius: 10px;
   background: var(--lilac-50);
@@ -482,17 +512,97 @@
 }
 
 .argument-map-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 0.9rem;
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-  color: #444;
+  margin-top: 0.75rem;
+  padding: 0.55rem 0.9rem 0.7rem;
+  border: 1px solid var(--lilac-200);
+  border-radius: 14px;
+  background: var(--lilac-50);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--ink);
 }
 
-.argument-map-legend > span {
+.legend-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.35rem 0.1rem;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--aubergine-950);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.legend-arrow {
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--lilac-700);
+  transition: transform 0.18s ease;
+}
+
+.legend-arrow-open {
+  transform: rotate(180deg);
+}
+
+.legend-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.55rem;
+  padding: 0.45rem 0 0.25rem;
+}
+
+.legend-chip {
   display: inline-flex;
   align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.65rem;
+  background: #fff;
+  border: 1px solid var(--lilac-200);
+  border-radius: 999px;
+}
+
+.legend-grey {
+  flex: none;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 4px;
+  background: #ececec;
+  border: 2px solid #8a8a8a;
+}
+
+/* The badge inside a legend chip stays compact. */
+.legend-chip .arg-node-badge {
+  font-size: 0.7rem;
+  padding: 0.05rem 0.45rem;
+}
+
+/* Samples match the left-edge rule drawn on each card kind. */
+.legend-rule {
+  flex: none;
+  width: 0;
+  height: 1.05rem;
+}
+
+.legend-rule-claim {
+  border-left: 4px solid var(--lilac-700);
+}
+
+.legend-rule-premise {
+  border-left: 4px double var(--gold);
+}
+
+.legend-rule-conclusion {
+  border-left: 7px solid var(--aubergine-950);
+}
+
+.legend-rule-rebuttal {
+  border-left: 4px dashed var(--burgundy);
 }
 
 .legend-swatch {
@@ -549,10 +659,10 @@
 
 .arg-node-text {
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
 }
 
 .arg-node-meta {
@@ -581,22 +691,24 @@
   gap: 0.25rem;
 }
 
+/* Solid fill so a fallacy flag reads at map zoom, not just up close. */
 .arg-node-badge {
   display: inline-block;
-  font-size: 0.65rem;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
   font-weight: 700;
-  line-height: 1.5;
-  color: var(--burgundy);
-  background: var(--burgundy-soft);
+  line-height: 1.45;
+  color: #fff;
+  background: var(--burgundy);
   border: 1px solid var(--burgundy);
   border-radius: 6px;
-  padding: 0 0.35rem;
+  padding: 0.15rem 0.5rem;
   white-space: normal;
 }
 
 .arg-node-badge-unverified {
-  color: #555;
-  background: #e4e4e4;
+  color: #fff;
+  background: #8a8a8a;
   border-color: #8a8a8a;
 }
 
@@ -604,7 +716,7 @@
   margin-top: 0.75rem;
   border: 1px solid #d8d8d8;
   border-radius: 10px;
-  padding: 0.75rem;
+  padding: 1rem;
   background: #fff;
 }
 
@@ -615,41 +727,55 @@
 
 .fallacy-list {
   list-style: none;
-  padding: 0;
-  margin: 0 0 0.5rem;
+  padding: 0 0.25rem 0 0;
+  margin: 0 0 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.45rem;
+  max-height: min(360px, 45vh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .fallacy-item {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.15rem 0.5rem;
+  align-items: center;
+  gap: 0.3rem 0.6rem;
   width: 100%;
   font: inherit;
   text-align: left;
   background: var(--burgundy-soft);
   border: 1px solid var(--burgundy);
   border-radius: 8px;
-  padding: 0.4rem 0.6rem;
+  padding: 0.6rem 0.75rem;
   cursor: pointer;
 }
 
 .fallacy-item-name {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--burgundy);
 }
 
 .fallacy-item-meta {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: #555;
 }
 
 .fallacy-item-status {
-  font-size: 0.8rem;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: var(--burgundy);
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+}
+
+.fallacy-unverified .fallacy-item-status {
+  background: #8a8a8a;
 }
 
 .fallacy-on-selected-node {
@@ -738,6 +864,18 @@
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Fills the philosopher column to the shared bottom; scrolls inside. */
+.philosopher-replies {
+  height: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 0.25rem;
 }
 
 .philosopher-choices {
@@ -1353,8 +1491,24 @@ button,
     grid-template-columns: 1fr;
   }
 
+  /* Stacked layout: each column is its own row, so let it size naturally. */
   .column {
-    min-height: 0;
+    overflow: visible;
+  }
+
+  .transcript-rail {
+    flex: none;
+    height: min(520px, 60vh);
+  }
+
+  .argument-map-wrapper {
+    height: clamp(380px, 55vh, 560px);
+  }
+
+  .philosopher-replies {
+    flex: none;
+    height: auto;
+    max-height: 60vh;
   }
 }
 
